@@ -16,7 +16,7 @@ public class DemoApp {
         String key = MasterKeyUtils.hashPassword(originPass, salt).get();
 
         if (MasterKeyUtils.verifyPassword("12345", key, salt)) {
-            switch("expression") {
+            switch("Какая-то команда") {
                 case "Добавить новый аккаунт":
                     // code block
                     break;
