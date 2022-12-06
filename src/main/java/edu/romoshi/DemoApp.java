@@ -40,10 +40,13 @@ public class DemoApp {
         }
 
         //*** СИММЕТРИЧНОЕ ШИФРОВАНИЕ ПАРОЛЕЙ (которые хранятся в менеджере) ***
-        String pass = "qwerty";
+        AccWhichSave yandex = new AccWhichSave("Yandex", "irina@yandex.ru", "qwerty");
+
+        String pass = yandex.getPassword();
 
         PassCipher passSave = new PassCipher();
         passSave.init();
+
         String encryptedPass = passSave.encrypt(pass);
 
         System.err.println("Original pass: " + pass);
