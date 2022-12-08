@@ -1,5 +1,6 @@
 package edu.romoshi;
 
+import edu.romoshi.commands.GeneralClass;
 import edu.romoshi.crypto.MasterKeyUtils;
 import edu.romoshi.crypto.PassCipher;
 import edu.romoshi.userTools.AccWhichSave;
@@ -9,32 +10,12 @@ public class DemoApp {
     public static void main(String[] args) throws Exception{
 
         //*** ПРОВЕРКА НА ПРАВИЛЬНОСТЬ ВВЕДЕНИЯ МАСТЕРА КЛЮЧА ***
-        String salt = MasterKeyUtils.generateSalt(512).get();
-
         String originPass = "12345";
-
+        String salt = MasterKeyUtils.generateSalt(512).get();
         String key = MasterKeyUtils.hashPassword(originPass, salt).get();
 
         if (MasterKeyUtils.verifyPassword("12345", key, salt)) {
-            switch("Какая-то команда") {
-                case "Добавить новый аккаунт":
-                    // code block
-                    break;
-                case "Посмотреть аккаунт":
-                    // code block
-                    break;
-                case "Изменить аккаунт":
-                    // code block
-                    break;
-                case "Удалить аккаунт":
-                    // code block
-                    break;
-                case "Забыл пароль от менеджера":
-                    // code block
-                    break;
-                default:
-                    System.out.println("Такой команды не существует");
-            }
+            GeneralClass.useCommands("Какая-то команда");
         } else {
             System.err.println("Password is incorrect");
         }
