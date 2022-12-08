@@ -49,10 +49,7 @@ public class DemoApp {
 
         String encryptedPass = passSave.encrypt(pass);
 
-        System.err.println("Original pass: " + pass);
         String decryptedPass = passSave.decrypt(encryptedPass);
-
-        System.err.println("Encrypted pass: " + encryptedPass);
-        System.err.println("Decrypted pass: " + decryptedPass);
+        System.out.println(decryptedPass);
     }
 }
