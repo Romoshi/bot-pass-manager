@@ -33,7 +33,7 @@ public class DemoApp {
                     // code block
                     break;
                 default:
-                    System.err.println("Такой команды не существует");
+                    System.out.println("Такой команды не существует");
             }
         } else {
             System.err.println("Password is incorrect");
