@@ -8,29 +8,22 @@ import edu.romoshi.userTools.AccWhichSave;
 public class DemoApp {
 
     public static void main(String[] args) throws Exception{
-
-        //*** ПРОВЕРКА НА ПРАВИЛЬНОСТЬ ВВЕДЕНИЯ МАСТЕРА КЛЮЧА ***
         String originPass = "12345";
         String salt = MasterKeyUtils.generateSalt(512).get();
         String key = MasterKeyUtils.hashPassword(originPass, salt).get();
 
-        if (MasterKeyUtils.verifyPassword("12345", key, salt)) {
-            GeneralClass.useCommands("Какая-то команда");
-        } else {
-            System.err.println("Password is incorrect");
-        }
-
         //*** СИММЕТРИЧНОЕ ШИФРОВАНИЕ ПАРОЛЕЙ (которые хранятся в менеджере) ***
         AccWhichSave yandex = new AccWhichSave("Yandex", "irina@yandex.ru", "qwerty");
 
-        String pass = yandex.getPassword();
+        //String decryptedPass = passSave.decrypt(encryptedPass);
+        //System.out.println(decryptedPass);
 
-        PassCipher passSave = new PassCipher();
-        passSave.init();
+        //*** ПРОВЕРКА НА ПРАВИЛЬНОСТЬ ВВЕДЕНИЯ МАСТЕРА КЛЮЧА ***
 
-        String encryptedPass = passSave.encrypt(pass);
-
-        String decryptedPass = passSave.decrypt(encryptedPass);
-        System.out.println(decryptedPass);
+        if (MasterKeyUtils.verifyPassword("12345", key, salt)) {
+            GeneralClass.useCommands("Добавить новый аккаунт", yandex);
+        } else {
+            System.err.println("Password is incorrect");
+        }
     }
 }

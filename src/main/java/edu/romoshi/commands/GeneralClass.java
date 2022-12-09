@@ -1,26 +1,28 @@
 package edu.romoshi.commands;
 
+import edu.romoshi.userTools.AccWhichSave;
+
 public class GeneralClass {
 
-    public static void useCommands(String command) {
+    public static void useCommands(String command, AccWhichSave account) throws Exception {
         switch(command) {
-            case "Добавить новый аккаунт":
-                // code block
+            case "Посмотреть аккаунты":
+                Commands.showAccounts();
                 break;
-            case "Посмотреть аккаунт":
-                // code block
+            case "Добавить новый аккаунт":
+                Commands.addAccount(account);
                 break;
             case "Изменить аккаунт":
-                // code block
+                Commands.changeAccount();
                 break;
             case "Удалить аккаунт":
-                // code block
+                Commands.deleteAccount();
                 break;
             case "Забыл пароль от менеджера":
-                // code block
+                Commands.changeMasterKey();
                 break;
             default:
-                System.out.println("Такой команды не существует");
+                System.err.println("Sorry, I don`t have this command");
         }
     }
 }

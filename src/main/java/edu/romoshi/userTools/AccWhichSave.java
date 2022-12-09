@@ -4,6 +4,7 @@ public class AccWhichSave {
     private String nameService;
     private String login;
     private String password;
+
     public AccWhichSave(String name, String login, String pass) {
         this.nameService = name;
         this.login = login;
@@ -11,8 +12,9 @@ public class AccWhichSave {
     }
 
     public String getServiceInfo() {
-        String info = nameService + "\n" + login + "\n" + password;
-        return info;
+        return "Название сервиса:" + nameService + "\n" +
+                "Лоигин:" + login + "\n" +
+                "Пароль:" + password;
     }
 
     public void setNameService(String nameService) {
@@ -25,6 +27,13 @@ public class AccWhichSave {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    public String getNameService() {
+        return nameService;
+    }
+
+    public String getLogin() {
+        return login;
     }
     public String getPassword() {
         return password;
