@@ -6,7 +6,8 @@ import edu.romoshi.userTools.AccWhichSave;
 
 public class Commands {
 
-    public static void showAccounts() {}
+    public static void showAccount(String nameService) {
+    }
     public static void addAccount(AccWhichSave account) throws Exception {
         PassCipher passSave = new PassCipher();
         passSave.init();

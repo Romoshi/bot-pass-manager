@@ -7,10 +7,10 @@ import javax.crypto.spec.GCMParameterSpec;
 import java.util.Base64;
 
 public class PassCipher {
-    private SecretKey key;
+    private static SecretKey key;
     private final int KEY_SIZE = 128;
-    private final int T_LEN = 128;
-    private Cipher encryptionCipher;
+    private static final int T_LEN = 128;
+    private static Cipher encryptionCipher;
 
     public void init() throws Exception {
         KeyGenerator generator = KeyGenerator.getInstance("AES");
@@ -26,7 +26,7 @@ public class PassCipher {
         return encode(encryptedBytes);
     }
 
-    public String decrypt(String encryptedMessage) throws Exception {
+    public static String decrypt(String encryptedMessage) throws Exception {
         byte[] messageInBytes = decode(encryptedMessage);
         Cipher decryptionCipher = Cipher.getInstance("AES/GCM/NoPadding");
         GCMParameterSpec spec = new GCMParameterSpec(T_LEN, encryptionCipher.getIV());
@@ -39,7 +39,7 @@ public class PassCipher {
         return Base64.getEncoder().encodeToString(data);
     }
 
-    private byte[] decode(String data) {
+    private static byte[] decode(String data) {
         return Base64.getDecoder().decode(data);
     }
 }

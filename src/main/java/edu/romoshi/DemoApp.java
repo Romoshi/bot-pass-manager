@@ -12,13 +12,7 @@ public class DemoApp {
         String salt = MasterKeyUtils.generateSalt(512).get();
         String key = MasterKeyUtils.hashPassword(originPass, salt).get();
 
-        //*** СИММЕТРИЧНОЕ ШИФРОВАНИЕ ПАРОЛЕЙ (которые хранятся в менеджере) ***
         AccWhichSave yandex = new AccWhichSave("Yandex", "irina@yandex.ru", "qwerty");
-
-        //String decryptedPass = passSave.decrypt(encryptedPass);
-        //System.out.println(decryptedPass);
-
-        //*** ПРОВЕРКА НА ПРАВИЛЬНОСТЬ ВВЕДЕНИЯ МАСТЕРА КЛЮЧА ***
 
         if (MasterKeyUtils.verifyPassword("12345", key, salt)) {
             GeneralClass.useCommands("Добавить новый аккаунт", yandex);

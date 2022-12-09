@@ -7,7 +7,7 @@ public class GeneralClass {
     public static void useCommands(String command, AccWhichSave account) throws Exception {
         switch(command) {
             case "Посмотреть аккаунты":
-                Commands.showAccounts();
+                Commands.showAccount("Yandex");
                 break;
             case "Добавить новый аккаунт":
                 Commands.addAccount(account);
