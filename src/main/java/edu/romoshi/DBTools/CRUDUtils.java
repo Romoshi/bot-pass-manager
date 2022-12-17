@@ -3,6 +3,7 @@ package edu.romoshi.DBTools;
 import edu.romoshi.userTools.AccWhichSave;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
@@ -14,6 +15,13 @@ public class CRUDUtils {
 
             preparedStatement.setString(1, nameService);
             preparedStatement.executeUpdate();
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString(2) + "\n" +
+                        resultSet.getString(3) + "\n" +
+                        resultSet.getString(4));
+            }
         } catch(SQLException ex) {
             ex.getMessage();
         }
