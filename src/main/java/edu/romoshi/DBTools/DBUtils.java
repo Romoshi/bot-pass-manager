@@ -9,7 +9,7 @@ public class DBUtils {
     private static String dbUser = "sa";
     private static String dbPassword = "";
     public static Connection getConnection() {
-        Connection connection = null;
+        Connection connection;
 
         try {
             connection = DriverManager.getConnection(dbURL, dbUser, dbPassword);
