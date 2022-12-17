@@ -1,8 +1,6 @@
 package edu.romoshi;
 
-import edu.romoshi.commands.GeneralClass;
 import edu.romoshi.crypto.MasterKeyUtils;
-import edu.romoshi.crypto.PassCipher;
 import edu.romoshi.userTools.AccWhichSave;
 
 public class DemoApp {
@@ -15,7 +13,7 @@ public class DemoApp {
         AccWhichSave yandex = new AccWhichSave("Yandex", "irina@yandex.ru", "qwerty");
 
         if (MasterKeyUtils.verifyPassword("12345", key, salt)) {
-            GeneralClass.useCommands("Добавить новый аккаунт", yandex);
+            Commands.useCommands("Добавить новый аккаунт", yandex);
         } else {
             System.err.println("Password is incorrect");
         }

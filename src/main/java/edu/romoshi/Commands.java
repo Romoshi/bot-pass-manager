@@ -1,25 +1,30 @@
-package edu.romoshi.commands;
+package edu.romoshi;
 
+import edu.romoshi.DBTools.CRUDUtils;
 import edu.romoshi.userTools.AccWhichSave;
 
-public class GeneralClass {
+public class Commands {
 
-    public static void useCommands(String command, AccWhichSave account) throws Exception {
+    public static void useCommands(String command, AccWhichSave account) {
         switch(command) {
             case "Посмотреть аккаунты":
-                Commands.showAccount("Yandex");
+                CRUDUtils.showAccount("Yandex");
                 break;
             case "Добавить новый аккаунт":
-                Commands.addAccount(account);
+                CRUDUtils.saveAccount(account);
                 break;
             case "Удалить аккаунт":
-                Commands.deleteAccount();
+                CRUDUtils.deleteAccount("Google");
                 break;
             case "Забыл пароль от менеджера":
-                Commands.changeMasterKey();
+                changeMasterKey();
                 break;
             default:
                 System.err.println("Sorry, I don`t have this command");
         }
+    }
+
+    public static void changeMasterKey() {
+
     }
 }

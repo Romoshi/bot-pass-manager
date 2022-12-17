@@ -1,4 +1,4 @@
-package edu.romoshi.JDBC;
+package edu.romoshi.DBTools;
 
 public class SQLCommands {
     static final String SHOW = "SELECT name_service, login, password FROM passwords_db WHERE name_service = ?;";
