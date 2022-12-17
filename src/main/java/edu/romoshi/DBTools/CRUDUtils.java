@@ -17,6 +17,8 @@ public class CRUDUtils {
             preparedStatement.executeUpdate();
 
             ResultSet resultSet = preparedStatement.executeQuery();
+
+            //TODO: I think this code need change.
             while (resultSet.next()) {
                 System.out.println(resultSet.getString(2) + "\n" +
                         resultSet.getString(3) + "\n" +
