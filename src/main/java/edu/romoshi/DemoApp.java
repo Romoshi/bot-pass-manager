@@ -7,6 +7,7 @@ public class DemoApp {
 
     public static void main(String[] args) {
         String originPass = "12345";
+
         String salt = MasterKeyUtils.generateSalt(512).get();
         String key = MasterKeyUtils.hashPassword(originPass, salt).get();
 
