@@ -12,9 +12,6 @@ public class GeneralClass {
             case "Добавить новый аккаунт":
                 Commands.addAccount(account);
                 break;
-            case "Изменить аккаунт":
-                Commands.changeAccount();
-                break;
             case "Удалить аккаунт":
                 Commands.deleteAccount();
                 break;

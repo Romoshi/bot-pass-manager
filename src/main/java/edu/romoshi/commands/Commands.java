@@ -17,7 +17,6 @@ public class Commands {
                         + passSave.encrypt(account.getPassword());
         CreatingFileAcc.Creating(saving);
     }
-    public static void changeAccount() {}
     public static void deleteAccount() {}
     public static void changeMasterKey() {}
 
