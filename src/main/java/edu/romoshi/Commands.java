@@ -7,7 +7,7 @@ public class Commands {
 
     public static void useCommands(String command, AccWhichSave account) {
         switch(command) {
-            case "Посмотреть аккаунты":
+            case "Посмотреть аккаунт":
                 CRUDUtils.showAccount("Yandex");
                 break;
             case "Добавить новый аккаунт":
