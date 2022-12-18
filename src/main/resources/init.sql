@@ -1,4 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS db_tBot_passManager;
+CREATE DATABASE IF NOT EXISTS db_tBot_passManager;
 USE db_tBot_passManager;
 
 CREATE TABLE db_pass (
