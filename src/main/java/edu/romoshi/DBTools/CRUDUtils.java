@@ -9,15 +9,11 @@ import java.sql.SQLException;
 
 public class CRUDUtils {
 
-    public static void showAccount(String nameService) {
+    public static void showAccounts() {
         try (Connection connection = DBUtils.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.SHOW)) {
 
-            preparedStatement.setString(1, nameService);
-            preparedStatement.executeUpdate();
-
             ResultSet resultSet = preparedStatement.executeQuery();
-
             //TODO: I think this code need change.
             while (resultSet.next()) {
                 System.out.println(resultSet.getString(2) + "\n" +
