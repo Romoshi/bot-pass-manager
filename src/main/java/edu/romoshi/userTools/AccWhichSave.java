@@ -13,7 +13,7 @@ public class AccWhichSave {
 
     public String getServiceInfo() {
         return "Название сервиса:" + nameService + "\n" +
-                "Лоигин:" + login + "\n" +
+                "Логин:" + login + "\n" +
                 "Пароль:" + password;
     }
 

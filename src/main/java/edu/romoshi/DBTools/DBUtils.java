@@ -5,11 +5,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBUtils {
+    private static String dbUrl;
+    private static String dbUser;
+    private static String dbPassword;
     public static Connection connection;
     public static Connection getNewConnection() throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/test";
-        String user = "root";
-        String passwd = "root";
-        return DriverManager.getConnection(url, user, passwd);
+        dbUrl = "jdbc:mysql://localhost:3306/test";
+        dbUser = "root";
+        dbPassword = "root";
+
+        connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        return connection;
     }
 }

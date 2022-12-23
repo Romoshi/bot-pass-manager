@@ -18,7 +18,7 @@ public class PassCipher {
         key = generator.generateKey();
     }
 
-    public String encrypt(String message) throws Exception {
+    public static String encrypt(String message) throws Exception {
         byte[] messageInBytes = message.getBytes();
         encryptionCipher = Cipher.getInstance("AES/GCM/NoPadding");
         encryptionCipher.init(Cipher.ENCRYPT_MODE, key);
@@ -35,7 +35,7 @@ public class PassCipher {
         return new String(decryptedBytes);
     }
 
-    private String encode(byte[] data) {
+    private static String encode(byte[] data) {
         return Base64.getEncoder().encodeToString(data);
     }
 
