@@ -14,7 +14,7 @@ public class CRUDUtils {
     public static void saveAccount(AccWhichSave account) {
         try(Connection connection = DBUtils.getNewConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(CRUDCommands.CREATE)) {
-            ResultSet rs = preparedStatement.executeQuery();
+            //preparedStatement.executeQuery();
 
             preparedStatement.setString(1, account.getNameService());
             preparedStatement.setString(2, account.getLogin());
