@@ -15,10 +15,10 @@ public class Commands {
                 //Сделать вывод сообщений через Telegram API
                 break;
             case "Добавить новый аккаунт":
-                CRUDUtils.saveAccount(account);
+                CRUDUtils.saveAccount(account, CRUDCommands.CREATE);
                 break;
             case "Удалить аккаунт":
-                CRUDUtils.deleteAccount("Yandex");
+                CRUDUtils.deleteAccount("Yandex", CRUDCommands.DELETE);
                 break;
             default:
                 System.err.println("Sorry, I don`t have this command");

@@ -11,10 +11,9 @@ import java.util.List;
 
 public class CRUDUtils {
     //CREATE
-    public static void saveAccount(AccWhichSave account) {
+    public static void saveAccount(AccWhichSave account, String query) {
         try(Connection connection = DBUtils.getNewConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(CRUDCommands.CREATE)) {
-            //preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, account.getNameService());
             preparedStatement.setString(2, account.getLogin());
@@ -50,9 +49,9 @@ public class CRUDUtils {
     //UPDATE...
 
     //DELETE
-    public static void deleteAccount(String nameService) {
+    public static void deleteAccount(String nameService, String query) {
         try(Connection connection = DBUtils.getNewConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(CRUDCommands.DELETE)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, nameService);
             preparedStatement.executeUpdate();
