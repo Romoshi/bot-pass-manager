@@ -29,7 +29,7 @@ class PassCipherTest {
         PassCipher pass = new PassCipher();
         pass.init();
         String passEncrypt = pass.encrypt("12334");
-        assertEquals("12334", pass.decrypt(passEncrypt));
+        assertEquals("12334", PassCipher.decrypt(passEncrypt));
     }
 
     @Test
