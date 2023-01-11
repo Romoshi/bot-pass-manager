@@ -8,6 +8,7 @@ import edu.romoshi.userTools.AccWhichSave;
 import edu.romoshi.userTools.MasterKey;
 import se.simbio.encryption.Encryption;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class DemoApp {
@@ -23,17 +24,11 @@ public class DemoApp {
         String login = "irina@yandex.ru";
         String password = "qwerty";
 
-        //Препроцессинг пароля
-        Encryption encryption = Encryption.getDefault(key, salt, new byte[16]);
-        String passwordPreEncrypt = encryption.encryptOrNull(password);
-
-        PassCipher pass = new PassCipher();
-        pass.init();
-        AccWhichSave yandex = new AccWhichSave(nameService, login, pass.encrypt(passwordPreEncrypt));
+        AccWhichSave yandex = new AccWhichSave(nameService, login, password);
 
         if (MasterKeyUtils.verifyPassword("123", key, salt)) {
             CRUDUtils.createTable(CRUDCommands.CREATE_TABLE);
-            Commands.useCommands("Добавить новый аккаунт", yandex);
+            Commands.useCommands("Посмотреть аккаунты", yandex);
         } else {
             System.err.println("Password is incorrect");
         }
