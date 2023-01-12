@@ -14,23 +14,44 @@ import java.util.Scanner;
 public class DemoApp {
 
     public static void main(String[] args) throws Exception {
+//        if () {
+//            System.out.println("Давайте создадим пароль");
+//            System.out.println("Введите пароль");
+//        }
+
+        System.out.println("Введите пароль для старта");
         Scanner scanner = new Scanner(System.in);
         MasterKey masterKey = new MasterKey(scanner.nextLine());
 
         String salt = MasterKeyUtils.generateSalt(512).get();
         String key = MasterKeyUtils.hashPassword(masterKey.toString(), salt).get();
 
-        String nameService = "Yandex";
-        String login = "irina@yandex.ru";
-        String password = "qwerty";
+        PassCipher pass = new PassCipher();
+        pass.init();
+        String passExample = "12345";
+        String passEncrypt = pass.encrypt(passExample);
 
-        AccWhichSave yandex = new AccWhichSave(nameService, login, password);
+        AccWhichSave account = new AccWhichSave("Yandex", "iam@yandex.ru", passEncrypt);
 
         if (MasterKeyUtils.verifyPassword("123", key, salt)) {
-            CRUDUtils.createTable(CRUDCommands.CREATE_TABLE);
-            Commands.useCommands("Посмотреть аккаунты", yandex);
+            CRUDUtils.createTable();
+            Commands.useCommands("Посмотреть аккаунты", account);
         } else {
             System.err.println("Password is incorrect");
         }
     }
+
+//    public static AccWhichSave createAccount() {
+//        //TODO: Заменить на телеграм апи
+//        System.out.println("Введите название сервиса");
+//        Scanner scannerNS = new Scanner(System.in);
+//
+//        System.out.println("Введите логин");
+//        Scanner scannerL = new Scanner(System.in);
+//
+//        System.out.println("Введите пароль");
+//        Scanner scannerP = new Scanner(System.in);
+//
+//        return new AccWhichSave(scannerNS.nextLine(), scannerL.nextLine(), scannerP.nextLine());
+//    }
 }

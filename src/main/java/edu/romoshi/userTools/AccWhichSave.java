@@ -17,17 +17,6 @@ public class AccWhichSave {
                 "Пароль: " + password;
     }
 
-    public void setNameService(String nameService) {
-        this.nameService = nameService;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
     public String getNameService() {
         return nameService;
     }
