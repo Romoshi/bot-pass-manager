@@ -12,7 +12,7 @@ public class PassCipher {
     private static final int T_LEN = 128;
     private static Cipher encryptionCipher;
 
-    public void init() throws Exception {
+     public void init() throws Exception {
         KeyGenerator generator = KeyGenerator.getInstance("AES");
         generator.init(KEY_SIZE);
         key = generator.generateKey();
