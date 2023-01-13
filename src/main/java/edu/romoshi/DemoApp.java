@@ -14,17 +14,9 @@ import java.util.Scanner;
 public class DemoApp {
 
     public static void main(String[] args) throws Exception {
-//        if () {
-//            System.out.println("Давайте создадим пароль");
-//            System.out.println("Введите пароль");
-//        }
-
-        System.out.println("Введите пароль для старта");
-        Scanner scanner = new Scanner(System.in);
-        MasterKey masterKey = new MasterKey(scanner.nextLine());
-
+        String masterKey = "123";
         String salt = MasterKeyUtils.generateSalt(512).get();
-        String key = MasterKeyUtils.hashPassword(masterKey.toString(), salt).get();
+        String key = MasterKeyUtils.hashPassword(masterKey, salt).get();
 
         PassCipher pass = new PassCipher();
         pass.init();
@@ -40,18 +32,4 @@ public class DemoApp {
             System.err.println("Password is incorrect");
         }
     }
-
-//    public static AccWhichSave createAccount() {
-//        //TODO: Заменить на телеграм апи
-//        System.out.println("Введите название сервиса");
-//        Scanner scannerNS = new Scanner(System.in);
-//
-//        System.out.println("Введите логин");
-//        Scanner scannerL = new Scanner(System.in);
-//
-//        System.out.println("Введите пароль");
-//        Scanner scannerP = new Scanner(System.in);
-//
-//        return new AccWhichSave(scannerNS.nextLine(), scannerL.nextLine(), scannerP.nextLine());
-//    }
 }
