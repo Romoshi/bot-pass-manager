@@ -15,7 +15,6 @@ public class DemoApp {
         String key = MasterKeyUtils.hashPassword(masterKey, salt).get();
 
         AccWhichSave acc = new AccWhichSave("oasis1", "iam@gmail.com","1234");
-        AccWhichSave acc1 = new AccWhichSave("oasis2", "iam@gmail.com","12345");
 
         if (MasterKeyUtils.verifyPassword("123", key, salt)) {
             CRUDUtils.createTable();
@@ -25,15 +24,7 @@ public class DemoApp {
                     List<AccWhichSave> accounts = CRUDUtils.getAccounts();
 
                     //TODO: Сделать вывод сообщений через Telegram API
-                    for (var account : accounts) {
-                        try {
-                            System.out.println("Название сервиса: " + account.getNameService() + "\n" +
-                                    "Логин: " + account.getLogin() + "\n" +
-                                    "Пароль: " + account.getPassword() + "\n");
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
+                    accounts.forEach(account -> System.out.println(account.getServiceInfo()));
                 }
                 case "Добавить новый аккаунт" -> CRUDUtils.saveAccount(acc);
                 case "Удалить аккаунт" -> CRUDUtils.deleteAccount("Yandex");
