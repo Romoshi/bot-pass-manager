@@ -14,7 +14,13 @@ public class DemoApp {
         String salt = MasterKeyUtils.generateSalt(512).get();
         String key = MasterKeyUtils.hashPassword(masterKey, salt).get();
 
-        AccWhichSave acc = new AccWhichSave("oasis1", "iam@gmail.com","1234");
+        String nameService = "oasis1";
+        String login = "iam@gmail.com";
+        String password = "1234";
+
+        PassCipher passCipher = new PassCipher();
+        passCipher.init();
+        AccWhichSave acc = new AccWhichSave(nameService, login, passCipher.encrypt(password));
 
         if (MasterKeyUtils.verifyPassword("123", key, salt)) {
             CRUDUtils.createTable();

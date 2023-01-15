@@ -1,6 +1,7 @@
 package edu.romoshi.DBTools;
 
 
+import edu.romoshi.crypto.PassCipher;
 import edu.romoshi.userTools.AccWhichSave;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,7 +38,7 @@ public class CRUDUtils {
                 String login = rs.getString("login");
                 String password = rs.getString("password");
 
-                accounts.add(new AccWhichSave(nameService, login, password));
+                accounts.add(new AccWhichSave(nameService, login, PassCipher.decrypt(password)));
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
