@@ -17,40 +17,30 @@ public class DemoApp {
         AccWhichSave acc = new AccWhichSave("oasis1", "iam@gmail.com","1234");
         AccWhichSave acc1 = new AccWhichSave("oasis2", "iam@gmail.com","12345");
 
-        AccWhichSave[] accs = {acc, acc1};
+        if (MasterKeyUtils.verifyPassword("123", key, salt)) {
+            CRUDUtils.createTable();
 
-        for (var s : accs) {
-            System.out.println(s.getPassword());
-            System.out.println(s.getDecPass());
+            switch ("Посмотреть аккаунты") {
+                case "Посмотреть аккаунты" -> {
+                    List<AccWhichSave> accounts = CRUDUtils.getAccounts();
+
+                    //TODO: Сделать вывод сообщений через Telegram API
+                    for (var account : accounts) {
+                        try {
+                            System.out.println("Название сервиса: " + account.getNameService() + "\n" +
+                                    "Логин: " + account.getLogin() + "\n" +
+                                    "Пароль: " + account.getPassword() + "\n");
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+                case "Добавить новый аккаунт" -> CRUDUtils.saveAccount(acc);
+                case "Удалить аккаунт" -> CRUDUtils.deleteAccount("Yandex");
+                default -> System.err.println("Sorry, I don`t have this command");
+            }
+        } else {
+            System.err.println("Password is incorrect");
         }
-
-
-
-
-//        if (MasterKeyUtils.verifyPassword("123", key, salt)) {
-//            CRUDUtils.createTable();
-//
-//            switch ("Посмотреть аккаунты") {
-//                case "Посмотреть аккаунты" -> {
-//                    List<AccWhichSave> accounts = CRUDUtils.getAccounts();
-//
-//                    //TODO: Сделать вывод сообщений через Telegram API
-//                    for (var account : accounts) {
-//                        try {
-//                            System.out.println("Название сервиса: " + account.getNameService() + "\n" +
-//                                    "Логин: " + account.getLogin() + "\n" +
-//                                    "Пароль: " + account.getDecPass() + "\n");
-//                        } catch (Exception e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                    }
-//                }
-//                case "Добавить новый аккаунт" -> CRUDUtils.saveAccount(acc);
-//                case "Удалить аккаунт" -> CRUDUtils.deleteAccount("Yandex");
-//                default -> System.err.println("Sorry, I don`t have this command");
-//            }
-//        } else {
-//            System.err.println("Password is incorrect");
-//        }
     }
 }
