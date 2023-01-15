@@ -14,13 +14,17 @@ public class DemoApp {
         String salt = MasterKeyUtils.generateSalt(512).get();
         String key = MasterKeyUtils.hashPassword(masterKey, salt).get();
 
+
         String nameService = "oasis1";
         String login = "iam@gmail.com";
-        String password = "1234";
+        String password = "qwerty";
+
 
         PassCipher passCipher = new PassCipher();
         passCipher.init();
-        AccWhichSave acc = new AccWhichSave(nameService, login, passCipher.encrypt(password));
+        String passEncrypt = passCipher.encrypt(password);
+
+        AccWhichSave acc = new AccWhichSave(nameService, login, passEncrypt);
 
         if (MasterKeyUtils.verifyPassword("123", key, salt)) {
             CRUDUtils.createTable();
@@ -30,7 +34,7 @@ public class DemoApp {
                     List<AccWhichSave> accounts = CRUDUtils.getAccounts();
 
                     //TODO: Сделать вывод сообщений через Telegram API
-                    accounts.forEach(account -> System.out.println(account.getServiceInfo()));
+                    accounts.forEach(account -> System.out.println(account.getPassword()));
                 }
                 case "Добавить новый аккаунт" -> CRUDUtils.saveAccount(acc);
                 case "Удалить аккаунт" -> CRUDUtils.deleteAccount("Yandex");

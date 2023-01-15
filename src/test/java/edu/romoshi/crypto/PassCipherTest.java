@@ -31,4 +31,16 @@ class PassCipherTest {
         String passEncrypt = pass.encrypt("12334");
         assertEquals("12334", PassCipher.decrypt(passEncrypt));
     }
+
+    @Test
+    void end2end() throws Exception {
+        PassCipher cypher = new PassCipher();
+        cypher.init();
+        var message = "Hello, World!";
+        var encrypted = cypher.encrypt(message);
+        assertNotSame(message, encrypted);
+
+        var decrypted = PassCipher.decrypt(encrypted);
+        assertEquals(message, decrypted);
+    }
 }
