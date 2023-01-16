@@ -8,11 +8,11 @@ import java.util.Base64;
 
 public class PassCipher {
     private static SecretKey key;
-    private final int KEY_SIZE = 128;
+    private static final int KEY_SIZE = 128;
     private static final int T_LEN = 128;
     private static Cipher encryptionCipher;
 
-     public void init() throws Exception {
+    public static void init() throws Exception {
         KeyGenerator generator = KeyGenerator.getInstance("AES");
         generator.init(KEY_SIZE);
         key = generator.generateKey();

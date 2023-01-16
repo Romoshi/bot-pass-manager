@@ -8,11 +8,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CRUDUtils {
-    //CREATE
+public class SQLUtils {
     public static void saveAccount(AccWhichSave account) {
         try(Connection connection = DBUtils.getNewConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(CRUDCommands.CREATE)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.CREATE)) {
 
             preparedStatement.setString(1, account.getNameService());
             preparedStatement.setString(2, account.getLogin());
@@ -23,12 +22,11 @@ public class CRUDUtils {
         }
     }
 
-    //READ
     public static List<AccWhichSave> getAccounts() {
         List<AccWhichSave> accounts = new ArrayList<>();
 
         try(Connection connection = DBUtils.getNewConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(CRUDCommands.READ)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.READ)) {
             ResultSet rs = preparedStatement.executeQuery();
 
             while(rs.next()) {
@@ -45,12 +43,9 @@ public class CRUDUtils {
         return accounts;
     }
 
-    //UPDATE...
-
-    //DELETE
     public static void deleteAccount(String nameService) {
         try(Connection connection = DBUtils.getNewConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(CRUDCommands.DELETE)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.DELETE)) {
 
             preparedStatement.setString(1, nameService);
             preparedStatement.executeUpdate();
@@ -61,7 +56,7 @@ public class CRUDUtils {
 
     public static void createTable() {
         try(Connection connection = DBUtils.getNewConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(CRUDCommands.CREATE_TABLE)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.CREATE_TABLE)) {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
