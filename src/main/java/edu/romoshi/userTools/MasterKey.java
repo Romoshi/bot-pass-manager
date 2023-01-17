@@ -7,11 +7,6 @@ public class MasterKey {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "" + password + "";
-    }
-
     public String getPassword() {
         return password;
     }

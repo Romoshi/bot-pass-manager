@@ -12,10 +12,9 @@ import java.security.AlgorithmParameters;
 import java.security.SecureRandom;
 
 public class Encryption {
-    public String encrypt(String word) throws Exception {
+    public String encrypt(String word, String password) throws Exception {
         byte[] ivBytes;
-        String password = "Hello";
-        /*you can give whatever you want for password. This is for testing purpose*/
+
         SecureRandom random = new SecureRandom();
         byte bytes[] = new byte[20];
         random.nextBytes(bytes);

@@ -10,8 +10,7 @@ import java.nio.ByteBuffer;
 
 public class Decryption {
     @SuppressWarnings("static-access")
-    public String decrypt(String encryptedText) throws Exception {
-        String password="Hello";
+    public String decrypt(String encryptedText, String password) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         //strip off the salt and iv
         ByteBuffer buffer = ByteBuffer.wrap(new Base64().decode(encryptedText));

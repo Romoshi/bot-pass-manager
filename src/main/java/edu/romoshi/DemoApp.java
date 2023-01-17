@@ -5,21 +5,23 @@ import edu.romoshi.crypto.Decryption;
 import edu.romoshi.crypto.Encryption;
 import edu.romoshi.crypto.MasterKeyUtils;
 import edu.romoshi.userTools.AccWhichSave;
+import edu.romoshi.userTools.MasterKey;
+
 import java.util.List;
 
 public class DemoApp {
     public static void main(String[] args) throws Exception {
-        String masterKey = "123";
+        MasterKey masterKey = new MasterKey("123");
         String salt = MasterKeyUtils.generateSalt(512).get();
-        String key = MasterKeyUtils.hashPassword(masterKey, salt).get();
+        String key = MasterKeyUtils.hashPassword(masterKey.getPassword(), salt).get();
 
 
-        String nameService = "oasis2";
-        String login = "ia1m@gmail.com";
-        String password = "qwerty";
+        String nameService = "riki";
+        String login = "riki@gmail.com";
+        String password = "dfgh";
 
         Encryption en = new Encryption();
-        AccWhichSave acc = new AccWhichSave(nameService, login, en.encrypt(password));
+        AccWhichSave acc = new AccWhichSave(nameService, login, en.encrypt(password, masterKey.getPassword()));
 
         if (MasterKeyUtils.verifyPassword("123", key, salt)) {
             SQLUtils.createTable();
@@ -33,7 +35,7 @@ public class DemoApp {
                             Decryption de = new Decryption();
                             System.out.println("Название сервиса: " + account.getNameService() + "\n" +
                                                 "Логин: " + account.getLogin() + "\n" +
-                                                "Пароль: " + de.decrypt(account.getPassword()));
+                                                "Пароль: " + de.decrypt(account.getPassword(), masterKey.getPassword()) + "\n");
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
