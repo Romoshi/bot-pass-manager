@@ -7,32 +7,36 @@ import javax.crypto.SecretKey;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PassCipherTest {
-
     @Test
     void encrypt() throws Exception {
-        PassCipher cipher = new PassCipher();
-        PassCipher.init();
-        String passEncrypt = cipher.encrypt("12334");
-        assertNotSame(passEncrypt, "12334" );
+        Encryption en = new Encryption();
+        String actual = "Test";
+        String unexpected = en.encrypt("Test");
+        assertNotSame(unexpected, actual);
     }
 
     @Test
     void decrypt() throws Exception {
-        PassCipher cipher = new PassCipher();
-        PassCipher.init();
-        String passEncrypt = cipher.encrypt("12334");
-        assertEquals("12334", cipher.decrypt(passEncrypt));
+        Encryption en = new Encryption();
+        String encryptedWord = en.encrypt("Test");
+
+        Decryption de = new Decryption();
+        String actual = de.decrypt(encryptedWord);
+
+        assertEquals("Test", actual);
     }
 
     @Test
     void end2end() throws Exception {
-        PassCipher cipher = new PassCipher();
-        PassCipher.init();
+
         var message = "Hello, World!";
-        var encrypted = cipher.encrypt(message);
+
+        Encryption en = new Encryption();
+        var encrypted = en.encrypt(message);
         assertNotSame(message, encrypted);
 
-        var decrypted = cipher.decrypt(encrypted);
+        Decryption de = new Decryption();
+        var decrypted = de.decrypt(encrypted);
         assertEquals(message, decrypted);
     }
 }
