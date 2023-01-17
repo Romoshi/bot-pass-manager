@@ -2,11 +2,9 @@ package edu.romoshi.crypto;
 
 import org.junit.jupiter.api.Test;
 
-import javax.crypto.SecretKey;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-class PassCipherTest {
+class EncryptDecryptTest {
     @Test
     void encrypt() throws Exception {
         Encryption en = new Encryption();
