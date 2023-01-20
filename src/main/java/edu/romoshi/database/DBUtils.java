@@ -1,4 +1,4 @@
-package edu.romoshi.DBTools;
+package edu.romoshi.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

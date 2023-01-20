@@ -1,6 +1,5 @@
 package edu.romoshi.crypto;
 
-import edu.romoshi.userTools.MasterKey;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

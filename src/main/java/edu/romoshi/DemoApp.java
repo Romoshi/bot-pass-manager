@@ -1,27 +1,31 @@
 package edu.romoshi;
 
-import edu.romoshi.DBTools.SQLUtils;
+import edu.romoshi.bot.Bot;
+import edu.romoshi.database.SQLUtils;
 import edu.romoshi.crypto.Decryption;
 import edu.romoshi.crypto.Encryption;
 import edu.romoshi.crypto.MasterKeyUtils;
-import edu.romoshi.userTools.AccWhichSave;
-import edu.romoshi.userTools.MasterKey;
+import edu.romoshi.user.AccWhichSave;
+import edu.romoshi.user.MasterKey;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import java.util.List;
 
 public class DemoApp {
     public static void main(String[] args) throws Exception {
+        try {
+            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+            botsApi.registerBot(new Bot());
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+
+        //App
         MasterKey masterKey = new MasterKey("123");
         String salt = MasterKeyUtils.generateSalt(512).get();
         String key = MasterKeyUtils.hashPassword(masterKey.getPassword(), salt).get();
-
-
-        String nameService = "riki";
-        String login = "riki@gmail.com";
-        String password = "dfgh";
-
-        Encryption en = new Encryption();
-        AccWhichSave acc = new AccWhichSave(nameService, login, en.encrypt(password, masterKey.getPassword()));
 
         if (MasterKeyUtils.verifyPassword("123", key, salt)) {
             SQLUtils.createTable();
@@ -41,9 +45,17 @@ public class DemoApp {
                         }
                     });
                 }
-                case "add" -> SQLUtils.saveAccount(acc);
-                case "del" -> SQLUtils.deleteAccount("Yandex");
-                default -> System.err.println("Sorry, I don`t have this command");
+                case "add" -> {
+                    String nameService = "riki";
+                    String login = "riki@gmail.com";
+                    String password = "qwerty";
+
+                    Encryption en = new Encryption();
+                    AccWhichSave acc = new AccWhichSave(nameService, login, en.encrypt(password, masterKey.getPassword()));
+                    SQLUtils.saveAccount(acc);
+                }
+                case "del" -> SQLUtils.deleteAccount("riki");
+                default -> System.err.println("Sorry, I don`t know this command");
             }
         } else {
             System.err.println("Password is incorrect");

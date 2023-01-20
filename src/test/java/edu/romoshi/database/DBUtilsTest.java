@@ -1,12 +1,10 @@
-package edu.romoshi.DBTools;
+package edu.romoshi.database;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static edu.romoshi.DBTools.DBUtils.getNewConnection;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DBUtilsTest {

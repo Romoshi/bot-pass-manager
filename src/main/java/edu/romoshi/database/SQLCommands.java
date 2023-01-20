@@ -1,4 +1,4 @@
-package edu.romoshi.DBTools;
+package edu.romoshi.database;
 
 public class SQLCommands {
     public static final String CREATE = "INSERT INTO db_passwords(name_service, login, password) VALUES(?, ?, ?)";

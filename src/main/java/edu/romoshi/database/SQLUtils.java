@@ -1,6 +1,6 @@
-package edu.romoshi.DBTools;
+package edu.romoshi.database;
 
-import edu.romoshi.userTools.AccWhichSave;
+import edu.romoshi.user.AccWhichSave;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

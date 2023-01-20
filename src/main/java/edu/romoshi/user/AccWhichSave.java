@@ -1,4 +1,4 @@
-package edu.romoshi.userTools;
+package edu.romoshi.user;
 
 public class AccWhichSave {
     private String nameService;
