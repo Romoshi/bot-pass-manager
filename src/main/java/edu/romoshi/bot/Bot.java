@@ -24,6 +24,7 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         try{
             initKeyboard();
+            SQLUtils.createTable();
 
             if(update.hasMessage() && update.getMessage().hasText())
             {
@@ -72,23 +73,17 @@ public class Bot extends TelegramLongPollingBot {
 
         switch (textMsg) {
             case "/start" -> response = "Приветствую!";
-            case "show" -> {
+            case "Показать пароли." -> {
                 List<AccWhichSave> accounts = SQLUtils.getAccounts();
 
-                accounts.forEach(account -> {
-                    try {
-                        Decryption de = new Decryption();
-                        response = "Название сервиса: " + account.getNameService() + "\n" +
-                                "Логин: " + account.getLogin() + "\n" +
-                                "Пароль: " + de.decrypt(account.getPassword(), masterKey.getPassword());
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-
-
-                });
+                for (var account : accounts) {
+                    Decryption de = new Decryption();
+                    response = "Название сервиса: " + account.getNameService() + "\n" +
+                            "Логин: " + account.getLogin() + "\n" +
+                            "Пароль: " + de.decrypt(account.getPassword(), masterKey.getPassword());
+                }
             }
-            case "add" -> {
+            case "Добавить пароль." -> {
                 String nameService = "riki";
                 String login = "riki@gmail.com";
                 String password = "qwerty";
@@ -98,7 +93,7 @@ public class Bot extends TelegramLongPollingBot {
                 SQLUtils.saveAccount(acc);
                 response = "Аккаунт добавлен!";
             }
-            case "del" -> {
+            case "Удалить пароль." -> {
                 SQLUtils.deleteAccount("riki");
                 response = "Аккаунт удалён!";
             }
