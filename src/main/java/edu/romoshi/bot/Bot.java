@@ -18,19 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bot extends TelegramLongPollingBot {
+    private String response = "";
     ReplyKeyboardMarkup replyKeyboardMarkup;
     MasterKey masterKey = new MasterKey("123");
     @Override
     public void onUpdateReceived(Update update) {
         try{
-            initKeyboard();
-            SQLUtils.createTable();
-
             if(update.hasMessage() && update.getMessage().hasText())
             {
                 Message inMess = update.getMessage();
                 String chatId = inMess.getChatId().toString();
-                String response = parseMessage(inMess.getText());
+                response = parseMessage(inMess.getText());
                 SendMessage outMess = new SendMessage();
 
                 outMess.setReplyMarkup(replyKeyboardMarkup);
@@ -60,20 +58,26 @@ public class Bot extends TelegramLongPollingBot {
         keyboardRows.add(keyboardSecondRow);
         keyboardRows.add(keyboardThirdRow);
 
-        keyboardFirstRow.add(new KeyboardButton("Показать пароли."));
-        keyboardFirstRow.add(new KeyboardButton("Добавить пароль."));
-        keyboardSecondRow.add(new KeyboardButton("Удалить пароль."));
-        keyboardThirdRow.add(new KeyboardButton("Информация."));
+        keyboardFirstRow.add(new KeyboardButton("Показать пароли"));
+        keyboardFirstRow.add(new KeyboardButton("Добавить пароль"));
+        keyboardSecondRow.add(new KeyboardButton("Удалить пароль"));
+        keyboardThirdRow.add(new KeyboardButton("Информация"));
 
         replyKeyboardMarkup.setKeyboard(keyboardRows);
     }
 
-    public String parseMessage(String textMsg) throws Exception {
-        String response = "";
+    public String parseMessage(String textMsg) {
+        if (textMsg.equals("/start")) {
+            initKeyboard();
+            SQLUtils.createTable();
+        }
 
-        switch (textMsg) {
-            case "/start" -> response = "Приветствую!";
-            case "Показать пароли." -> {
+        return response;
+    }
+
+    public void useSQLCommands(String command) throws Exception {
+        switch (command) {
+            case "Показать пароли" -> {
                 List<AccWhichSave> accounts = SQLUtils.getAccounts();
 
                 for (var account : accounts) {
@@ -83,7 +87,8 @@ public class Bot extends TelegramLongPollingBot {
                             "Пароль: " + de.decrypt(account.getPassword(), masterKey.getPassword());
                 }
             }
-            case "Добавить пароль." -> {
+            case "Добавить пароль" -> {
+
                 String nameService = "riki";
                 String login = "riki@gmail.com";
                 String password = "qwerty";
@@ -93,14 +98,12 @@ public class Bot extends TelegramLongPollingBot {
                 SQLUtils.saveAccount(acc);
                 response = "Аккаунт добавлен!";
             }
-            case "Удалить пароль." -> {
+            case "Удалить пароль" -> {
                 SQLUtils.deleteAccount("riki");
                 response = "Аккаунт удалён!";
             }
-            default -> response = "Sorry, I don`t know this command";
+            default -> response = "Извините, но такой команды нет.";
         }
-
-        return response;
     }
 
     @Override
@@ -110,6 +113,6 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "5987488924:AAH1WfMQ2kFIJy0lg8WWlIE1l6BsDHtNhTE";
+        return "123";
     }
 }
