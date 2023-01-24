@@ -18,94 +18,94 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bot extends TelegramLongPollingBot {
-    private String response = "";
-    ReplyKeyboardMarkup replyKeyboardMarkup;
+    private  static final String NAME_SERVICE_STRING = "Введите название сервиса.";
+    private  static final String LOGIN_STRING = "Введите логин.";
+    private  static final String PASSWORD_STRING = "Введите пароль.";
     MasterKey masterKey = new MasterKey("123");
+
     @Override
     public void onUpdateReceived(Update update) {
         try{
             if(update.hasMessage() && update.getMessage().hasText())
             {
                 Message inMess = update.getMessage();
-                String chatId = inMess.getChatId().toString();
-                response = parseMessage(inMess.getText());
-                SendMessage outMess = new SendMessage();
-
-                outMess.setReplyMarkup(replyKeyboardMarkup);
-                outMess.setChatId(chatId);
-                outMess.setText(response);
-
-                execute(outMess);
-
+                parseMessage(inMess);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    void initKeyboard()
-    {
-        replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(true);
+    public void parseMessage(Message message) throws Exception {
+        String textMessage = message.getText();
 
-        ArrayList<KeyboardRow> keyboardRows = new ArrayList<>();
-
-        KeyboardRow keyboardFirstRow = new KeyboardRow();
-        KeyboardRow keyboardSecondRow = new KeyboardRow();
-        KeyboardRow keyboardThirdRow = new KeyboardRow();
-        keyboardRows.add(keyboardFirstRow);
-        keyboardRows.add(keyboardSecondRow);
-        keyboardRows.add(keyboardThirdRow);
-
-        keyboardFirstRow.add(new KeyboardButton("Показать пароли"));
-        keyboardFirstRow.add(new KeyboardButton("Добавить пароль"));
-        keyboardSecondRow.add(new KeyboardButton("Удалить пароль"));
-        keyboardThirdRow.add(new KeyboardButton("Информация"));
-
-        replyKeyboardMarkup.setKeyboard(keyboardRows);
-    }
-
-    public String parseMessage(String textMsg) {
-        if (textMsg.equals("/start")) {
-            initKeyboard();
-            SQLUtils.createTable();
-        }
-
-        return response;
-    }
-
-    public void useSQLCommands(String command) throws Exception {
-        switch (command) {
+        switch (textMessage) {
+            case "/start" -> {
+                SQLUtils.createTable();
+                sendMsg(message, "Бот запущен");
+            }
             case "Показать пароли" -> {
                 List<AccWhichSave> accounts = SQLUtils.getAccounts();
 
                 for (var account : accounts) {
                     Decryption de = new Decryption();
-                    response = "Название сервиса: " + account.getNameService() + "\n" +
+                    String answer = "Название сервиса: " + account.getNameService() + "\n" +
                             "Логин: " + account.getLogin() + "\n" +
                             "Пароль: " + de.decrypt(account.getPassword(), masterKey.getPassword());
+                    sendMsg(message, answer);
                 }
             }
             case "Добавить пароль" -> {
-
-                String nameService = "riki";
-                String login = "riki@gmail.com";
-                String password = "qwerty";
+                sendMsg(message, NAME_SERVICE_STRING);
+                String nameService = "Zxc";
+                sendMsg(message, LOGIN_STRING);
+                String login = "Asd";
+                sendMsg(message, PASSWORD_STRING);
+                String password = "123";
 
                 Encryption en = new Encryption();
                 AccWhichSave acc = new AccWhichSave(nameService, login, en.encrypt(password, masterKey.getPassword()));
                 SQLUtils.saveAccount(acc);
-                response = "Аккаунт добавлен!";
+                sendMsg(message, "Аккаунт добавлен!");
             }
             case "Удалить пароль" -> {
                 SQLUtils.deleteAccount("riki");
-                response = "Аккаунт удалён!";
+                sendMsg(message, "Аккаунт удалён!");
             }
-            default -> response = "Извините, но такой команды нет.";
+            case "Помощь" -> sendMsg(message, "Аккаунт удалён!");
+            default -> sendMsg(message, "Извините, но такой команды нет.");
         }
     }
 
+    private void sendMsg(Message message, String s) throws TelegramApiException {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.enableMarkdown(true);
+        sendMessage.setChatId(message.getChatId());
+        sendMessage.setText(s);
+        initKeyboard(sendMessage);
+        execute(sendMessage);
+    }
+    private void initKeyboard(SendMessage sendMessage)
+    {
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        sendMessage.setReplyMarkup(replyKeyboardMarkup);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(true);
+
+        ArrayList<KeyboardRow> keyboard = new ArrayList<>();
+
+        KeyboardRow keyboardFirstRow = new KeyboardRow();
+        keyboardFirstRow.add(new KeyboardButton("Показать пароли"));
+        keyboardFirstRow.add(new KeyboardButton("Добавить пароль"));
+
+        KeyboardRow keyboardSecondRow = new KeyboardRow();
+        keyboardSecondRow.add(new KeyboardButton("Удалить пароль"));
+
+        keyboard.add(keyboardFirstRow);
+        keyboard.add(keyboardSecondRow);
+
+        replyKeyboardMarkup.setKeyboard(keyboard);
+    }
     @Override
     public String getBotUsername() {
         return "pass_manager_tlgbot";
