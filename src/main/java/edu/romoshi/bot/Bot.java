@@ -18,9 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bot extends TelegramLongPollingBot {
-    private  static final String NAME_SERVICE_STRING = "Введите название сервиса.";
-    private  static final String LOGIN_STRING = "Введите логин.";
-    private  static final String PASSWORD_STRING = "Введите пароль.";
     MasterKey masterKey = new MasterKey("123");
 
     @Override
@@ -56,11 +53,8 @@ public class Bot extends TelegramLongPollingBot {
                 }
             }
             case "Добавить пароль" -> {
-                sendMsg(message, NAME_SERVICE_STRING);
-                String nameService = "Zxc";
-                sendMsg(message, LOGIN_STRING);
+                String nameService = "Google";
                 String login = "Asd";
-                sendMsg(message, PASSWORD_STRING);
                 String password = "123";
 
                 Encryption en = new Encryption();
@@ -69,7 +63,7 @@ public class Bot extends TelegramLongPollingBot {
                 sendMsg(message, "Аккаунт добавлен!");
             }
             case "Удалить пароль" -> {
-                SQLUtils.deleteAccount("riki");
+                SQLUtils.deleteAccount("Zxc");
                 sendMsg(message, "Аккаунт удалён!");
             }
             case "Помощь" -> sendMsg(message, "Аккаунт удалён!");
