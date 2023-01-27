@@ -9,16 +9,11 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class Bot extends TelegramLongPollingBot {
-    MasterKey masterKey = new MasterKey("123");
+public class PassManagerBot extends TelegramLongPollingBot {
+
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -34,14 +29,15 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     public void parseMessage(Message message) throws Exception {
-        String textMessage = message.getText();
+        MasterKey masterKey = new MasterKey(message.getChatId().toString());
+        String[] messageArray = message.getText().split(" ");
 
-        switch (textMessage) {
-            case "/start" -> {
+        switch (messageArray[0]) {
+            case BotStrings.START_COMMAND -> {
                 SQLUtils.createTable();
-                sendMsg(message, "Бот запущен");
+                sendMsg(message, BotStrings.START_STRING);
             }
-            case "Показать пароли" -> {
+            case BotStrings.SHOW_COMMAND -> {
                 List<AccWhichSave> accounts = SQLUtils.getAccounts();
 
                 for (var account : accounts) {
@@ -52,21 +48,18 @@ public class Bot extends TelegramLongPollingBot {
                     sendMsg(message, answer);
                 }
             }
-            case "Добавить пароль" -> {
-                String nameService = "Google";
-                String login = "Asd";
-                String password = "123";
-
+            case BotStrings.SAVE_COMMAND -> {
                 Encryption en = new Encryption();
-                AccWhichSave acc = new AccWhichSave(nameService, login, en.encrypt(password, masterKey.getPassword()));
+                AccWhichSave acc = new AccWhichSave(messageArray[1], messageArray[2],
+                                                    en.encrypt(messageArray[3], masterKey.getPassword()));
                 SQLUtils.saveAccount(acc);
                 sendMsg(message, "Аккаунт добавлен!");
             }
-            case "Удалить пароль" -> {
-                SQLUtils.deleteAccount("Zxc");
+            case BotStrings.DELETE_COMMAND -> {
+                SQLUtils.deleteAccount(messageArray[1]);
                 sendMsg(message, "Аккаунт удалён!");
             }
-            case "Помощь" -> sendMsg(message, "Аккаунт удалён!");
+            case BotStrings.HELP_COMMAND -> sendMsg(message, BotStrings.START_STRING);
             default -> sendMsg(message, "Извините, но такой команды нет.");
         }
     }
@@ -76,29 +69,7 @@ public class Bot extends TelegramLongPollingBot {
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(message.getChatId());
         sendMessage.setText(s);
-        initKeyboard(sendMessage);
         execute(sendMessage);
-    }
-    private void initKeyboard(SendMessage sendMessage)
-    {
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        sendMessage.setReplyMarkup(replyKeyboardMarkup);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(true);
-
-        ArrayList<KeyboardRow> keyboard = new ArrayList<>();
-
-        KeyboardRow keyboardFirstRow = new KeyboardRow();
-        keyboardFirstRow.add(new KeyboardButton("Показать пароли"));
-        keyboardFirstRow.add(new KeyboardButton("Добавить пароль"));
-
-        KeyboardRow keyboardSecondRow = new KeyboardRow();
-        keyboardSecondRow.add(new KeyboardButton("Удалить пароль"));
-
-        keyboard.add(keyboardFirstRow);
-        keyboard.add(keyboardSecondRow);
-
-        replyKeyboardMarkup.setKeyboard(keyboard);
     }
     @Override
     public String getBotUsername() {
