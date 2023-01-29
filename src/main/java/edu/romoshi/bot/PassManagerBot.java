@@ -5,6 +5,7 @@ import edu.romoshi.crypto.Encryption;
 import edu.romoshi.database.SQLUtils;
 import edu.romoshi.user.AccWhichSave;
 import edu.romoshi.user.MasterKey;
+
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
@@ -26,21 +27,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
             {
                 Message inMess = update.getMessage();
                 parseMessage(inMess);
-                DeleteMessage deleteMessage = new DeleteMessage(inMess.getChatId().toString(), inMess.getMessageId());
-
-                final Timer time = new Timer();
-
-                time.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        try {
-                            execute(deleteMessage);
-                        } catch (TelegramApiException e) {
-                            throw new RuntimeException(e);
-                        }
-                        time.cancel();
-                    }
-                }, 4000, 4000);
+                autoDeleteMessage(inMess);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,7 +75,26 @@ public class PassManagerBot extends TelegramLongPollingBot {
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(message.getChatId());
         sendMessage.setText(s);
-        execute(sendMessage);
+
+        Message sentOutMessage = execute(sendMessage);
+        autoDeleteMessage(sentOutMessage);
+    }
+
+    private void autoDeleteMessage(Message message) {
+        final Timer time = new Timer();
+        DeleteMessage deleteMessage = new DeleteMessage(message.getChatId().toString(), message.getMessageId());
+        time.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    execute(deleteMessage);
+                } catch (TelegramApiException e) {
+                    throw new RuntimeException(e);
+                }
+                time.cancel();
+            }
+        }, 4000, 4000);
+
     }
 
     @Override
