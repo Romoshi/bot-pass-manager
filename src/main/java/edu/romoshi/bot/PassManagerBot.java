@@ -93,7 +93,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 }
                 time.cancel();
             }
-        }, 4000, 4000);
+        }, 300000);
 
     }
 
