@@ -7,21 +7,40 @@ import edu.romoshi.user.AccWhichSave;
 import edu.romoshi.user.MasterKey;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class PassManagerBot extends TelegramLongPollingBot {
 
-
     @Override
     public void onUpdateReceived(Update update) {
+
         try{
             if(update.hasMessage() && update.getMessage().hasText())
             {
                 Message inMess = update.getMessage();
                 parseMessage(inMess);
+                DeleteMessage deleteMessage = new DeleteMessage(inMess.getChatId().toString(), inMess.getMessageId());
+
+                final Timer time = new Timer();
+
+                time.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        try {
+                            execute(deleteMessage);
+                        } catch (TelegramApiException e) {
+                            throw new RuntimeException(e);
+                        }
+                        time.cancel();
+                    }
+                }, 4000, 4000);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,6 +90,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
         sendMessage.setText(s);
         execute(sendMessage);
     }
+
     @Override
     public String getBotUsername() {
         return "pass_manager_tlgbot";
