@@ -1,11 +1,11 @@
 package edu.romoshi.user;
 
-public class AccWhichSave {
+public class Account {
     private String nameService;
     private String login;
     private String password;
 
-    public AccWhichSave(String name, String login, String pass) {
+    public Account(String name, String login, String pass) {
         this.nameService = name;
         this.login = login;
         this.password = pass;

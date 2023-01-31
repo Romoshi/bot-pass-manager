@@ -1,6 +1,6 @@
 package edu.romoshi.database;
 
-import edu.romoshi.user.AccWhichSave;
+import edu.romoshi.user.Account;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SQLUtils {
-    public static void saveAccount(AccWhichSave account) {
+    public static void saveAccount(Account account) {
         try(Connection connection = DBUtils.getNewConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.CREATE)) {
 
@@ -24,8 +24,8 @@ public class SQLUtils {
         }
     }
 
-    public static List<AccWhichSave> getAccounts() {
-        List<AccWhichSave> accounts = new ArrayList<>();
+    public static List<Account> getAccounts() {
+        List<Account> accounts = new ArrayList<>();
 
         try(Connection connection = DBUtils.getNewConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.READ)) {
@@ -36,7 +36,7 @@ public class SQLUtils {
                 String login = rs.getString("login");
                 String password = rs.getString("password");
 
-                accounts.add(new AccWhichSave(nameService, login, password));
+                accounts.add(new Account(nameService, login, password));
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
