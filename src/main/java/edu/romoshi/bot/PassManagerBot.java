@@ -18,6 +18,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class PassManagerBot extends TelegramLongPollingBot {
+    private final String BOT_TOKEN = System.getenv("BOT_TOKEN");
+    private final String BOT_NAME = System.getenv("BOT_NAME");
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -99,11 +101,11 @@ public class PassManagerBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "pass_manager_tlgbot";
+        return BOT_NAME;
     }
 
     @Override
     public String getBotToken() {
-        return "5987488924:AAH1WfMQ2kFIJy0lg8WWlIE1l6BsDHtNhTE";
+        return BOT_TOKEN;
     }
 }
