@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static edu.romoshi.database.SQLUtils.userExist;
+
 public class PassManagerBot extends TelegramLongPollingBot {
     private final String BOT_TOKEN = System.getenv("BOT_TOKEN");
     private final String BOT_NAME = System.getenv("BOT_NAME");
@@ -42,7 +44,10 @@ public class PassManagerBot extends TelegramLongPollingBot {
 
         switch (messageArray[0]) {
             case BotStrings.START_COMMAND -> {
-                SQLUtils.createTable();
+                SQLUtils.createTableUser();
+                if(userExist(message)) SQLUtils.createUser(message);
+                SQLUtils.createTablePass();
+
                 sendMsg(message, BotStrings.START_STRING);
             }
             case BotStrings.SHOW_COMMAND -> {
@@ -60,7 +65,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 Encryption en = new Encryption();
                 Account acc = new Account(messageArray[1], messageArray[2],
                                                     en.encrypt(messageArray[3], masterKey.getPassword()));
-                SQLUtils.saveAccount(acc);
+                SQLUtils.saveAccount(acc, message);
                 sendMsg(message, "Аккаунт добавлен!");
             }
             case BotStrings.DELETE_COMMAND -> {
