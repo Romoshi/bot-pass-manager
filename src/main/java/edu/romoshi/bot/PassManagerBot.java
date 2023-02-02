@@ -51,7 +51,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 sendMsg(message, BotStrings.START_STRING);
             }
             case BotStrings.SHOW_COMMAND -> {
-                List<Account> accounts = SQLUtils.getAccounts();
+                List<Account> accounts = SQLUtils.getAccounts(message);
 
                 for (var account : accounts) {
                     Decryption de = new Decryption();
@@ -69,7 +69,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 sendMsg(message, "Аккаунт добавлен!");
             }
             case BotStrings.DELETE_COMMAND -> {
-                SQLUtils.deleteAccount(messageArray[1]);
+                SQLUtils.deleteAccount(messageArray[1], message);
                 sendMsg(message, "Аккаунт удалён!");
             }
             case BotStrings.HELP_COMMAND -> sendMsg(message, BotStrings.START_STRING);

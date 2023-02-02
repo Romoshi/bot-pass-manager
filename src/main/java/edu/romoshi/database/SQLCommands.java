@@ -7,8 +7,10 @@ public class SQLCommands {
                                         VALUES((SELECT users.id FROM users WHERE users.user_info = ?), ?, ?, ?);
                                         """;
     public static final String CREATE_USER = "INSERT INTO users(user_info) VALUES(?);";
-    public static final String READ = "SELECT * FROM passwords;";
-    public static final String DELETE = "DELETE FROM passwords WHERE name_service = ?;";
+    public static final String READ = "SELECT * FROM passwords WHERE (SELECT users.id FROM users WHERE users.user_info = ?);";
+    public static final String DELETE = """
+                                            DELETE FROM passwords WHERE name_service = ?
+                                                                  AND (SELECT users.id FROM users WHERE users.user_info = ?);""";
     public static final String CREATE_TABLE_PASS = """
                                                 CREATE TABLE IF NOT EXISTS passwords(
                                                     id BIGINT AUTO_INCREMENT PRIMARY KEY,

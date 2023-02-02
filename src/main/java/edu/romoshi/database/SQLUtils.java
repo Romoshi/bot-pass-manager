@@ -37,13 +37,14 @@ public class SQLUtils {
         }
     }
 
-    public static List<Account> getAccounts() {
+    public static List<Account> getAccounts(Message message) {
         List<Account> accounts = new ArrayList<>();
 
         try(Connection connection = DBUtils.getNewConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.READ)) {
-            ResultSet rs = preparedStatement.executeQuery();
+            preparedStatement.setString(1, message.getChatId().toString());
 
+            ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()) {
                 String nameService = rs.getString("name_service");
                 String login = rs.getString("login");
@@ -58,11 +59,12 @@ public class SQLUtils {
         return accounts;
     }
 
-    public static void deleteAccount(String nameService) {
+    public static void deleteAccount(String nameService, Message message) {
         try(Connection connection = DBUtils.getNewConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.DELETE)) {
 
             preparedStatement.setString(1, nameService);
+            preparedStatement.setString(2, message.getChatId().toString());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
