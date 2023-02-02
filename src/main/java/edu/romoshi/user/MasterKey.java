@@ -1,6 +1,6 @@
 package edu.romoshi.user;
 
-public class MasterKey {
+public final class MasterKey {
 
     private final String password;
     public MasterKey(String password) {

@@ -3,7 +3,7 @@ package edu.romoshi.bot;
 import edu.romoshi.crypto.Decryption;
 import edu.romoshi.crypto.Encryption;
 import edu.romoshi.database.SQLUtils;
-import edu.romoshi.user.Account;
+import edu.romoshi.user.Accounts;
 import edu.romoshi.user.MasterKey;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -47,11 +47,10 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 SQLUtils.createTableUser();
                 if(userExist(message)) SQLUtils.createUser(message);
                 SQLUtils.createTablePass();
-
                 sendMsg(message, BotStrings.START_STRING);
             }
             case BotStrings.SHOW_COMMAND -> {
-                List<Account> accounts = SQLUtils.getAccounts(message);
+                List<Accounts> accounts = SQLUtils.getAccounts(message);
 
                 for (var account : accounts) {
                     Decryption de = new Decryption();
@@ -63,7 +62,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
             }
             case BotStrings.SAVE_COMMAND -> {
                 Encryption en = new Encryption();
-                Account acc = new Account(messageArray[1], messageArray[2],
+                Accounts acc = new Accounts(messageArray[1], messageArray[2],
                                                     en.encrypt(messageArray[3], masterKey.getPassword()));
                 SQLUtils.saveAccount(acc, message);
                 sendMsg(message, "Аккаунт добавлен!");
