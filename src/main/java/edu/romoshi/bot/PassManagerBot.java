@@ -1,8 +1,8 @@
 package edu.romoshi.bot;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import edu.romoshi.crypto.Decryption;
 import edu.romoshi.crypto.Encryption;
-import edu.romoshi.crypto.MasterKeyUtils;
 import edu.romoshi.database.SQLUtils;
 import edu.romoshi.user.Accounts;
 import edu.romoshi.user.MasterKey;
@@ -15,19 +15,16 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.*;
-import java.util.logging.Level;
+
 
 import static edu.romoshi.database.SQLUtils.userExist;
 
 public class PassManagerBot extends TelegramLongPollingBot {
     private final String BOT_TOKEN = System.getenv("BOT_TOKEN");
     private final String BOT_NAME = System.getenv("BOT_NAME");
-    Map<String, List<String>> cache = new HashMap<>();
+    Map<Integer, List<String>> cache = new HashMap<>();
     List<String> messages = new ArrayList<>();
     MasterKey masterKey;
-    String salt = MasterKeyUtils.generateSalt(512).get();
-
-
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -46,22 +43,24 @@ public class PassManagerBot extends TelegramLongPollingBot {
 
     public void parseMessage(Message message) throws Exception {
         String[] messageArray = message.getText().split(" ");
+        cache.put(message.getChatId().intValue(), messages);
         messages.add(message.getText());
-        cache.put(message.getChatId().toString(), messages);
+
+        SQLUtils.createTableUser();
+        SQLUtils.createTablePass();
+
+        boolean verifyMK = findPassFromCache(cache, message);
 
         switch (messageArray[0]) {
             case BotStrings.START_COMMAND -> {
-                SQLUtils.createTableUser();
-                SQLUtils.createTablePass();
-                sendMsg(message, BotStrings.START_STRING_ONE);
+                sendMsg(message, BotStrings.START_STRING);
             }
-            case "mk" -> sendMsg(message, BotStrings.START_STRING_TWO);
             case BotStrings.MASTER_KEY_COMMAND -> {
-                if(masterKey == null) {
+                if(!verifyMK) {
                     if(userExist(message)) {
                         masterKey = new MasterKey(messageArray[1]);
-                        String key = MasterKeyUtils.hashPassword(masterKey.getPassword(), salt).get();
-                        SQLUtils.createUserMk(message, key);
+                        String bcryptHashString = BCrypt.withDefaults().hashToString(12, masterKey.getPassword().toCharArray());
+                        SQLUtils.createUserMk(message, bcryptHashString);
                         sendMsg(message, "Пароль создан.");
                     }
                 } else {
@@ -69,7 +68,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 }
             }
             case BotStrings.SHOW_COMMAND -> {
-                if (masterKey != null) {
+                if (verifyMK) {
                     List<Accounts> accounts = SQLUtils.getAccounts(message);
 
                     for (var account : accounts) {
@@ -80,30 +79,30 @@ public class PassManagerBot extends TelegramLongPollingBot {
                         sendMsg(message, answer);
                     }
                 }else {
-                    sendMsg(message, BotStrings.START_STRING_ONE);
+                    sendMsg(message, BotStrings.START_STRING);
                 }
             }
             case BotStrings.SAVE_COMMAND -> {
-                if (masterKey != null) {
+                if (verifyMK) {
                     Encryption en = new Encryption();
                     Accounts acc = new Accounts(messageArray[1], messageArray[2],
                             en.encrypt(messageArray[3], masterKey.getPassword()));
                     SQLUtils.saveAccount(acc, message);
                     sendMsg(message, "Аккаунт добавлен!");
                 } else {
-                    sendMsg(message, BotStrings.START_STRING_ONE);
+                    sendMsg(message, BotStrings.START_STRING);
                 }
             }
             case BotStrings.DELETE_COMMAND -> {
-                if (masterKey != null) {
+                if (verifyMK) {
                     SQLUtils.deleteAccount(messageArray[1], message);
                     sendMsg(message, "Аккаунт удалён!");
                 }else {
-                    sendMsg(message, BotStrings.START_STRING_ONE);
+                    sendMsg(message, BotStrings.START_STRING);
                 }
             }
             case BotStrings.HELP_COMMAND -> sendMsg(message, BotStrings.HELP_STRING);
-            default -> sendMsg(message, "Извините, но такой команды нет.");
+            default -> sendMsg(message, "Введите /help");
         }
     }
 
@@ -132,6 +131,21 @@ public class PassManagerBot extends TelegramLongPollingBot {
             }
         }, 300000);
 
+    }
+
+    private static boolean findPassFromCache(Map<Integer, List<String>> map, Message message) {
+        if (SQLUtils.mkExist(message)) return false;
+
+        for(Map.Entry<Integer, List<String>> entry : map.entrySet()) {
+            if(entry.getKey() == message.getChatId().intValue()) {
+                for (var item : entry.getValue()) {
+                    BCrypt.Result result = BCrypt.verifyer().verify(item.toCharArray(), SQLUtils.getMk(message));
+                    if(result.verified) return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     @Override

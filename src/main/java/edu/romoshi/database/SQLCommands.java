@@ -27,5 +27,6 @@ public class SQLCommands {
                                                     mk VARCHAR(100)
                                                 );""";
     public static final String USER_EXIST = "SELECT id FROM users WHERE user_info = ?;";
+    public static final String MK = "SELECT mk FROM users WHERE user_info = ?;";
 
 }

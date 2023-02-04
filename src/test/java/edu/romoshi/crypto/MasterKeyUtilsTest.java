@@ -1,15 +1,16 @@
 package edu.romoshi.crypto;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class MasterKeyUtilsTest {
+class HashTest {
 
     @Test
-    void verifyPassword() {
-        String salt = MasterKeyUtils.generateSalt(512).get();
+    void verifyMK() {
         String originPass = "12345";
-        String key = MasterKeyUtils.hashPassword(originPass, salt).get();
-        assertTrue(MasterKeyUtils.verifyPassword("12345", key, salt));
+        String bcryptHashString = BCrypt.withDefaults().hashToString(12, originPass.toCharArray());
+        BCrypt.Result result = BCrypt.verifyer().verify(originPass.toCharArray(), bcryptHashString);
+        assertTrue(result.verified);
     }
 }

@@ -7,19 +7,17 @@ public class BotStrings {
     public static final String SAVE_COMMAND = "/save";
     public static final String DELETE_COMMAND = "/delete";
     public static final String HELP_COMMAND = "/help";
-    public static final String START_STRING_ONE = """
+    public static final String START_STRING = """
                                         Введите пароль.
                                         
                                         Если у Вас его нет, давайте его создадим.
+                                        Возможности поменять пароль нет. Но к счастью, это
+                                        единственный пароль, который придётся запомнить.
+                                        
                                         Введите команду:
                                         /key пароль
                                         
                                         Например: _/key 12345_""";
-    public static final String START_STRING_TWO = """
-                                        Приветствую!
-                                        Бот включен и готов к использованию.
-                                        Для помощи введите команду:
-                                        /help""";
     public static final String HELP_STRING = """
                                         1. Команда для начала работы бота:
                                            /start

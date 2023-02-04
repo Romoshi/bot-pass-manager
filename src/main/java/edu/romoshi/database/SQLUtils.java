@@ -2,7 +2,6 @@ package edu.romoshi.database;
 
 import edu.romoshi.user.Accounts;
 
-import edu.romoshi.user.MasterKey;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.sql.Connection;
@@ -104,5 +103,36 @@ public class SQLUtils {
         }
 
         return false;
+    }
+
+    public static boolean mkExist(Message message) {
+        try(Connection connection = DBUtils.getNewConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.MK)) {
+
+
+            preparedStatement.setInt(1, message.getChatId().intValue());
+            ResultSet rs = preparedStatement.executeQuery();
+            if(!rs.next()) return true;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return false;
+    }
+
+    public static String getMk(Message message) {
+        String key;
+
+        try(Connection connection = DBUtils.getNewConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.MK)) {
+
+            preparedStatement.setInt(1, message.getChatId().intValue());
+            ResultSet rs = preparedStatement.executeQuery();
+            rs.next();
+            key = rs.getString("mk");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return key;
     }
 }
