@@ -1,12 +1,26 @@
 package edu.romoshi.bot;
 
 public class BotStrings {
+    public static final String MASTER_KEY_COMMAND = "/key";
     public static final String START_COMMAND = "/start";
     public static final String SHOW_COMMAND = "/show";
     public static final String SAVE_COMMAND = "/save";
     public static final String DELETE_COMMAND = "/delete";
     public static final String HELP_COMMAND = "/help";
-    public static final String START_STRING = """
+    public static final String START_STRING_ONE = """
+                                        Введите пароль.
+                                        
+                                        Если у Вас его нет, давайте его создадим.
+                                        Введите команду:
+                                        /key пароль
+                                        
+                                        Например: _/key 12345_""";
+    public static final String START_STRING_TWO = """
+                                        Приветствую!
+                                        Бот включен и готов к использованию.
+                                        Для помощи введите команду:
+                                        /help""";
+    public static final String HELP_STRING = """
                                         1. Команда для начала работы бота:
                                            /start
 

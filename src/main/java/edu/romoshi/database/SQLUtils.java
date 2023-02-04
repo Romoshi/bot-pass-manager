@@ -2,6 +2,7 @@ package edu.romoshi.database;
 
 import edu.romoshi.user.Accounts;
 
+import edu.romoshi.user.MasterKey;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.sql.Connection;
@@ -13,11 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SQLUtils {
-    public static void createUser(Message message) {
+    public static void createUserMk(Message message, String key) {
         try(Connection connection = DBUtils.getNewConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.CREATE_USER)) {
 
-            preparedStatement.setString(1, message.getChatId().toString());
+            preparedStatement.setInt(1, message.getChatId().intValue());
+            preparedStatement.setString(2, key);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
