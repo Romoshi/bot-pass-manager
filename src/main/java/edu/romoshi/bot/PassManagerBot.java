@@ -24,7 +24,6 @@ public class PassManagerBot extends TelegramLongPollingBot {
     private final String BOT_NAME = System.getenv("BOT_NAME");
     Map<Integer, List<String>> cache = new HashMap<>();
     List<String> messages = new ArrayList<>();
-    MasterKey masterKey;
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -58,10 +57,10 @@ public class PassManagerBot extends TelegramLongPollingBot {
             case BotStrings.MASTER_KEY_COMMAND -> {
                 if(!verifyMK) {
                     if(userExist(message)) {
-                        masterKey = new MasterKey(messageArray[1]);
-                        String bcryptHashString = BCrypt.withDefaults().hashToString(12, masterKey.getPassword().toCharArray());
+                        String bcryptHashString = BCrypt.withDefaults().hashToString(12, messageArray[1].toCharArray());
                         SQLUtils.createUserMk(message, bcryptHashString);
                         sendMsg(message, "Пароль создан.");
+                        sendMsg(message, "Введите /help");
                     }
                 } else {
                     sendMsg(message, "Пароль уже существует.");
@@ -75,7 +74,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
                         Decryption de = new Decryption();
                         String answer = "Название сервиса: " + account.getNameService() + "\n" +
                                 "Логин: " + account.getLogin() + "\n" +
-                                "Пароль: " + de.decrypt(account.getPassword(), masterKey.getPassword());
+                                "Пароль: " + de.decrypt(account.getPassword(), message.getChatId().toString());
                         sendMsg(message, answer);
                     }
                 }else {
@@ -86,7 +85,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 if (verifyMK) {
                     Encryption en = new Encryption();
                     Accounts acc = new Accounts(messageArray[1], messageArray[2],
-                            en.encrypt(messageArray[3], masterKey.getPassword()));
+                            en.encrypt(messageArray[3], message.getChatId().toString()));
                     SQLUtils.saveAccount(acc, message);
                     sendMsg(message, "Аккаунт добавлен!");
                 } else {
@@ -138,7 +137,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
 
         for(Map.Entry<Integer, List<String>> entry : map.entrySet()) {
             if(entry.getKey() == message.getChatId().intValue()) {
-                for (var item : entry.getValue()) {
+                for (var item : entry.getValue()) { //TODO: ГОВОРИТ, ЧТО ОШИБКА ГДЕ-ТО ЗДЕСЬ
                     BCrypt.Result result = BCrypt.verifyer().verify(item.toCharArray(), SQLUtils.getMk(message));
                     if(result.verified) return true;
                 }
