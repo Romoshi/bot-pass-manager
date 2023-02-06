@@ -8,11 +8,11 @@ Documentation Here
 
 ## Distribute
 
-- [Service Name](Page Link)
+[Telegram Bot - Passwords Manager](t.me/pass_manager_tlgbot)
 
 
 ## Developers
 
-- [Romoshi](https://github.com/Romoshi)
+[Romoshi](https://github.com/Romoshi)
 
 ## License
