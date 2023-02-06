@@ -16,3 +16,5 @@ Documentation Here
 [Romoshi](https://github.com/Romoshi)
 
 ## License
+
+Project tbot pass manager is distributed under the MIT license.
