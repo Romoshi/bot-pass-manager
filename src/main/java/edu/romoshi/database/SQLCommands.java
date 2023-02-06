@@ -7,7 +7,9 @@ public class SQLCommands {
                                         VALUES((SELECT users.id FROM users WHERE users.user_info = ?), ?, ?, ?);
                                         """;
     public static final String CREATE_USER = "INSERT INTO users(user_info, mk) VALUES(?, ?);";
-    public static final String READ = "SELECT * FROM passwords WHERE (SELECT users.id FROM users WHERE users.user_info = ?);";
+    public static final String READ = """
+                                        SELECT name_service, login, password 
+                                        FROM passwords WHERE passwords.id = (SELECT users.id FROM users WHERE users.user_info = ?);""";
     public static final String DELETE = """
                                             DELETE FROM passwords WHERE name_service = ?
                                                                   AND (SELECT users.id FROM users WHERE users.user_info = ?);""";

@@ -43,7 +43,7 @@ public class SQLUtils {
 
         try(Connection connection = DBUtils.getNewConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.READ)) {
-            preparedStatement.setString(1, message.getChatId().toString());
+            preparedStatement.setInt(1, message.getChatId().intValue());
 
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()) {

@@ -55,21 +55,18 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 sendMsg(message, BotStrings.START_STRING);
             }
             case BotStrings.MASTER_KEY_COMMAND -> {
-                if(!verifyMK) {
-                    if(userExist(message)) {
+                if(!verifyMK && userExist(message)) {
                         String bcryptHashString = BCrypt.withDefaults().hashToString(12, messageArray[1].toCharArray());
                         SQLUtils.createUserMk(message, bcryptHashString);
                         sendMsg(message, "Пароль создан.");
                         sendMsg(message, "Введите /help");
-                    }
-                } else {
+                } else if (!messageArray[1].isEmpty()){
                     sendMsg(message, "Пароль уже существует.");
                 }
             }
             case BotStrings.SHOW_COMMAND -> {
                 if (verifyMK) {
-                    List<Accounts> accounts = SQLUtils.getAccounts(message);
-
+                   List<Accounts> accounts = SQLUtils.getAccounts(message);
                     for (var account : accounts) {
                         Decryption de = new Decryption();
                         String answer = "Название сервиса: " + account.getNameService() + "\n" +
@@ -137,7 +134,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
 
         for(Map.Entry<Integer, List<String>> entry : map.entrySet()) {
             if(entry.getKey() == message.getChatId().intValue()) {
-                for (var item : entry.getValue()) { //TODO: ГОВОРИТ, ЧТО ОШИБКА ГДЕ-ТО ЗДЕСЬ
+                for (var item : entry.getValue()) {
                     BCrypt.Result result = BCrypt.verifyer().verify(item.toCharArray(), SQLUtils.getMk(message));
                     if(result.verified) return true;
                 }
@@ -145,6 +142,10 @@ public class PassManagerBot extends TelegramLongPollingBot {
         }
 
         return false;
+    }
+
+    private void showAccounts(Map<Integer, List<Accounts>> accounts, Message message) throws Exception {
+
     }
 
     @Override
