@@ -5,7 +5,6 @@ import edu.romoshi.crypto.Decryption;
 import edu.romoshi.crypto.Encryption;
 import edu.romoshi.database.SQLUtils;
 import edu.romoshi.user.Accounts;
-import edu.romoshi.user.MasterKey;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -15,9 +14,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.*;
-
-
-import static edu.romoshi.database.SQLUtils.userExist;
 
 public class PassManagerBot extends TelegramLongPollingBot {
     private final String BOT_TOKEN = System.getenv("BOT_TOKEN");
@@ -34,6 +30,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 Message inMess = update.getMessage();
                 parseMessage(inMess);
                 autoDeleteMessage(inMess);
+                autoDeleteCache();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,16 +52,18 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 sendMsg(message, BotStrings.START_STRING);
             }
             case BotStrings.MASTER_KEY_COMMAND -> {
-                if(!verifyMK && userExist(message)) {
+                if(messageArray.length != 3) sendMsg(message, BotStrings.MISTAKE_MESSAGE);
+                if(!verifyMK && SQLUtils.userExist(message)) {
                         String bcryptHashString = BCrypt.withDefaults().hashToString(12, messageArray[1].toCharArray());
                         SQLUtils.createUserMk(message, bcryptHashString);
-                        sendMsg(message, "Пароль создан.");
-                        sendMsg(message, "Введите /help");
+                        sendMsg(message, BotStrings.KEY_STRING);
+                        sendMsg(message, "Введите пароль, а затем /help");
                 } else if (!messageArray[1].isEmpty()){
                     sendMsg(message, "Пароль уже существует.");
                 }
             }
             case BotStrings.SHOW_COMMAND -> {
+                if(messageArray.length != 1) sendMsg(message, BotStrings.MISTAKE_MESSAGE);
                 if (verifyMK) {
                    List<Accounts> accounts = SQLUtils.getAccounts(message);
                     for (var account : accounts) {
@@ -79,6 +78,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 }
             }
             case BotStrings.SAVE_COMMAND -> {
+                if(messageArray.length != 4) sendMsg(message, BotStrings.MISTAKE_MESSAGE);
                 if (verifyMK) {
                     Encryption en = new Encryption();
                     Accounts acc = new Accounts(messageArray[1], messageArray[2],
@@ -90,6 +90,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 }
             }
             case BotStrings.DELETE_COMMAND -> {
+                if(messageArray.length != 2) sendMsg(message, BotStrings.MISTAKE_MESSAGE);
                 if (verifyMK) {
                     SQLUtils.deleteAccount(messageArray[1], message);
                     sendMsg(message, "Аккаунт удалён!");
@@ -97,7 +98,10 @@ public class PassManagerBot extends TelegramLongPollingBot {
                     sendMsg(message, BotStrings.START_STRING);
                 }
             }
-            case BotStrings.HELP_COMMAND -> sendMsg(message, BotStrings.HELP_STRING);
+            case BotStrings.HELP_COMMAND -> {
+                if(messageArray.length != 1) sendMsg(message, BotStrings.MISTAKE_MESSAGE);
+                sendMsg(message, BotStrings.HELP_STRING);
+            }
             default -> sendMsg(message, "Введите /help");
         }
     }
@@ -115,6 +119,8 @@ public class PassManagerBot extends TelegramLongPollingBot {
     private void autoDeleteMessage(Message message) {
         final Timer time = new Timer();
         DeleteMessage deleteMessage = new DeleteMessage(message.getChatId().toString(), message.getMessageId());
+
+        final int AUTO_DELETE_MESSAGE_TIME = 3*(int)Math.pow(10, 5); //5 minute
         time.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -125,8 +131,19 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 }
                 time.cancel();
             }
-        }, 300000);
+        }, AUTO_DELETE_MESSAGE_TIME);
+    }
 
+    private void autoDeleteCache() {
+        final Timer time = new Timer();
+        final int AUTO_DELETE_CACHE_TIME = (int) (86.4 * Math.pow(10, 5)); //24 hours
+        time.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                cache.clear();
+                time.cancel();
+            }
+        }, AUTO_DELETE_CACHE_TIME);
     }
 
     private static boolean findPassFromCache(Map<Integer, List<String>> map, Message message) {
@@ -142,10 +159,6 @@ public class PassManagerBot extends TelegramLongPollingBot {
         }
 
         return false;
-    }
-
-    private void showAccounts(Map<Integer, List<Accounts>> accounts, Message message) throws Exception {
-
     }
 
     @Override

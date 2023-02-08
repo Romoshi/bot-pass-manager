@@ -7,16 +7,19 @@ public class BotStrings {
     public static final String SAVE_COMMAND = "/save";
     public static final String DELETE_COMMAND = "/delete";
     public static final String HELP_COMMAND = "/help";
+    public static final String MISTAKE_MESSAGE = "Введите команду правильно.";
+    public static final String KEY_STRING = """
+                                        Пароль создан.
+                                            
+                                        Возможности поменять пароль нет. 
+                                        Но к счастью, это единственный пароль, который придётся запомнить.""";
     public static final String START_STRING = """
                                         Для доступа введите пароль.
                                         
-                                        Вы можете создать его с помощью команды: 
+                                        Если у Вас его нет, Вы можете создать его с помощью команды: 
                                         /key пароль
                                         
-                                        Например: _/key 12345_
-                                        
-                                        Возможности поменять пароль нет. 
-                                        Но к счастью, это единственный пароль, который придётся запомнить.""";
+                                        Например: /key 12345""";
     public static final String HELP_STRING = """
                                         1. Команда для начала работы бота:
                                            /start
@@ -26,9 +29,9 @@ public class BotStrings {
 
                                         3. Команда для сохранения паролей:
                                            /save сервис логин пароль
-                                           Например: _/save Яндекс ivanivanov@yandex.ru qwerty_
+                                           Например: /save Яндекс ivanivanov@yandex.ru qwerty
 
                                         4. Команда для удаления пароля:
                                            /delete сервис
-                                           Например: _/delete Яндекс_""";
+                                           Например: /delete Яндекс""";
 }
