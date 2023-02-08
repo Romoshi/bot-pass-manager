@@ -10,15 +10,14 @@
 
 ## About
 
-About Text Here
-
-## Documentation
-
-Documentation Here
+This bot can help save your password. 
+<br>It uses AES encryption algorithm.
+<br>In the beginning you create a password (for sign in) because I want you have more security.
+<br>Sign in password is hash with [bcrypt](https://github.com/patrickfav/bcrypt).
 
 ## Distribute
 
-[Telegram Bot - Passwords Manager](t.me/pass_manager_tlgbot)
+[Telegram Bot - Passwords Manager](https://t.me/pass_manager_tlgbot)
 
 
 ## Developers
