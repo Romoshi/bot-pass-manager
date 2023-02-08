@@ -1,6 +1,7 @@
 package edu.romoshi.bot;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import edu.romoshi.Cache;
 import edu.romoshi.crypto.Decryption;
 import edu.romoshi.crypto.Encryption;
 import edu.romoshi.database.SQLUtils;
@@ -16,13 +17,13 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.*;
 
 public class PassManagerBot extends TelegramLongPollingBot {
-    private final String BOT_TOKEN = System.getenv("BOT_TOKEN");
-    private final String BOT_NAME = System.getenv("BOT_NAME");
-    Map<Integer, List<String>> cache = new HashMap<>();
-    List<String> messages = new ArrayList<>();
+    private static final String BOT_TOKEN = System.getenv("BOT_TOKEN");
+    private static final String BOT_NAME = System.getenv("BOT_NAME");
+    private final Cache cache = new Cache(new HashMap<>(), new ArrayList<>());
 
     @Override
     public void onUpdateReceived(Update update) {
+        cache.autoDeleteCache();
 
         try{
             if(update.hasMessage() && update.getMessage().hasText())
@@ -30,7 +31,6 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 Message inMess = update.getMessage();
                 parseMessage(inMess);
                 autoDeleteMessage(inMess);
-                autoDeleteCache();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,13 +39,12 @@ public class PassManagerBot extends TelegramLongPollingBot {
 
     public void parseMessage(Message message) throws Exception {
         String[] messageArray = message.getText().split(" ");
-        cache.put(message.getChatId().intValue(), messages);
-        messages.add(message.getText());
+        cache.createCache(message);
 
         SQLUtils.createTableUser();
         SQLUtils.createTablePass();
 
-        boolean verifyMK = findPassFromCache(cache, message);
+        boolean verifyMK = cache.findPassFromCache(message);
 
         switch (messageArray[0]) {
             case BotStrings.START_COMMAND -> sendMsg(message, BotStrings.START_STRING);
@@ -146,33 +145,6 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 time.cancel();
             }
         }, AUTO_DELETE_MESSAGE_TIME);
-    }
-
-    private void autoDeleteCache() {
-        final Timer time = new Timer();
-        final int AUTO_DELETE_CACHE_TIME = (int) (86.4 * Math.pow(10, 5)); //24 hours
-        time.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                cache.clear();
-                time.cancel();
-            }
-        }, AUTO_DELETE_CACHE_TIME);
-    }
-
-    private static boolean findPassFromCache(Map<Integer, List<String>> map, Message message) {
-        if (SQLUtils.mkExist(message)) return false;
-
-        for(Map.Entry<Integer, List<String>> entry : map.entrySet()) {
-            if(entry.getKey() == message.getChatId().intValue()) {
-                for (var item : entry.getValue()) {
-                    BCrypt.Result result = BCrypt.verifyer().verify(item.toCharArray(), SQLUtils.getMk(message));
-                    if(result.verified) return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     @Override
