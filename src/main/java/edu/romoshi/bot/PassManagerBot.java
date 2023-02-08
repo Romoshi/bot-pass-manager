@@ -19,6 +19,7 @@ import java.util.*;
 public class PassManagerBot extends TelegramLongPollingBot {
     private static final String BOT_TOKEN = System.getenv("BOT_TOKEN");
     private static final String BOT_NAME = System.getenv("BOT_NAME");
+    private final int AUTO_DELETE_MESSAGE_TIME = 3 * (int)Math.pow(10, 5); //5 minute
     private final Cache cache = new Cache(new HashMap<>(), new ArrayList<>());
 
     @Override
@@ -132,8 +133,6 @@ public class PassManagerBot extends TelegramLongPollingBot {
     private void autoDeleteMessage(Message message) {
         final Timer time = new Timer();
         DeleteMessage deleteMessage = new DeleteMessage(message.getChatId().toString(), message.getMessageId());
-
-        final int AUTO_DELETE_MESSAGE_TIME = 3*(int)Math.pow(10, 5); //5 minute
         time.schedule(new TimerTask() {
             @Override
             public void run() {
