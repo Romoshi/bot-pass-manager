@@ -17,7 +17,7 @@ This bot can help save your password.
 
 ## Distribute
 
-[Telegram Bot - Passwords Manager](t.me/pass_manager_tlgbot)
+[Telegram Bot - Passwords Manager](https://t.me/pass_manager_tlgbot)
 
 
 ## Developers
