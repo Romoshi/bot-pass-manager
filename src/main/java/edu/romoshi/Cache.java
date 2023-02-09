@@ -17,7 +17,7 @@ public class Cache {
         this.messages = mes;
     }
 
-    public void createCache(Message message) {
+    public void fillCache(Message message) {
         cacheMsg.put(message.getChatId().intValue(), messages);
         messages.add(message.getText());
     }

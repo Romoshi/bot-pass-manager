@@ -40,7 +40,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
 
     public void parseMessage(Message message) throws Exception {
         String[] messageArray = message.getText().split(" ");
-        cache.createCache(message);
+        cache.fillCache(message);
 
         SQLUtils.createTableUser();
         SQLUtils.createTablePass();
@@ -50,22 +50,23 @@ public class PassManagerBot extends TelegramLongPollingBot {
         switch (messageArray[0]) {
             case BotStrings.START_COMMAND -> sendMsg(message, BotStrings.START_STRING);
             case BotStrings.MASTER_KEY_COMMAND -> {
-                if(messageArray.length != 2) {
-                    if(!verifyMK && SQLUtils.userExist(message)) {
+                if(!verifyMK && SQLUtils.userExist(message)) {
+                    if(messageArray.length == 2) {
                         String bcryptHashString = BCrypt.withDefaults().hashToString(12, messageArray[1].toCharArray());
                         SQLUtils.createUserMk(message, bcryptHashString);
                         sendMsg(message, BotStrings.KEY_STRING);
                         sendMsg(message, "Введите пароль, а затем /help");
-                    } else if (!messageArray[1].isEmpty()){
-                        sendMsg(message, "Пароль уже существует.");
+                    } else {
+                        sendMsg(message, BotStrings.MISTAKE_MESSAGE);
                     }
-                } else {
-                    sendMsg(message, BotStrings.MISTAKE_MESSAGE);
+
+                } else if (!messageArray[1].isEmpty()){
+                    sendMsg(message, "Пароль уже существует.");
                 }
             }
             case BotStrings.SHOW_COMMAND -> {
-                if(messageArray.length != 1) {
-                    if (verifyMK) {
+                if (verifyMK) {
+                    if(messageArray.length == 1) {
                         List<Accounts> accounts = SQLUtils.getAccounts(message);
                         for (var account : accounts) {
                             Decryption de = new Decryption();
@@ -74,42 +75,42 @@ public class PassManagerBot extends TelegramLongPollingBot {
                                     "Пароль: " + de.decrypt(account.getPassword(), message.getChatId().toString());
                             sendMsg(message, answer);
                         }
-                    }else {
-                        sendMsg(message, BotStrings.START_STRING);
+                    } else {
+                        sendMsg(message, BotStrings.MISTAKE_MESSAGE);
                     }
-                } else {
-                    sendMsg(message, BotStrings.MISTAKE_MESSAGE);
+                }else {
+                    sendMsg(message, BotStrings.START_STRING);
                 }
             }
             case BotStrings.SAVE_COMMAND -> {
-                if(messageArray.length != 4) {
-                    if (verifyMK) {
+                if (verifyMK) {
+                    if(messageArray.length == 4) {
                         Encryption en = new Encryption();
                         Accounts acc = new Accounts(messageArray[1], messageArray[2],
                                 en.encrypt(messageArray[3], message.getChatId().toString()));
                         SQLUtils.saveAccount(acc, message);
                         sendMsg(message, "Аккаунт добавлен!");
                     } else {
-                        sendMsg(message, BotStrings.START_STRING);
+                        sendMsg(message, BotStrings.MISTAKE_MESSAGE);
                     }
                 } else {
-                    sendMsg(message, BotStrings.MISTAKE_MESSAGE);
+                    sendMsg(message, BotStrings.START_STRING);
                 }
             }
             case BotStrings.DELETE_COMMAND -> {
-                if(messageArray.length != 2) {
-                    if (verifyMK) {
+                if (verifyMK) {
+                    if(messageArray.length == 2) {
                         SQLUtils.deleteAccount(messageArray[1], message);
                         sendMsg(message, "Аккаунт удалён!");
-                    }else {
-                        sendMsg(message, BotStrings.START_STRING);
+                    } else {
+                        sendMsg(message, BotStrings.MISTAKE_MESSAGE);
                     }
-                } else {
-                    sendMsg(message, BotStrings.MISTAKE_MESSAGE);
+                }else {
+                    sendMsg(message, BotStrings.START_STRING);
                 }
             }
             case BotStrings.HELP_COMMAND -> {
-                if(messageArray.length != 1) {
+                if(messageArray.length == 1) {
                     sendMsg(message, BotStrings.HELP_STRING);
                 } else {
                     sendMsg(message, BotStrings.MISTAKE_MESSAGE);
