@@ -15,12 +15,13 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PassManagerBot extends TelegramLongPollingBot {
     private static final String BOT_TOKEN = System.getenv("BOT_TOKEN");
     private static final String BOT_NAME = System.getenv("BOT_NAME");
     private final int AUTO_DELETE_MESSAGE_TIME = 3 * (int)Math.pow(10, 5); //5 minute
-    private final Cache cache = new Cache(new HashMap<>(), new ArrayList<>());
+    private final Cache cache = new Cache(new ConcurrentHashMap<>(), new ArrayList<>());
 
     @Override
     public void onUpdateReceived(Update update) {

@@ -5,14 +5,15 @@ import edu.romoshi.database.SQLUtils;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Cache {
 
-    private final Map<Integer, List<String>> cacheMsg;
+    private final ConcurrentHashMap<Integer, List<String>> cacheMsg;
     private final List<String> messages;
     private final int AUTO_DELETE_CACHE_TIME = (int) (86.4 * Math.pow(10, 5)); //24 hours
 
-    public Cache(Map<Integer, List<String>> c, List<String> mes) {
+    public Cache(ConcurrentHashMap <Integer, List<String>> c, List<String> mes) {
         this.cacheMsg = c;
         this.messages = mes;
     }
