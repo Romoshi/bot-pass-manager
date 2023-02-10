@@ -25,8 +25,6 @@ public class PassManagerBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        cache.autoDeleteCache();
-
         try{
             if(update.hasMessage() && update.getMessage().hasText())
             {
@@ -41,7 +39,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
 
     public void parseMessage(Message message) throws Exception {
         String[] messageArray = message.getText().split(" ");
-        cache.fillCache(message);
+        cache.add(message);
 
         SQLUtils.createTableUser();
         SQLUtils.createTablePass();

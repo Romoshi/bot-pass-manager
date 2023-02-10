@@ -5,26 +5,25 @@ import edu.romoshi.database.SQLUtils;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class Cache {
 
-    private final ConcurrentHashMap<Integer, List<String>> cacheMsg;
+    private final ConcurrentMap<Integer, List<String>> cacheMsg;
     private final List<String> messages;
-    private final int AUTO_DELETE_CACHE_TIME = (int) (86.4 * Math.pow(10, 5)); //24 hours
+    private final int DEFAULT_TIMEOUT = (int) (86.4 * Math.pow(10, 5));
 
-    public Cache(ConcurrentHashMap <Integer, List<String>> c, List<String> mes) {
+    public Cache(ConcurrentMap <Integer, List<String>> c, List<String> mes) {
         this.cacheMsg = c;
         this.messages = mes;
     }
 
-    public void fillCache(Message message) {
+    public void add(Message message) {
         cacheMsg.put(message.getChatId().intValue(), messages);
         messages.add(message.getText());
     }
     public boolean findPassFromCache(Message message) {
         if (SQLUtils.mkExist(message)) return false;
-
         for(Map.Entry<Integer, List<String>> entry : cacheMsg.entrySet()) {
             if(entry.getKey() == message.getChatId().intValue()) {
                 for (var item : entry.getValue()) {
@@ -35,16 +34,5 @@ public class Cache {
         }
 
         return false;
-    }
-
-    public void autoDeleteCache() {
-        final Timer time = new Timer();
-        time.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                cacheMsg.clear();
-                time.cancel();
-            }
-        }, AUTO_DELETE_CACHE_TIME);
     }
 }
