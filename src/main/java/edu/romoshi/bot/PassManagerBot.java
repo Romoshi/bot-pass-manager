@@ -31,6 +31,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 Message inMess = update.getMessage();
                 parseMessage(inMess);
                 autoDeleteMessage(inMess);
+                cache.autoDeleteCache(inMess);
             }
         } catch (Exception e) {
             e.printStackTrace();
