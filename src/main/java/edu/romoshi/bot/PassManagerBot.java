@@ -30,6 +30,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
             {
                 Message inMess = update.getMessage();
                 parseMessage(inMess);
+
                 autoDeleteMessage(inMess);
                 cache.autoDeleteCache(inMess);
             }
@@ -38,7 +39,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
         }
     }
 
-    public void parseMessage(Message message) throws Exception {
+    private void parseMessage(Message message) throws Exception {
         String[] messageArray = message.getText().split(" ");
         cache.add(message);
 
@@ -48,8 +49,10 @@ public class PassManagerBot extends TelegramLongPollingBot {
         boolean verifyMK = cache.findPassFromCache(message);
 
         switch (messageArray[0]) {
-            case BotStrings.START_COMMAND -> sendMsg(message, BotStrings.START_STRING);
-            case BotStrings.MASTER_KEY_COMMAND -> {
+            case BotStrings.START_COMMAND -> {
+                sendMsg(message, BotStrings.START_STRING);
+            }
+            case BotStrings.KEY_COMMAND -> {
                 if(!verifyMK && SQLUtils.userExist(message)) {
                     if(messageArray.length == 2) {
                         String bcryptHashString = BCrypt.withDefaults().hashToString(12, messageArray[1].toCharArray());
@@ -59,7 +62,6 @@ public class PassManagerBot extends TelegramLongPollingBot {
                     } else {
                         sendMsg(message, BotStrings.MISTAKE_MESSAGE);
                     }
-
                 } else if (!messageArray[1].isEmpty()){
                     sendMsg(message, "Пароль уже существует.");
                 }
@@ -115,13 +117,12 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 } else {
                     sendMsg(message, BotStrings.MISTAKE_MESSAGE);
                 }
-
             }
             default -> sendMsg(message, "Введите /help");
         }
     }
 
-    private void sendMsg(Message message, String s) throws TelegramApiException {
+    public void sendMsg(Message message, String s) throws TelegramApiException {
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(message.getChatId());
@@ -129,6 +130,10 @@ public class PassManagerBot extends TelegramLongPollingBot {
 
         Message sentOutMessage = execute(sendMessage);
         autoDeleteMessage(sentOutMessage);
+    }
+
+    public void sending() {
+        System.out.println("msg");
     }
 
     private void autoDeleteMessage(Message message) {

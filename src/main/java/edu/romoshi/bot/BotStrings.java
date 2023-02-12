@@ -1,7 +1,7 @@
 package edu.romoshi.bot;
 
 public class BotStrings {
-    public static final String MASTER_KEY_COMMAND = "/key";
+    public static final String KEY_COMMAND = "/key";
     public static final String START_COMMAND = "/start";
     public static final String SHOW_COMMAND = "/show";
     public static final String SAVE_COMMAND = "/save";
