@@ -20,8 +20,8 @@ public class Cache {
     }
 
     public void add(Message message) {
-        cacheMsg.put(message.getChatId().intValue(), messages);
         messages.add(message.getText());
+        cacheMsg.put(message.getChatId().intValue(), messages);
     }
     public boolean findPassFromCache(Message message) {
         if (SQLUtils.mkExist(message)) return false;
@@ -33,7 +33,6 @@ public class Cache {
                 }
             }
         }
-
         return false;
     }
 

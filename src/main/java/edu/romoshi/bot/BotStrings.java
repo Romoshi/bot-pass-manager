@@ -1,18 +1,18 @@
 package edu.romoshi.bot;
 
 public class BotStrings {
-    public static final String KEY_COMMAND = "/key";
-    public static final String START_COMMAND = "/start";
-    public static final String SHOW_COMMAND = "/show";
-    public static final String SAVE_COMMAND = "/save";
-    public static final String DELETE_COMMAND = "/delete";
-    public static final String HELP_COMMAND = "/help";
+
     public static final String MISTAKE_MESSAGE = "Введите команду правильно.";
+    public static final String DEFAULT_STRING = "Введите /help";
+    public static final String DELETE_STRING = "Аккаунт удалён!";
+    public static final String SAVE_STRING = "Аккаунт добавлен!";
     public static final String KEY_STRING = """
-                                        Пароль создан.
-                                            
+                                        Отлично, пароль создан!
+                                        Теперь нужно его ввести :)""";
+    public static final String AFTER_KEY_STRING = """
                                         Возможности поменять пароль нет. 
                                         Но к счастью, это единственный пароль, который придётся запомнить.""";
+    public static final String KEY_EXIST = "Пароль уже существует.";
     public static final String START_STRING = """
                                         Для доступа введите пароль.
                                         

@@ -11,4 +11,8 @@ import java.util.List;
 
 public class ShowCommand implements Command {
 
+    @Override
+    public void execute(PassManagerBot bot, Message message) {
+
+    }
 }
