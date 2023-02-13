@@ -40,8 +40,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
         }
     }
 
-    private void parseMessage(Message message) throws Exception {
-        //String[] messageArray = message.getText().split(" ");
+    private void parseMessage(Message message) {
         cache.add(message);
 
         SQLUtils.createTableUser();
@@ -50,75 +49,12 @@ public class PassManagerBot extends TelegramLongPollingBot {
         initCommands(message);
         handler.runCommand(message);
 
-
-
-//        boolean verifyMK = cache.findPassFromCache(message);
-//        switch (messageArray[0]) {
-//            case CommandStrings.START_COMMAND -> sendMsg(message, BotStrings.START_STRING);
-//            case CommandStrings.KEY_COMMAND -> {
-//                if(!verifyMK && SQLUtils.userExist(message)) {
-//                    if(messageArray.length == 2) {
-//                        String bcryptHashString = BCrypt.withDefaults().hashToString(12, messageArray[1].toCharArray());
-//                        SQLUtils.createUserMk(message, bcryptHashString);
-//                        sendMsg(message, BotStrings.KEY_STRING);
-//                        sendMsg(message, BotStrings.AFTER_KEY_STRING);
-//                    } else {
-//                        sendMsg(message, BotStrings.MISTAKE_MESSAGE);
-//                    }
-//                } else if (!messageArray[1].isEmpty()){
-//                    sendMsg(message, BotStrings.KEY_EXIST);
-//                }
-//            }
-//            case CommandStrings.SHOW_COMMAND -> {
-//                if (verifyMK) {
-//                    if(messageArray.length == 1) {
-//                        List<Accounts> accounts = SQLUtils.getAccounts(message);
-//                        for (var account : accounts) {
-//                            sendMsg(message, account.getServices(message));
-//                        }
-//                    } else {
-//                        sendMsg(message, BotStrings.MISTAKE_MESSAGE);
-//                    }
-//                }else {
-//                    sendMsg(message, BotStrings.START_STRING);
-//                }
-//            }
-//            case CommandStrings.SAVE_COMMAND -> {
-//                if (verifyMK) {
-//                    if(messageArray.length == 4) {
-//                        Encryption en = new Encryption();
-//                        Accounts acc = new Accounts(messageArray[1], messageArray[2],
-//                                en.encrypt(messageArray[3], message.getChatId().toString()));
-//                        SQLUtils.saveAccount(acc, message);
-//                        sendMsg(message, BotStrings.SAVE_STRING);
-//                    } else {
-//                        sendMsg(message, BotStrings.MISTAKE_MESSAGE);
-//                    }
-//                } else {
-//                    sendMsg(message, BotStrings.START_STRING);
-//                }
-//            }
-//            case CommandStrings.DELETE_COMMAND -> {
-//                if (verifyMK) {
-//                    if(messageArray.length == 2) {
-//                        SQLUtils.deleteAccount(messageArray[1], message);
-//                        sendMsg(message, BotStrings.DELETE_STRING);
-//                    } else {
-//                        sendMsg(message, BotStrings.MISTAKE_MESSAGE);
-//                    }
-//                }else {
-//                    sendMsg(message, BotStrings.START_STRING);
-//                }
-//            }
-//            case CommandStrings.HELP_COMMAND -> {
-//                if(messageArray.length == 1) {
-//                    sendMsg(message, BotStrings.HELP_STRING);
-//                } else {
-//                    sendMsg(message, BotStrings.MISTAKE_MESSAGE);
-//                }
-//            }
-//            default -> sendMsg(message, BotStrings.DEFAULT_STRING);
-//        }
+        if(!handler.flag) {
+            DefaultCommand defaultCommand = new DefaultCommand();
+            defaultCommand.execute(message);
+        } else {
+            handler.flag = false;
+        }
     }
 
     public void sendMsg(Message message, String s) throws TelegramApiException {

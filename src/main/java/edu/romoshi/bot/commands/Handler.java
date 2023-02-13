@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentMap;
 
 public class Handler {
     private final ConcurrentMap<String, Command> commands;
+    public boolean flag = false;
 
     public Handler(ConcurrentMap <String, Command> commands) {
         this.commands = commands;
@@ -22,6 +23,7 @@ public class Handler {
         for(var entry : commands.entrySet()) {
             if(Objects.equals(entry.getKey(), messageArray[0])) {
                 entry.getValue().execute(message);
+                flag = true;
             }
         }
     }

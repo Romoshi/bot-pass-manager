@@ -4,7 +4,6 @@ import edu.romoshi.crypto.Decryption;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 public class Accounts {
-    Accounts account;
     private final String nameService;
     private final String login;
     private final String password;

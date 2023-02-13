@@ -3,7 +3,7 @@ package edu.romoshi.bot;
 public class BotStrings {
 
     public static final String MISTAKE_MESSAGE = "Введите команду правильно.";
-    public static final String DEFAULT_STRING = "Введите /help";
+    public static final String DEFAULT_STRING = "Помощь: /help";
     public static final String DELETE_STRING = "Аккаунт удалён!";
     public static final String SAVE_STRING = "Аккаунт добавлен!";
     public static final String KEY_STRING = """
