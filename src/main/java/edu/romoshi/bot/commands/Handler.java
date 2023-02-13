@@ -17,13 +17,12 @@ public class Handler {
         commands.put(cmd, command);
     }
 
-    public void runCommand(PassManagerBot bot, Message message) {
+    public void runCommand(Message message) {
         String[] messageArray = message.getText().split(" ");
         for(var entry : commands.entrySet()) {
             if(Objects.equals(entry.getKey(), messageArray[0])) {
-                entry.getValue().execute(bot, message);
+                entry.getValue().execute(message);
             }
         }
     }
-
 }

@@ -15,11 +15,11 @@ public class Accounts {
         this.password = pass;
     }
 
-    public String getServices(Message message) throws Exception {
+    public static String getServices(Accounts account, Message message) throws Exception {
         Decryption de = new Decryption();
-        return "Название сервиса: " + this.account.getNameService() + "\n" +
-                "Логин: " + this.account.getLogin() + "\n" +
-                "Пароль: " + de.decrypt(this.account.getPassword(), message.getChatId().toString());
+        return "Название сервиса: " + account.getNameService() + "\n" +
+                "Логин: " + account.getLogin() + "\n" +
+                "Пароль: " + de.decrypt(account.getPassword(), message.getChatId().toString());
     }
 
     public String getNameService() {

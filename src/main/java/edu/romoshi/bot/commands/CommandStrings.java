@@ -1,17 +1,17 @@
 package edu.romoshi.bot.commands;
 
 public class CommandStrings {
-    public static final String commandInitChar = "/";
+    public static final String COMMAND_INIT_CHAR = "/";
     // Create master key command
-    public static final String keyCommand = commandInitChar + "key";
+    public static final String KEY_COMMAND = COMMAND_INIT_CHAR + "key";
     // Start command
-    public static final String startCommand = commandInitChar + "start";
+    public static final String START_COMMAND = COMMAND_INIT_CHAR + "start";
     // Show command
-    public static final String showCommand = commandInitChar + "show";
+    public static final String SHOW_COMMAND = COMMAND_INIT_CHAR + "show";
     // Save command
-    public static final String saveCommand = commandInitChar + "save";
+    public static final String SAVE_COMMAND = COMMAND_INIT_CHAR + "save";
     // Delete command
-    public static final String deleteCommand = commandInitChar + "delete";
+    public static final String DELETE_COMMAND = COMMAND_INIT_CHAR + "delete";
     // Help command
-    public static final String helpCommand = commandInitChar + "help";
+    public static final String HELP_COMMAND = COMMAND_INIT_CHAR + "help";
 }

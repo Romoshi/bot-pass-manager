@@ -4,5 +4,5 @@ import edu.romoshi.bot.PassManagerBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 public interface Command {
-    void execute(PassManagerBot bot, Message message);
+    void execute(Message message);
 }

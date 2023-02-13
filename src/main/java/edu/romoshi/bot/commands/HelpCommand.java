@@ -1,14 +1,17 @@
 package edu.romoshi.bot.commands;
 
 import edu.romoshi.bot.BotStrings;
-import edu.romoshi.bot.PassManagerBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import static edu.romoshi.Main.bot;
 
 public class HelpCommand implements Command {
 
     @Override
-    public void execute(PassManagerBot bot, Message message) {
-
+    public void execute(Message message) {
+        try {
+            bot.sendMsg(message, BotStrings.HELP_STRING);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
