@@ -2,7 +2,7 @@ package edu.romoshi.bot.commands;
 
 import edu.romoshi.bot.BotStrings;
 import edu.romoshi.database.SQLUtils;
-import edu.romoshi.user.Accounts;
+import edu.romoshi.user.AccWhichSave;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
@@ -22,9 +22,9 @@ public class ShowCommand implements Command {
         try {
             if (verifyMK) {
                 if(messageArray.length == 1) {
-                    List<Accounts> accounts = SQLUtils.getAccounts(message);
+                    List<AccWhichSave> accounts = SQLUtils.getAccounts(message);
                     for (var account : accounts) {
-                        bot.sendMsg(message, Accounts.getServices(account, message));
+                        bot.sendMsg(message, AccWhichSave.getServices(account, message));
                     }
                 } else {
                     bot.sendMsg(message, BotStrings.MISTAKE_MESSAGE);

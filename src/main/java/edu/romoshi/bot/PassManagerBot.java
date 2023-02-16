@@ -1,11 +1,8 @@
 package edu.romoshi.bot;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import edu.romoshi.Cache;
 import edu.romoshi.bot.commands.*;
-import edu.romoshi.crypto.Encryption;
 import edu.romoshi.database.SQLUtils;
-import edu.romoshi.user.Accounts;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

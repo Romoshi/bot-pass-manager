@@ -1,6 +1,6 @@
 package edu.romoshi.database;
 
-import edu.romoshi.user.Accounts;
+import edu.romoshi.user.AccWhichSave;
 
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -24,7 +24,7 @@ public class SQLUtils {
             throw new RuntimeException(e);
         }
     }
-    public static void saveAccount(Accounts account, Message message) {
+    public static void saveAccount(AccWhichSave account, Message message) {
         try(Connection connection = DBUtils.getNewConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.CREATE_PASSWORD)) {
 
@@ -38,8 +38,8 @@ public class SQLUtils {
         }
     }
 
-    public static List<Accounts> getAccounts(Message message) {
-        List<Accounts> accounts = new ArrayList<>();
+    public static List<AccWhichSave> getAccounts(Message message) {
+        List<AccWhichSave> accounts = new ArrayList<>();
 
         try(Connection connection = DBUtils.getNewConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.READ)) {
@@ -51,7 +51,7 @@ public class SQLUtils {
                 String login = rs.getString("login");
                 String password = rs.getString("password");
 
-                accounts.add(new Accounts(nameService, login, password));
+                accounts.add(new AccWhichSave(nameService, login, password));
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
