@@ -20,7 +20,7 @@ public class KeyCommand implements Command {
             if(!verifyMK && SQLUtils.userExist(message)) {
                 if(messageArray.length == 2) {
                     String bcryptHashString = BCrypt.withDefaults().hashToString(12, messageArray[1].toCharArray());
-                    SQLUtils.createUserMk(message, bcryptHashString);
+                    SQLUtils.createUser(message, bcryptHashString);
                     bot.sendMsg(message, BotStrings.KEY_STRING);
                     bot.sendMsg(message, BotStrings.AFTER_KEY_STRING);
                 } else {

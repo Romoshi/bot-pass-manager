@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SQLUtils {
-    public static void createUserMk(Message message, String key) {
+    public static void createUser(Message message, String key) {
         try(Connection connection = DBUtils.getNewConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.CREATE_USER)) {
 
