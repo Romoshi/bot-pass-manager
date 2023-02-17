@@ -21,18 +21,9 @@ public class Tables {
                                                     mk VARCHAR(100)
                                                 );""";
 
-    private static void initTableUser() {
+    private static void addTable(String query) {
         try(Connection connection = Connector.getNewConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(INIT_TABLE_USER)) {
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static void initTableAccounts() {
-        try(Connection connection = Connector.getNewConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(INIT_TABLE_ACCOUNTS)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -40,7 +31,7 @@ public class Tables {
     }
 
     public static void initTables() {
-        initTableUser();
-        initTableAccounts();
+        addTable(INIT_TABLE_USER);
+        addTable(INIT_TABLE_ACCOUNTS);
     }
 }
