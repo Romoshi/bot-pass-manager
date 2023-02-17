@@ -1,4 +1,4 @@
-package edu.romoshi.database;
+package edu.romoshi.jdbc;
 
 import org.junit.jupiter.api.Test;
 
@@ -7,10 +7,10 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DBUtilsTest {
+class ConnectorTest {
     @Test
-    public void shouldGetJdbcConnection() throws SQLException {
-        try(Connection connection = DBUtils.getNewConnection()) {
+    void getNewConnection() throws SQLException {
+        try(Connection connection = Connector.getNewConnection()) {
             assertTrue(connection.isValid(1));
             assertFalse(connection.isClosed());
         }

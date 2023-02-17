@@ -1,7 +1,7 @@
 package edu.romoshi;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import edu.romoshi.database.SQLUtils;
+import edu.romoshi.jdbc.users.Users;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.*;
@@ -24,11 +24,12 @@ public class Cache {
         cacheMsg.put(message.getChatId().intValue(), messages);
     }
     public boolean findPassFromCache(Message message) {
-        if (SQLUtils.mkExist(message)) return false;
+        Users user = new Users(message);
+        if (user.getMk() == null) return false;
         for(Map.Entry<Integer, List<String>> entry : cacheMsg.entrySet()) {
             if(entry.getKey() == message.getChatId().intValue()) {
                 for (var item : entry.getValue()) {
-                    BCrypt.Result result = BCrypt.verifyer().verify(item.toCharArray(), SQLUtils.getMk(message));
+                    BCrypt.Result result = BCrypt.verifyer().verify(item.toCharArray(), user.getMk());
                     if(result.verified) return true;
                 }
             }

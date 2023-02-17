@@ -1,18 +1,18 @@
-package edu.romoshi.database.accounts;
+package edu.romoshi.jdbc.accounts;
 
 import edu.romoshi.crypto.Decryption;
-import edu.romoshi.database.DBUtils;
-import edu.romoshi.database.SQLCommands;
+import edu.romoshi.jdbc.Connector;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Accounts implements AccountsDao {
+public class Accounts {
     private final String nameService;
     private final String login;
     private final String password;
@@ -24,10 +24,9 @@ public class Accounts implements AccountsDao {
         this.password = password;
     }
 
-    @Override
     public void addAccount(Message message) {
-        try(Connection connection = DBUtils.getNewConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.CREATE_PASSWORD)) {
+        try(Connection connection = Connector.getNewConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(AccountsQuery.ADD_ACCOUNT)) {
 
             preparedStatement.setInt(1, message.getChatId().intValue());
             preparedStatement.setString(2, this.nameService);
@@ -38,11 +37,11 @@ public class Accounts implements AccountsDao {
             throw new RuntimeException(e);
         }
     }
-    public static List<Accounts> getAcc(Message message) {
+    public static List<Accounts> getAccounts(Message message) {
         List<Accounts> accounts = new ArrayList<>();
 
-        try(Connection connection = DBUtils.getNewConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.READ)) {
+        try(Connection connection = Connector.getNewConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(AccountsQuery.READ)) {
             preparedStatement.setInt(1, message.getChatId().intValue());
 
             ResultSet rs = preparedStatement.executeQuery();
@@ -60,19 +59,19 @@ public class Accounts implements AccountsDao {
         return accounts;
     }
 
-    public static void deleteAcc(String nameService, Message message) {
-        try(Connection connection = DBUtils.getNewConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SQLCommands.DELETE)) {
+    public static void deleteAccount(String nameService, Message message) {
+        try(Connection connection = Connector.getNewConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(AccountsQuery.DELETE)) {
 
             preparedStatement.setString(1, nameService);
-            preparedStatement.setString(2, message.getChatId().toString());
+            preparedStatement.setInt(2, message.getChatId().intValue());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public String sendServices(Message message) throws Exception {
+    public String getInfo(Message message) throws Exception {
         Decryption de = new Decryption();
         return "Название сервиса: " + this.nameService + "\n" +
                 "Логин: " + this.login + "\n" +

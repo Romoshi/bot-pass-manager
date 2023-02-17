@@ -1,7 +1,7 @@
 package edu.romoshi.bot.commands;
 
 import edu.romoshi.bot.BotStrings;
-import edu.romoshi.database.SQLUtils;
+import edu.romoshi.jdbc.accounts.Accounts;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import static edu.romoshi.Main.bot;
 
@@ -17,7 +17,7 @@ public class DeleteCommand implements Command {
         try {
             if (verifyMK) {
                 if(messageArray.length == 2) {
-                    SQLUtils.deleteAccount(messageArray[1], message);
+                    Accounts.deleteAccount(messageArray[1], message);
                     bot.sendMsg(message, BotStrings.DELETE_STRING);
                 } else {
                     bot.sendMsg(message, BotStrings.MISTAKE_MESSAGE);

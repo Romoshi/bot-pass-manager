@@ -2,8 +2,8 @@ package edu.romoshi.bot;
 
 import edu.romoshi.Cache;
 import edu.romoshi.bot.commands.*;
-import edu.romoshi.database.SQLUtils;
 
+import edu.romoshi.jdbc.Tables;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
@@ -40,9 +40,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
     private void parseMessage(Message message) {
         cache.add(message);
 
-        SQLUtils.createTableUser();
-        SQLUtils.createTablePass();
-
+        Tables.initTables();
         initCommands(message);
         handler.runCommand(message);
 

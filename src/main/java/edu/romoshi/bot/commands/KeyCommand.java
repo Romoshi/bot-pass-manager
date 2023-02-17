@@ -2,7 +2,8 @@ package edu.romoshi.bot.commands;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import edu.romoshi.bot.BotStrings;
-import edu.romoshi.database.SQLUtils;
+import edu.romoshi.jdbc.accounts.Accounts;
+import edu.romoshi.jdbc.users.Users;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import static edu.romoshi.Main.bot;
 
@@ -17,10 +18,11 @@ public class KeyCommand implements Command {
     public void execute(Message message) {
         try {
             String[] messageArray = message.getText().split(" ");
-            if(!verifyMK && SQLUtils.userExist(message)) {
+            Users user = new Users(message);
+            if(!verifyMK && user.userExist()) {
                 if(messageArray.length == 2) {
                     String bcryptHashString = BCrypt.withDefaults().hashToString(12, messageArray[1].toCharArray());
-                    SQLUtils.createUser(message, bcryptHashString);
+                    user.addUser(bcryptHashString);
                     bot.sendMsg(message, BotStrings.KEY_STRING);
                     bot.sendMsg(message, BotStrings.AFTER_KEY_STRING);
                 } else {
