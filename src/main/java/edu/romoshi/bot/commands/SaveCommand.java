@@ -7,16 +7,16 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import static edu.romoshi.Main.bot;
 
 public class SaveCommand implements Command {
-    private final boolean verifyMK;
+    private final boolean verifyKey;
 
-    public SaveCommand(boolean verifyMK) {
-        this.verifyMK = verifyMK;
+    public SaveCommand(boolean verifyKey) {
+        this.verifyKey = verifyKey;
     }
     @Override
     public void execute(Message message) {
         try {
             String[] messageArray = message.getText().split(" ");
-            if (verifyMK) {
+            if (verifyKey) {
                 if(messageArray.length == 4) {
                     Encryption en = new Encryption();
                     Accounts account = new Accounts(messageArray[1], messageArray[2],

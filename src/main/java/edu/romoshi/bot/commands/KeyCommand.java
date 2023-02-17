@@ -2,16 +2,15 @@ package edu.romoshi.bot.commands;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import edu.romoshi.bot.BotStrings;
-import edu.romoshi.jdbc.accounts.Accounts;
 import edu.romoshi.jdbc.users.Users;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import static edu.romoshi.Main.bot;
 
 public class KeyCommand implements Command {
-    private final boolean verifyMK;
+    private final boolean verifyKey;
 
-    public KeyCommand(boolean verifyMK) {
-        this.verifyMK = verifyMK;
+    public KeyCommand(boolean verifyKey) {
+        this.verifyKey = verifyKey;
     }
 
     @Override
@@ -19,7 +18,7 @@ public class KeyCommand implements Command {
         try {
             String[] messageArray = message.getText().split(" ");
             Users user = new Users(message);
-            if(!verifyMK && user.userExist()) {
+            if(!verifyKey && user.userExist()) {
                 if(messageArray.length == 2) {
                     String bcryptHashString = BCrypt.withDefaults().hashToString(12, messageArray[1].toCharArray());
                     user.addUser(bcryptHashString);

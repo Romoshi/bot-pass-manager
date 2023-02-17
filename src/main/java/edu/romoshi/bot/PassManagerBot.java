@@ -17,9 +17,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PassManagerBot extends TelegramLongPollingBot {
     private static final String BOT_TOKEN = System.getenv("BOT_TOKEN");
     private static final String BOT_NAME = System.getenv("BOT_NAME");
-    private final Handler handler = new Handler(new ConcurrentHashMap<>());
     private final int AUTO_DELETE_MESSAGE_TIME = 3 * (int)Math.pow(10, 5); //5 minute
+    private final Handler handler = new Handler(new ConcurrentHashMap<>());
     private final Cache cache = new Cache(new ConcurrentHashMap<>(), new ArrayList<>());
+
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -79,13 +80,13 @@ public class PassManagerBot extends TelegramLongPollingBot {
     }
 
     private void initCommands(Message message) {
-        boolean verifyMK = cache.findPassFromCache(message);
+        boolean verifyKey = cache.findPassFromCache(message);
 
         handler.addCommand(CommandStrings.START_COMMAND, new StartCommand());
-        handler.addCommand(CommandStrings.KEY_COMMAND, new KeyCommand(verifyMK));
-        handler.addCommand(CommandStrings.SHOW_COMMAND, new ShowCommand(verifyMK));
-        handler.addCommand(CommandStrings.SAVE_COMMAND, new SaveCommand(verifyMK));
-        handler.addCommand(CommandStrings.DELETE_COMMAND, new DeleteCommand(verifyMK));
+        handler.addCommand(CommandStrings.KEY_COMMAND, new KeyCommand(verifyKey));
+        handler.addCommand(CommandStrings.SHOW_COMMAND, new ShowCommand(verifyKey));
+        handler.addCommand(CommandStrings.SAVE_COMMAND, new SaveCommand(verifyKey));
+        handler.addCommand(CommandStrings.DELETE_COMMAND, new DeleteCommand(verifyKey));
         handler.addCommand(CommandStrings.HELP_COMMAND, new HelpCommand());
     }
 

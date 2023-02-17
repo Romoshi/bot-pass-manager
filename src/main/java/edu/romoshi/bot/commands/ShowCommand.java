@@ -7,17 +7,17 @@ import java.util.List;
 import static edu.romoshi.Main.bot;
 
 public class ShowCommand implements Command {
-    private final boolean verifyMK;
+    private final boolean verifyKey;
 
-    public ShowCommand(boolean verifyMK) {
-        this.verifyMK = verifyMK;
+    public ShowCommand(boolean verifyKey) {
+        this.verifyKey = verifyKey;
     }
 
     @Override
     public void execute(Message message) {
         String[] messageArray = message.getText().split(" ");
         try {
-            if (verifyMK) {
+            if (verifyKey) {
                 if(messageArray.length == 1) {
                     List<Accounts> accounts =Accounts.getAccounts(message);
                     for (var account : accounts) {
