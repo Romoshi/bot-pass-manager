@@ -3,6 +3,10 @@
 </p>
 
 <p align="center">
+   ## BOT NOT WORKING BECAUSE IT`S IN DEVELOPMENT (ONLY LOCAL)
+</p>
+     
+<p align="left">
    <img src="https://img.shields.io/badge/License-MIT-green" alt="License">
 </p>
 
