@@ -2,8 +2,8 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+group 'edu.romoshi'
+version '1.0-VERSION'
 
 repositories {
     mavenCentral()
@@ -15,8 +15,16 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     implementation 'mysql:mysql-connector-java:8.0.31'
     implementation group: 'commons-codec', name: 'commons-codec', version: '1.9'
-    implementation 'org.telegram:telegrambots:6.4.0'
+    implementation group: 'org.telegram', name: 'telegrambots', version: '6.4.0'
     implementation group: 'at.favre.lib', name: 'bcrypt', version: '0.9.0'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'edu.romoshi.Main'
+        )
+    }
 }
 
 test {
