@@ -1,8 +1,9 @@
+### BOT IN DEVELOPMENT (ONLY LOCAL)
 <p align="center">
       <img src="https://i.ibb.co/52QPfDY/padlock.png" alt="Project logo" width="324">
 </p>
 
-<p align="center">
+<p align="left">
    <img src="https://img.shields.io/badge/License-MIT-green" alt="License">
 </p>
 
