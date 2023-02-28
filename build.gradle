@@ -1,9 +1,21 @@
 plugins {
     id 'java'
+    id 'application'
+    id "io.ktor.plugin" version "2.2.3"
 }
 
 group 'edu.romoshi'
 version '1.0-VERSION'
+
+application {
+    mainClass.set("edu.romoshi.Main")
+}
+
+ktor {
+    fatJar {
+        archiveFileName.set("t-bot.jar")
+    }
+}
 
 repositories {
     mavenCentral()
@@ -17,14 +29,6 @@ dependencies {
     implementation group: 'commons-codec', name: 'commons-codec', version: '1.9'
     implementation group: 'org.telegram', name: 'telegrambots', version: '6.4.0'
     implementation group: 'at.favre.lib', name: 'bcrypt', version: '0.9.0'
-}
-
-jar {
-    manifest {
-        attributes(
-                'Main-Class': 'edu.romoshi.Main'
-        )
-    }
 }
 
 test {
