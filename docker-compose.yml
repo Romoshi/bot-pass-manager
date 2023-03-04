@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+
+  app:
+    image: "t-bot"
+    container_name: t-bot
+    env_file:
+      - .env
+    depends_on:
+      - app-db
+    networks:
+      - app-network
+
+  app-db:
+    image: "mysql/mysql-server:8.0"
+    container_name: mysql8
+    ports:
+      - "3306:3306"
+    labels:
+      environment: ${BOT_NAME}
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
+      - MYSQL_DATABASE=test
+    volumes:
+      - ./dbdata:/var/lib/mysql/
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
