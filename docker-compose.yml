@@ -4,6 +4,7 @@ services:
 
   app:
     image: "t-bot"
+    restart: always
     container_name: t-bot
     env_file:
       - .env
@@ -14,6 +15,7 @@ services:
 
   app-db:
     image: "mysql/mysql-server:8.0"
+    restart: always
     container_name: mysql8
     ports:
       - "3306:3306"
