@@ -1,6 +1,7 @@
 package edu.romoshi.bot;
 
 import edu.romoshi.Cache;
+import edu.romoshi.Log;
 import edu.romoshi.bot.commands.*;
 
 import edu.romoshi.jdbc.Tables;
@@ -34,7 +35,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 cache.autoDeleteCache(inMess);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.logger.error("Update problems", e);
         }
     }
 
@@ -72,7 +73,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 try {
                     execute(deleteMessage);
                 } catch (TelegramApiException e) {
-                    throw new RuntimeException(e);
+                    Log.logger.error("Auto delete message", e);
                 }
                 time.cancel();
             }

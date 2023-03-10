@@ -31,5 +31,6 @@ public class Tables {
     public static void initTables() {
         addTable(INIT_TABLE_USER);
         addTable(INIT_TABLE_ACCOUNTS);
+        Log.logger.info("Tables create.");
     }
 }
