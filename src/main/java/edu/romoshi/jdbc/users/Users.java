@@ -1,5 +1,6 @@
 package edu.romoshi.jdbc.users;
 
+import edu.romoshi.Log;
 import edu.romoshi.jdbc.Connector;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -22,7 +23,7 @@ public class Users {
             preparedStatement.setString(2, key);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Log.logger.error("From Users class, add user", e);
         }
     }
     public boolean userExist() {
@@ -34,7 +35,7 @@ public class Users {
             ResultSet rs = preparedStatement.executeQuery();
             if(!rs.next()) return true;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            Log.logger.error("From Users class, check user", e);
         }
 
         return false;
@@ -49,7 +50,7 @@ public class Users {
             ResultSet rs = preparedStatement.executeQuery();
             if(rs.next()) mk = rs.getString("mk");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            Log.logger.error("From Users class, get user mk", e);
         }
         return mk;
     }

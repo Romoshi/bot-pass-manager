@@ -1,6 +1,7 @@
 package edu.romoshi.bot.commands;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import edu.romoshi.Log;
 import edu.romoshi.bot.BotStrings;
 import edu.romoshi.jdbc.users.Users;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -31,7 +32,7 @@ public class KeyCommand implements Command {
                 bot.sendMsg(message, BotStrings.KEY_EXIST);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Log.logger.error("Key command", ex);
         }
     }
 }

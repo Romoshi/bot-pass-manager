@@ -1,5 +1,6 @@
 package edu.romoshi.crypto;
 
+import edu.romoshi.Log;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.*;
@@ -30,12 +31,11 @@ public class Decryption {
         byte[] decryptedTextBytes = null;
         try {
             decryptedTextBytes = cipher.doFinal(encryptedTextBytes);
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
+            Log.logger.error("Decryption problem", e);
         }
 
+        assert decryptedTextBytes != null;
         return new String(decryptedTextBytes);
     }
 }

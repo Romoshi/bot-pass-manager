@@ -1,5 +1,7 @@
 package edu.romoshi.jdbc;
 
+import edu.romoshi.Log;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -22,7 +24,7 @@ public class Tables {
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Log.logger.error("From CRUD(add tables)", e);
         }
     }
 

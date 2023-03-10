@@ -16,7 +16,7 @@ public class Encryption {
         byte[] ivBytes;
 
         SecureRandom random = new SecureRandom();
-        byte bytes[] = new byte[20];
+        byte[] bytes = new byte[20];
         random.nextBytes(bytes);
         byte[] saltBytes = bytes;
         // Derive the key
