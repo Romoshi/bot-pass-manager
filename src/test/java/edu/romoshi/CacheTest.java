@@ -27,9 +27,4 @@ class CacheTest {
         cache.add(message);
         assertEquals(1, cache.getSize());
     }
-
-    @Test
-    void findPassFromCache() {
-
-    }
 }
