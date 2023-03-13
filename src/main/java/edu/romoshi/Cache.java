@@ -12,6 +12,7 @@ public class Cache {
     private final ConcurrentMap<Integer, List<String>> cacheMsg;
     private final List<String> messages;
     private final int DEFAULT_TIMEOUT = (int) (86.4 * Math.pow(10, 5)); //24 hours
+    private long size;
 
 
     public Cache(ConcurrentMap <Integer, List<String>> c, List<String> mes) {
@@ -19,9 +20,14 @@ public class Cache {
         this.messages = mes;
     }
 
+    public long getSize() {
+        return size;
+    }
+
     public void add(Message message) {
         messages.add(message.getText());
         cacheMsg.put(message.getChatId().intValue(), messages);
+        size++;
     }
     public boolean findPassFromCache(Message message) {
         Users user = new Users(message);
