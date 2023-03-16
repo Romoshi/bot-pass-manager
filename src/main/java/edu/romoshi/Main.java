@@ -13,7 +13,7 @@ public class Main {
             botsApi.registerBot(bot);
             Log.logger.info("Bot ON");
         } catch (TelegramApiException e) {
-            Log.logger.error("Problems with telegram API", e);
+            Log.logger.error("Problems with bot register", e);
         }
     }
 }

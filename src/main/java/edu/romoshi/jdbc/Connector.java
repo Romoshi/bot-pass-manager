@@ -7,12 +7,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Connector {
-    private static final String dbUrl = System.getenv("DB_URL");
-    private static final String dbUser = System.getenv("DB_USER");
-    private static final String dbPassword = System.getenv("DB_PASS");
+    private static final String URL = "DB_URL";
+    private static final String USER ="DB_USER";
+    private static final String PASS = "DB_PASS";
     public static Connection connection;
     public static Connection getNewConnection() throws SQLException {
-        connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        connection = DriverManager.getConnection(URL, USER, PASS);
         Log.logger.info("Connection done.");
         return connection;
     }
