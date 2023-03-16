@@ -7,6 +7,8 @@ services:
     restart: always
     env_file:
       - .env
+    volumes:
+      - ./logs:/var/log
     depends_on:
       - app-db
     networks:
