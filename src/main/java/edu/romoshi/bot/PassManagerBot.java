@@ -1,10 +1,12 @@
 package edu.romoshi.bot;
 
 import edu.romoshi.Cache;
-import edu.romoshi.Log;
+import edu.romoshi.Main;
 import edu.romoshi.bot.commands.*;
 
 import edu.romoshi.jdbc.Tables;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
@@ -16,6 +18,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PassManagerBot extends TelegramLongPollingBot {
+    private static final Logger logger = LoggerFactory.getLogger(PassManagerBot.class);
     private static final String BOT_TOKEN = System.getenv("BOT_TOKEN");
     private static final String BOT_NAME = System.getenv("BOT_NAME");
     private final int AUTO_DELETE_MESSAGE_TIME = 3 * (int)Math.pow(10, 5); //5 minute
@@ -35,7 +38,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 cache.autoDeleteCache(inMess);
             }
         } catch (Exception e) {
-            Log.logger.error("Update problems", e);
+            logger.error("Update problems", e);
         }
     }
 
@@ -46,11 +49,11 @@ public class PassManagerBot extends TelegramLongPollingBot {
         initCommands(message);
         handler.runCommand(message);
 
-        if(!handler.flag) {
+        if(!handler.isFlag()) {
             DefaultCommand defaultCommand = new DefaultCommand();
             defaultCommand.execute(message);
         } else {
-            handler.flag = false;
+            handler.setFlag(false);
         }
     }
 
@@ -73,7 +76,7 @@ public class PassManagerBot extends TelegramLongPollingBot {
                 try {
                     execute(deleteMessage);
                 } catch (TelegramApiException e) {
-                    Log.logger.error("Auto delete message", e);
+                    logger.error("Auto delete message", e);
                 }
                 time.cancel();
             }

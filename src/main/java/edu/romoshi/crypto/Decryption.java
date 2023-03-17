@@ -1,7 +1,9 @@
 package edu.romoshi.crypto;
 
-import edu.romoshi.Log;
+import edu.romoshi.jdbc.Tables;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -10,6 +12,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.ByteBuffer;
 
 public class Decryption {
+    private static final Logger logger = LoggerFactory.getLogger(Decryption.class);
     @SuppressWarnings("static-access")
     public String decrypt(String encryptedText, String password) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -32,7 +35,7 @@ public class Decryption {
         try {
             decryptedTextBytes = cipher.doFinal(encryptedTextBytes);
         } catch (IllegalBlockSizeException | BadPaddingException e) {
-            Log.logger.error("Decryption problem", e);
+            logger.error("Decryption problem", e);
         }
 
         assert decryptedTextBytes != null;

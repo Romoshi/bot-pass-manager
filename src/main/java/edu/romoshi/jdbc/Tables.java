@@ -1,12 +1,14 @@
 package edu.romoshi.jdbc;
 
-import edu.romoshi.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Tables {
+    private static final Logger logger = LoggerFactory.getLogger(Tables.class);
     private static final String INIT_DB = "CREATE DATABASE IF NOT EXISTS test;" +
                                             "USE test;";
     private static final String INIT_TABLE_ACCOUNTS = "CREATE TABLE IF NOT EXISTS accounts(" +
@@ -26,7 +28,7 @@ public class Tables {
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            Log.logger.error("From tables - execute query", e);
+            logger.error("From tables - execute query", e);
         }
     }
 
@@ -34,6 +36,6 @@ public class Tables {
         executeQuery(INIT_DB);
         executeQuery(INIT_TABLE_USER);
         executeQuery(INIT_TABLE_ACCOUNTS);
-        Log.logger.info("Tables create.");
+        logger.info("Tables create.");
     }
 }

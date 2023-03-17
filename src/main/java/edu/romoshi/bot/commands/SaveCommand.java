@@ -1,13 +1,16 @@
 package edu.romoshi.bot.commands;
 
-import edu.romoshi.Log;
+import edu.romoshi.Main;
 import edu.romoshi.bot.BotStrings;
 import edu.romoshi.crypto.Encryption;
 import edu.romoshi.jdbc.accounts.Accounts;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import static edu.romoshi.Main.bot;
 
 public class SaveCommand implements Command {
+    private static final Logger logger = LoggerFactory.getLogger(SaveCommand.class);
     private final boolean verifyKey;
 
     public SaveCommand(boolean verifyKey) {
@@ -31,7 +34,7 @@ public class SaveCommand implements Command {
                 bot.sendMsg(message, BotStrings.START_STRING);
             }
         } catch (Exception ex) {
-            Log.logger.error("Save command", ex);
+            logger.error("Save command", ex);
         }
     }
 }

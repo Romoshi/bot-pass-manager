@@ -8,7 +8,15 @@ import java.util.concurrent.ConcurrentMap;
 
 public class Handler {
     private final ConcurrentMap<String, Command> commands;
-    public boolean flag = false;
+    private boolean flag = false;
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
 
     public Handler(ConcurrentMap <String, Command> commands) {
         this.commands = commands;

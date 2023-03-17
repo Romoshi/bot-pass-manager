@@ -1,19 +1,22 @@
 package edu.romoshi;
 
 import edu.romoshi.bot.PassManagerBot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 public class Main {
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
     public static final PassManagerBot bot = new PassManagerBot();
     public static void main(String[] args) {
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             botsApi.registerBot(bot);
-            Log.logger.info("Bot ON");
+            logger.info("Bot ON");
         } catch (TelegramApiException e) {
-            Log.logger.error("Problems with bot register", e);
+            logger.error("Problems with bot register", e);
         }
     }
 }

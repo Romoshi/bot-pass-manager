@@ -1,8 +1,10 @@
 package edu.romoshi.jdbc.accounts;
 
-import edu.romoshi.Log;
 import edu.romoshi.crypto.Decryption;
 import edu.romoshi.jdbc.Connector;
+import edu.romoshi.jdbc.Tables;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.sql.Connection;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Accounts {
+    private static final Logger logger = LoggerFactory.getLogger(Accounts.class);
     private final String nameService;
     private final String login;
     private final String password;
@@ -35,7 +38,7 @@ public class Accounts {
             preparedStatement.setString(4, this.password);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            Log.logger.error("From CRUD(add account)", e);
+            logger.error("Add account)", e);
         }
     }
     public static List<Accounts> getAccounts(Message message) {
@@ -54,7 +57,7 @@ public class Accounts {
                 accounts.add(new Accounts(ns, lg, pass));
             }
         } catch (Exception e) {
-            Log.logger.error("From CRUD(get accounts)", e);
+            logger.error("Get accounts", e);
         }
 
         return accounts;
@@ -68,7 +71,7 @@ public class Accounts {
             preparedStatement.setInt(2, message.getChatId().intValue());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            Log.logger.error("From CRUD(delete account)", e);
+            logger.error("Delete account", e);
         }
     }
 
