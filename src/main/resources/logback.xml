@@ -2,16 +2,16 @@
 
     <appender name="FILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/app.log</file>
+        <file>log/bot.log</file>
         <rollingPolicy
                 class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>logging/app.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>app.%d{yyyy-MM-dd}.log</fileNamePattern>
 
-            <!-- Храним файлы логов 10 дней -->
+            <!-- Logs health 10 days -->
             <maxHistory>10</maxHistory>
 
-            <!-- Максимальный размер файлов лога 20 гигабайт -->
+            <!-- Max size 20 GB -->
             <totalSizeCap>20GB</totalSizeCap>
 
         </rollingPolicy>

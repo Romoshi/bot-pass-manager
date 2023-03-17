@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Tables {
+    private static final String INIT_DB = "CREATE DATABASE IF NOT EXISTS test;" +
+                                            "USE test;";
     private static final String INIT_TABLE_ACCOUNTS = "CREATE TABLE IF NOT EXISTS accounts(" +
                                                     "id BIGINT AUTO_INCREMENT PRIMARY KEY," +
                                                     "user_id INT NOT NULL," +
@@ -19,18 +21,19 @@ public class Tables {
                                                     "user_info INT," +
                                                     "mk VARCHAR(100));";
 
-    private static void addTable(String query) {
+    private static void executeQuery(String query) {
         try(Connection connection = Connector.getNewConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            Log.logger.error("From CRUD(add tables)", e);
+            Log.logger.error("From tables - execute query", e);
         }
     }
 
     public static void initTables() {
-        addTable(INIT_TABLE_USER);
-        addTable(INIT_TABLE_ACCOUNTS);
+        executeQuery(INIT_DB);
+        executeQuery(INIT_TABLE_USER);
+        executeQuery(INIT_TABLE_ACCOUNTS);
         Log.logger.info("Tables create.");
     }
 }

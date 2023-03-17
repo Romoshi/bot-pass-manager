@@ -3,19 +3,19 @@ version: '3.8'
 services:
 
   app:
-    image: "t-bot"
+    image: t-bot
     restart: always
     env_file:
       - .env
     volumes:
-      - ./logs:/var/log
+      - ./logs:/log/
     depends_on:
       - app-db
     networks:
       - app-network
 
   app-db:
-    image: "mysql/mysql-server:8.0"
+    image: mysql/mysql-server:8.0
     restart: always
     container_name: mysql8
     ports:
