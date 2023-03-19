@@ -45,7 +45,10 @@ public class PassManagerBot extends TelegramLongPollingBot {
     private void parseMessage(Message message) {
         cache.add(message);
 
-        Tables.initTables();
+        if(!Tables.isFlag()) {
+            Tables.initTables();
+        }
+
         initCommands(message);
         handler.runCommand(message);
 

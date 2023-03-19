@@ -1,5 +1,4 @@
 package edu.romoshi.jdbc;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,9 +7,14 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Tables {
+    private static boolean flag = false;
+
+    public static boolean isFlag() {
+        return flag;
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(Tables.class);
-    private static final String INIT_DB = "CREATE DATABASE IF NOT EXISTS test;" +
-                                            "USE test;";
+    private static final String INIT_DB = "CREATE DATABASE IF NOT EXISTS test;";
     private static final String INIT_TABLE_ACCOUNTS = "CREATE TABLE IF NOT EXISTS accounts(" +
                                                     "id BIGINT AUTO_INCREMENT PRIMARY KEY," +
                                                     "user_id INT NOT NULL," +
@@ -36,6 +40,7 @@ public class Tables {
         executeQuery(INIT_DB);
         executeQuery(INIT_TABLE_USER);
         executeQuery(INIT_TABLE_ACCOUNTS);
+        flag = true;
         logger.info("Tables create.");
     }
 }

@@ -2,19 +2,21 @@ version: '3.8'
 
 services:
 
+  #Java Service
   app:
     image: t-bot
     restart: always
     env_file:
       - .env
     volumes:
-      - ./logs:/log/
+      -  ./logs:/app/log
     depends_on:
-      - app-db
+      - db
     networks:
       - app-network
 
-  app-db:
+  #MySQL Service
+  db:
     image: mysql/mysql-server:8.0
     restart: always
     container_name: mysql8
@@ -30,6 +32,7 @@ services:
     networks:
       - app-network
 
+#Docker Networks
 networks:
   app-network:
     driver: bridge
