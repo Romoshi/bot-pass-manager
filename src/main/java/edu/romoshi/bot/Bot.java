@@ -1,7 +1,6 @@
 package edu.romoshi.bot;
 
 import edu.romoshi.Cache;
-import edu.romoshi.Main;
 import edu.romoshi.bot.commands.*;
 
 import edu.romoshi.jdbc.Tables;
@@ -16,30 +15,22 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class PassManagerBot extends TelegramLongPollingBot {
-    private static final Logger logger = LoggerFactory.getLogger(PassManagerBot.class);
+public class Bot extends TelegramLongPollingBot {
+    private static final Logger logger = LoggerFactory.getLogger(Bot.class);
     private static final String BOT_TOKEN = System.getenv("BOT_TOKEN");
     private static final String BOT_NAME = System.getenv("BOT_NAME");
-    private final int AUTO_DELETE_MESSAGE_TIME = 3 * (int)Math.pow(10, 5); //5 minute
+    //private final int AUTO_DELETE_MESSAGE_TIME = 3 * (int)Math.pow(10, 5); //5 minute
     private final Handler handler = new Handler(new ConcurrentHashMap<>());
     private final Cache cache = new Cache(new ConcurrentHashMap<>(), new ArrayList<>());
-
+    public final Queue<Object> sendQueue = new ConcurrentLinkedQueue<>();
+    public final Queue<Object> receiveQueue = new ConcurrentLinkedQueue<>();
 
     @Override
     public void onUpdateReceived(Update update) {
-        try{
-            if(update.hasMessage() && update.getMessage().hasText())
-            {
-                Message inMess = update.getMessage();
-                parseMessage(inMess);
-
-                autoDeleteMessage(inMess);
-                cache.autoDeleteCache(inMess);
-            }
-        } catch (Exception e) {
-            logger.error("Update problems", e);
-        }
+        logger.debug("Receive new Update. updateID: " + update.getUpdateId());
+        receiveQueue.add(update);
     }
 
     private void parseMessage(Message message) {
@@ -60,31 +51,31 @@ public class PassManagerBot extends TelegramLongPollingBot {
         }
     }
 
-    public void sendMsg(Message message, String s) throws TelegramApiException {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.enableMarkdown(true);
-        sendMessage.setChatId(message.getChatId());
-        sendMessage.setText(s);
-
-        Message sentOutMessage = execute(sendMessage);
-        autoDeleteMessage(sentOutMessage);
-    }
-
-    private void autoDeleteMessage(Message message) {
-        final Timer time = new Timer();
-        DeleteMessage deleteMessage = new DeleteMessage(message.getChatId().toString(), message.getMessageId());
-        time.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    execute(deleteMessage);
-                } catch (TelegramApiException e) {
-                    logger.error("Auto delete message", e);
-                }
-                time.cancel();
-            }
-        }, AUTO_DELETE_MESSAGE_TIME);
-    }
+//    public void sendMsg(Message message, String s) throws TelegramApiException {
+//        SendMessage sendMessage = new SendMessage();
+//        sendMessage.enableMarkdown(true);
+//        sendMessage.setChatId(message.getChatId());
+//        sendMessage.setText(s);
+//
+//        Message sentOutMessage = execute(sendMessage);
+//        autoDeleteMessage(sentOutMessage);
+//    }
+//
+//    private void autoDeleteMessage(Message message) {
+//        final Timer time = new Timer();
+//        DeleteMessage deleteMessage = new DeleteMessage(message.getChatId().toString(), message.getMessageId());
+//        time.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                try {
+//                    execute(deleteMessage);
+//                } catch (TelegramApiException e) {
+//                    logger.error("Auto delete message", e);
+//                }
+//                time.cancel();
+//            }
+//        }, AUTO_DELETE_MESSAGE_TIME);
+//    }
 
     private void initCommands(Message message) {
         boolean verifyKey = cache.findPassFromCache(message);
