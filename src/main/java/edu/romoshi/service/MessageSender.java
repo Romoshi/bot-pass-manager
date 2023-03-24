@@ -28,7 +28,6 @@ public class MessageSender implements Runnable {
         try {
             while(true) {
                 for(Object object = bot.sendQueue.poll(); object != null; object = bot.sendQueue.poll()) {
-                    logger.debug("Get new msg to send " + object);
                     send(object);
                 }
                 try {
