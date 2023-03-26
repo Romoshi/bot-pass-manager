@@ -1,6 +1,5 @@
 package edu.romoshi.bot.commands;
 
-import edu.romoshi.Main;
 import edu.romoshi.bot.BotStrings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

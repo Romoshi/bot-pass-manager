@@ -21,26 +21,34 @@ public class Bot extends TelegramLongPollingBot {
     private static final Logger logger = LoggerFactory.getLogger(Bot.class);
     private static final String BOT_TOKEN = System.getenv("BOT_TOKEN");
     private static final String BOT_NAME = System.getenv("BOT_NAME");
-    //private final int AUTO_DELETE_MESSAGE_TIME = 3 * (int)Math.pow(10, 5); //5 minute
+    private final int AUTO_DELETE_MESSAGE_TIME = 3 * (int)Math.pow(10, 5); //5 minute
     private final Handler handler = new Handler(new ConcurrentHashMap<>());
     private final Cache cache = new Cache(new ConcurrentHashMap<>(), new ArrayList<>());
-    public final Queue<Object> sendQueue = new ConcurrentLinkedQueue<>();
-    public final Queue<Object> receiveQueue = new ConcurrentLinkedQueue<>();
 
     @Override
     public void onUpdateReceived(Update update) {
-        logger.debug("Receive new Update. updateID: " + update.getUpdateId());
-        receiveQueue.add(update);
+        if(!Tables.isFlag()) {
+            Tables.initTables();
+        }
+
+        try{
+            if(update.hasMessage() && update.getMessage().hasText())
+            {
+                Message inMess = update.getMessage();
+                parseMessage(inMess);
+
+                autoDeleteMessage(inMess);
+                cache.autoDeleteCache(inMess);
+            }
+        } catch (Exception e) {
+            logger.error("Update problems", e);
+        }
     }
 
     private void parseMessage(Message message) {
         cache.add(message);
 
-        if(!Tables.isFlag()) {
-            Tables.initTables();
-        }
-
-        initCommands(message);
+        initCommands(cache.findPassFromCache(message));
         handler.runCommand(message);
 
         if(!handler.isFlag()) {
@@ -51,35 +59,37 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
-//    public void sendMsg(Message message, String s) throws TelegramApiException {
-//        SendMessage sendMessage = new SendMessage();
-//        sendMessage.enableMarkdown(true);
-//        sendMessage.setChatId(message.getChatId());
-//        sendMessage.setText(s);
-//
-//        Message sentOutMessage = execute(sendMessage);
-//        autoDeleteMessage(sentOutMessage);
-//    }
-//
-//    private void autoDeleteMessage(Message message) {
-//        final Timer time = new Timer();
-//        DeleteMessage deleteMessage = new DeleteMessage(message.getChatId().toString(), message.getMessageId());
-//        time.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                try {
-//                    execute(deleteMessage);
-//                } catch (TelegramApiException e) {
-//                    logger.error("Auto delete message", e);
-//                }
-//                time.cancel();
-//            }
-//        }, AUTO_DELETE_MESSAGE_TIME);
-//    }
+    public void sendMsg(Message message, String s) {
+        try {
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.enableMarkdown(true);
+            sendMessage.setChatId(message.getChatId());
+            sendMessage.setText(s);
 
-    private void initCommands(Message message) {
-        boolean verifyKey = cache.findPassFromCache(message);
+            Message sentOutMessage = execute(sendMessage);
+            autoDeleteMessage(sentOutMessage);
+        } catch (TelegramApiException ex) {
+            logger.error("Send Message trouble", ex);
+        }
+    }
 
+    private void autoDeleteMessage(Message message) {
+        final Timer time = new Timer();
+        DeleteMessage deleteMessage = new DeleteMessage(message.getChatId().toString(), message.getMessageId());
+        time.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    execute(deleteMessage);
+                } catch (TelegramApiException e) {
+                    logger.error("Auto delete message", e);
+                }
+                time.cancel();
+            }
+        }, AUTO_DELETE_MESSAGE_TIME);
+    }
+
+    private void initCommands(boolean verifyKey) {
         handler.addCommand(CommandStrings.START_COMMAND, new StartCommand());
         handler.addCommand(CommandStrings.KEY_COMMAND, new KeyCommand(verifyKey));
         handler.addCommand(CommandStrings.SHOW_COMMAND, new ShowCommand(verifyKey));
