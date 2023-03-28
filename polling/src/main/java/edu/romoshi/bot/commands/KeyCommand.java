@@ -22,7 +22,7 @@ public class KeyCommand implements Command {
     public void execute(Message message) {
         try {
             String[] messageArray = message.getText().split(" ");
-            Users user = new Users(message);
+            Users user = new Users(message.getChatId().intValue());
             if(!verifyKey && user.userExist()) {
                 if(messageArray.length == 2) {
                     String bcryptHashString = BCrypt.withDefaults().hashToString(12, messageArray[1].toCharArray());

@@ -3,7 +3,6 @@ package edu.romoshi.jdbc.users;
 import edu.romoshi.jdbc.Connector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +12,8 @@ import java.sql.SQLException;
 public class Users {
     private static final Logger logger = LoggerFactory.getLogger(Users.class);
     private final int userId;
-    public Users(Message message) {
-        this.userId = message.getChatId().intValue();
+    public Users(int userId) {
+        this.userId = userId;
     }
 
     public void addUser(String key) {

@@ -4,7 +4,6 @@ import edu.romoshi.crypto.Decryption;
 import edu.romoshi.jdbc.Connector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,11 +26,11 @@ public class Accounts {
         this.password = password;
     }
 
-    public void addAccount(Message message) {
+    public void addAccount(int id) {
         try(Connection connection = Connector.getNewConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(AccountsQuery.ADD_ACCOUNT)) {
 
-            preparedStatement.setInt(1, message.getChatId().intValue());
+            preparedStatement.setInt(1, id);
             preparedStatement.setString(2, this.nameService);
             preparedStatement.setString(3, this.login);
             preparedStatement.setString(4, this.password);
@@ -40,12 +39,12 @@ public class Accounts {
             logger.error("Add account)", e);
         }
     }
-    public static List<Accounts> getAccounts(Message message) {
+    public static List<Accounts> getAccounts(int id) {
         List<Accounts> accounts = new ArrayList<>();
 
         try(Connection connection = Connector.getNewConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(AccountsQuery.READ)) {
-            preparedStatement.setInt(1, message.getChatId().intValue());
+            preparedStatement.setInt(1, id);
 
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()) {
@@ -62,22 +61,22 @@ public class Accounts {
         return accounts;
     }
 
-    public static void deleteAccount(String nameService, Message message) {
+    public static void deleteAccount(String nameService, int id) {
         try(Connection connection = Connector.getNewConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(AccountsQuery.DELETE)) {
 
             preparedStatement.setString(1, nameService);
-            preparedStatement.setInt(2, message.getChatId().intValue());
+            preparedStatement.setInt(2, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Delete account", e);
         }
     }
 
-    public String getInfo(Message message) throws Exception {
+    public String getInfo(String info) throws Exception {
         Decryption de = new Decryption();
         return "Название сервиса: " + this.nameService + "\n" +
                 "Логин: " + this.login + "\n" +
-                "Пароль: " + de.decrypt(this.password, message.getChatId().toString());
+                "Пароль: " + de.decrypt(this.password, info);
     }
 }

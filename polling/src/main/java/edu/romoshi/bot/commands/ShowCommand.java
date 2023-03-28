@@ -23,9 +23,9 @@ public class ShowCommand implements Command {
         try {
             if (verifyKey) {
                 if(messageArray.length == 1) {
-                    List<Accounts> accounts =Accounts.getAccounts(message);
+                    List<Accounts> accounts =Accounts.getAccounts(message.getChatId().intValue());
                     for (var account : accounts) {
-                        bot.sendMsg(message, account.getInfo(message));
+                        bot.sendMsg(message, account.getInfo(message.getChatId().toString()));
                     }
                 } else {
                     bot.sendMsg(message, BotStrings.MISTAKE_MESSAGE);

@@ -25,7 +25,7 @@ public class Cache {
         cacheMsg.put(message.getChatId().intValue(), messages);
     }
     public boolean findPassFromCache(Message message) {
-        Users user = new Users(message);
+        Users user = new Users(message.getChatId().intValue());
         if (user.getMk() == null) return false;
         for(Map.Entry<Integer, List<String>> entry : cacheMsg.entrySet()) {
             if(entry.getKey() == message.getChatId().intValue()) {

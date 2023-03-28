@@ -22,7 +22,7 @@ public class DeleteCommand implements Command {
         try {
             if (verifyKey) {
                 if(messageArray.length == 2) {
-                    Accounts.deleteAccount(messageArray[1], message);
+                    Accounts.deleteAccount(messageArray[1], message.getChatId().intValue());
                     bot.sendMsg(message, BotStrings.DELETE_STRING);
                 } else {
                     bot.sendMsg(message, BotStrings.MISTAKE_MESSAGE);

@@ -25,7 +25,7 @@ public class SaveCommand implements Command {
                     Encryption en = new Encryption();
                     Accounts account = new Accounts(messageArray[1], messageArray[2],
                             en.encrypt(messageArray[3], message.getChatId().toString()));
-                    account.addAccount(message);
+                    account.addAccount(message.getChatId().intValue());
                     bot.sendMsg(message, BotStrings.SAVE_STRING);
                 } else {
                     bot.sendMsg(message, BotStrings.MISTAKE_MESSAGE);

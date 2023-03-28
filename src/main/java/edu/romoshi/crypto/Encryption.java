@@ -1,6 +1,5 @@
 package edu.romoshi.crypto;
 
-import edu.romoshi.jdbc.Tables;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,6 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.AlgorithmParameters;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class Encryption {
