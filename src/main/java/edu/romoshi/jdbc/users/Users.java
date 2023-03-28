@@ -1,7 +1,6 @@
 package edu.romoshi.jdbc.users;
 
 import edu.romoshi.jdbc.Connector;
-import edu.romoshi.jdbc.Tables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Message;
