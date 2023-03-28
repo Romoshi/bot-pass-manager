@@ -30,7 +30,7 @@ public class ShowCommand implements Command {
                 } else {
                     bot.sendMsg(message, BotStrings.MISTAKE_MESSAGE);
                 }
-            }else {
+            } else {
                 bot.sendMsg(message, BotStrings.START_STRING);
             }
         } catch (Exception ex) {
