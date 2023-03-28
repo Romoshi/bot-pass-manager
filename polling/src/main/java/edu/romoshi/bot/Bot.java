@@ -2,10 +2,11 @@ package edu.romoshi.bot;
 
 import edu.romoshi.Cache;
 import edu.romoshi.bot.commands.*;
-
 import edu.romoshi.jdbc.Tables;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
@@ -13,9 +14,10 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Bot extends TelegramLongPollingBot {
     private static final Logger logger = LoggerFactory.getLogger(Bot.class);
@@ -27,10 +29,6 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if(!Tables.isFlag()) {
-            Tables.initTables();
-        }
-
         try{
             if(update.hasMessage() && update.getMessage().hasText())
             {
@@ -46,6 +44,10 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     private void parseMessage(Message message) {
+        if(!Tables.isFlag()) {
+            Tables.initTables();
+        }
+
         cache.add(message);
 
         initCommands(cache.findPassFromCache(message));
@@ -97,7 +99,6 @@ public class Bot extends TelegramLongPollingBot {
         handler.addCommand(CommandStrings.DELETE_COMMAND, new DeleteCommand(verifyKey));
         handler.addCommand(CommandStrings.HELP_COMMAND, new HelpCommand());
     }
-
     @Override
     public String getBotUsername() {
         return BOT_NAME;

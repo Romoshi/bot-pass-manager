@@ -1,6 +1,5 @@
 package edu.romoshi.jdbc;
 
-import edu.romoshi.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

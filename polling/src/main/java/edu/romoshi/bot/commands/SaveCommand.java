@@ -1,12 +1,12 @@
 package edu.romoshi.bot.commands;
 
-import edu.romoshi.Main;
 import edu.romoshi.bot.BotStrings;
 import edu.romoshi.crypto.Encryption;
 import edu.romoshi.jdbc.accounts.Accounts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Message;
+
 import static edu.romoshi.Main.bot;
 
 public class SaveCommand implements Command {
