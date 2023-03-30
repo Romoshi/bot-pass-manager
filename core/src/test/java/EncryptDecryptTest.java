@@ -1,5 +1,5 @@
-package edu.romoshi.crypto;
-
+import edu.romoshi.crypto.Decryption;
+import edu.romoshi.crypto.Encryption;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

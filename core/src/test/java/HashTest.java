@@ -1,5 +1,3 @@
-package edu.romoshi.crypto;
-
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import org.junit.jupiter.api.Test;
 

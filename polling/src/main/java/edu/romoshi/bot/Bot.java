@@ -2,8 +2,8 @@ package edu.romoshi.bot;
 
 import edu.romoshi.Cache;
 import edu.romoshi.bot.commands.*;
-import edu.romoshi.jdbc.Tables;
 
+import edu.romoshi.jdbc.Tables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
