@@ -3,7 +3,7 @@ version: '3.8'
 services:
 
   #Java Service
-  app:
+  app-core:
     image: t-bot
     restart: always
     env_file:
