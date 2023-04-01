@@ -7,7 +7,7 @@ group 'edu.romoshi'
 version '1.0-VERSION'
 
 shadowJar {
-    archiveBaseName.set('poll')
+    archiveBaseName.set('t-bot')
 }
 
 jar {

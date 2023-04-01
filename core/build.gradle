@@ -7,7 +7,7 @@ group 'edu.romoshi'
 version '1.0-VERSION'
 
 shadowJar {
-    archiveBaseName.set('t-bot')
+    archiveBaseName.set('general')
 }
 
 jar {

@@ -121,7 +121,7 @@ gradle-app.setting
 *.log
 logs
 log
-logback.xml
+
 
 # BlueJ files
 *.ctxt
