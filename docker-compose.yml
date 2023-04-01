@@ -2,14 +2,28 @@ version: '3.8'
 
 services:
 
-  #Java Service
-  app:
+  #Java Services
+  #Polling
+  app-poll:
     image: t-bot
     restart: always
+    container_name: t-bot
     env_file:
       - .env
     volumes:
-      -  ./logs:/app/log
+      - ./logs:/app/log
+    depends_on:
+      - app-core
+    networks:
+      - app-network
+
+  #Java Services
+  #Core
+  app-core:
+    image: bot-core
+    restart: always
+    env_file:
+      - .env
     depends_on:
       - db
     networks:
