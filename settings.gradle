@@ -1,4 +1,7 @@
 rootProject.name = 'pass_manager_Tb'
 include 'polling'
 include 'core'
+include 'receiver'
+include 'sender'
+include 'handler'
 

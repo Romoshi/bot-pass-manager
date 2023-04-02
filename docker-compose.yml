@@ -12,8 +12,6 @@ services:
       - .env
     volumes:
       - ./logs:/app/log
-    depends_on:
-      - app-core
     networks:
       - app-network
 

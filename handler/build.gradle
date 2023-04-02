@@ -7,7 +7,7 @@ group 'edu.romoshi'
 version '1.0-VERSION'
 
 shadowJar {
-    archiveBaseName.set('t-bot')
+    archiveBaseName.set('handler')
 }
 
 jar {
@@ -24,8 +24,11 @@ repositories {
 }
 
 dependencies {
+    implementation 'mysql:mysql-connector-java:8.0.31'
+    implementation group: 'commons-codec', name: 'commons-codec', version: '1.9'
     implementation group: 'org.telegram', name: 'telegrambots', version: '6.4.0'
     implementation group: 'at.favre.lib', name: 'bcrypt', version: '0.9.0'
+
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.6'
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.5'
 
