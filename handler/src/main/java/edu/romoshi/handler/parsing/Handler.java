@@ -8,13 +8,15 @@ import edu.romoshi.handler.jdbc.Tables;
 import edu.romoshi.handler.parsing.commands.*;
 
 import java.util.ArrayList;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class Transmitter {
-    private static final Logger logger = LoggerFactory.getLogger(Transmitter.class);
-//    private final int AUTO_DELETE_MESSAGE_TIME = 3 * (int)Math.pow(10, 5); //5 minute
+public class Handler {
+    private static final Logger logger = LoggerFactory.getLogger(Handler.class);
     private final Receiver receiver = new Receiver(new ConcurrentHashMap<>());
     private final Cache cache = new Cache(new ConcurrentHashMap<>(), new ArrayList<>());
+    public final Queue<Message> hadlerQueue = new ConcurrentLinkedQueue<>();
     private void parseMessage(Message message) {
         if(!Tables.isFlag()) {
             Tables.initTables();
