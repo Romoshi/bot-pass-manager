@@ -1,10 +1,12 @@
 package edu.romoshi.handler.parsing.commands;
 
-import edu.romoshi.polling.bot.BotStrings;
+import edu.romoshi.handler.parsing.*;
 import edu.romoshi.handler.jdbc.accounts.Accounts;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Message;
+
 import java.util.List;
 
 public class ShowCommand implements Command {
@@ -23,13 +25,13 @@ public class ShowCommand implements Command {
                 if(messageArray.length == 1) {
                     List<Accounts> accounts = Accounts.getAccounts(message.getChatId().intValue());
                     for (var account : accounts) {
-                        Main.bot.sendMsg(message, account.getInfo(message.getChatId().toString()));
+                        Handler.hadlerQueue.add(account.getInfo(message.getChatId().toString()));
                     }
                 } else {
-                    Main.bot.sendMsg(message, BotStrings.MISTAKE_MESSAGE);
+                    Handler.hadlerQueue.add(MessageStrings.MISTAKE_MESSAGE);
                 }
             } else {
-                Main.bot.sendMsg(message, BotStrings.START_STRING);
+                Handler.hadlerQueue.add(MessageStrings.START_STRING);
             }
         } catch (Exception ex) {
             logger.error("Show command", ex);

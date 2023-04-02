@@ -1,8 +1,10 @@
 package edu.romoshi.handler.parsing.commands;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import edu.romoshi.polling.bot.BotStrings;
+
 import edu.romoshi.handler.jdbc.users.Users;
+import edu.romoshi.handler.parsing.Handler;
+import edu.romoshi.handler.parsing.MessageStrings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -25,13 +27,13 @@ public class KeyCommand implements Command {
                 if(messageArray.length == 2) {
                     String bcryptHashString = BCrypt.withDefaults().hashToString(12, messageArray[1].toCharArray());
                     user.addUser(bcryptHashString);
-                    Main.bot.sendMsg(message, BotStrings.KEY_STRING);
-                    Main.bot.sendMsg(message, BotStrings.AFTER_KEY_STRING);
+                    Handler.hadlerQueue.add(MessageStrings.KEY_STRING);
+                    Handler.hadlerQueue.add(MessageStrings.AFTER_KEY_STRING);
                 } else {
-                    Main.bot.sendMsg(message, BotStrings.MISTAKE_MESSAGE);
+                    Handler.hadlerQueue.add(MessageStrings.MISTAKE_MESSAGE);
                 }
             } else if (!messageArray[1].isEmpty()){
-                Main.bot.sendMsg(message, BotStrings.KEY_EXIST);
+                Handler.hadlerQueue.add(MessageStrings.KEY_EXIST);
             }
         } catch (Exception ex) {
             logger.error("Key command", ex);

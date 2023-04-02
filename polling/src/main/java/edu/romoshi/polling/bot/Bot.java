@@ -28,6 +28,7 @@ public class Bot extends TelegramLongPollingBot {
             if(update.hasMessage() && update.getMessage().hasText())
             {
                 Message inMess = update.getMessage();
+                sendQueue.add(inMess);
                 autoDeleteMessage(inMess);
             }
         } catch (Exception e) {
@@ -35,17 +36,19 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
-    public void sendMsg(Message message, String s) {
-        try {
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.enableMarkdown(true);
-            sendMessage.setChatId(message.getChatId());
-            sendMessage.setText(s);
+    private void sendMsg(Queue<Message> messageQueue, String sendString) {
+        for(var message : messageQueue) {
+            try {
+                SendMessage sendMessage = new SendMessage();
+                sendMessage.enableMarkdown(true);
+                sendMessage.setChatId(message.getChatId());
+                sendMessage.setText(sendString);
 
-            Message sentOutMessage = execute(sendMessage);
-            autoDeleteMessage(sentOutMessage);
-        } catch (TelegramApiException ex) {
-            logger.error("Send Message trouble", ex);
+                Message sentOutMessage = execute(sendMessage);
+                autoDeleteMessage(sentOutMessage);
+            } catch (TelegramApiException ex) {
+                logger.error("Send Message trouble", ex);
+            }
         }
     }
 

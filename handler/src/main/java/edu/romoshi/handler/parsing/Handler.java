@@ -16,23 +16,29 @@ public class Handler {
     private static final Logger logger = LoggerFactory.getLogger(Handler.class);
     private final Receiver receiver = new Receiver(new ConcurrentHashMap<>());
     private final Cache cache = new Cache(new ConcurrentHashMap<>(), new ArrayList<>());
-    public final Queue<Message> hadlerQueue = new ConcurrentLinkedQueue<>();
-    private void parseMessage(Message message) {
-        if(!Tables.isFlag()) {
-            Tables.initTables();
-        }
+    public static Queue<String> hadlerQueue = new ConcurrentLinkedQueue<>();
+    private void parseMessage(Queue<Message> messageQueue) {
+        try {
+            for (var message : messageQueue) {
+                if(!Tables.isFlag()) {
+                    Tables.initTables();
+                }
 
-        cache.autoDeleteCache(message);
-        cache.add(message);
+                cache.autoDeleteCache(message);
+                cache.add(message);
 
-        initCommands(cache.findPassFromCache(message));
-        receiver.runCommand(message);
+                initCommands(cache.findPassFromCache(message));
+                receiver.runCommand(message);
 
-        if(!receiver.isFlag()) {
-            DefaultCommand defaultCommand = new DefaultCommand();
-            defaultCommand.execute(message);
-        } else {
-            receiver.setFlag(false);
+                if(!receiver.isFlag()) {
+                    DefaultCommand defaultCommand = new DefaultCommand();
+                    defaultCommand.execute(message);
+                } else {
+                    receiver.setFlag(false);
+                }
+            }
+        } catch (Exception ex) {
+            logger.error("Parse error", ex.getMessage());
         }
     }
 
@@ -43,5 +49,7 @@ public class Handler {
         receiver.addCommand(CommandStrings.SAVE_COMMAND, new SaveCommand(verifyKey));
         receiver.addCommand(CommandStrings.DELETE_COMMAND, new DeleteCommand(verifyKey));
         receiver.addCommand(CommandStrings.HELP_COMMAND, new HelpCommand());
+
+        logger.info("Create commands list");
     }
 }
