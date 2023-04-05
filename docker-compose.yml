@@ -3,11 +3,11 @@ version: '3.8'
 services:
 
   #Java Services
-  #Polling
+  #Puller
   app-poll:
-    image: t-bot
+    image: bot-pull
     restart: always
-    container_name: t-bot
+    container_name: bot-pull
     env_file:
       - .env
     volumes:
