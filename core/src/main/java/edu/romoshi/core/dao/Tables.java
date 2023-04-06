@@ -1,4 +1,4 @@
-package edu.romoshi.core.dto;
+package edu.romoshi.core.dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

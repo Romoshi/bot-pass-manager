@@ -20,9 +20,7 @@ public class SaveCommand implements Command {
             String[] messageArray = message.getText().split(" ");
             if (verifyKey) {
                 if(messageArray.length == 4) {
-                    Encryption en = new Encryption();
-                    Accounts account = new Accounts(messageArray[1], messageArray[2],
-                            en.encrypt(messageArray[3], message.getChatId().toString()));
+                    Accounts account = new Accounts(messageArray[1], messageArray[2], messageArray[3]);
                     account.addAccount(message.getChatId().intValue());
                     bot.sendMsg(message, MessageStrings.SAVE_STRING);
                 } else {

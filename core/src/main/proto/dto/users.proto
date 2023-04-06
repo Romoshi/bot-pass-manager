@@ -1,0 +1,22 @@
+syntax = "proto3";
+package edu.romoshi.core.grpc;
+import "google/protobuf/empty.proto";
+
+message AddRequest {
+  int32 id = 1;
+  string key = 2;
+}
+
+message GeneralRequest {
+  int32 id = 1;
+}
+
+message UserResponse {
+  string masterKey = 1;
+}
+
+service UserService {
+  rpc addUser(AddRequest) returns (google.protobuf.Empty);
+  rpc userExist(GeneralRequest) returns ();
+  rpc getMk(GeneralRequest) returns (UserResponse);
+}

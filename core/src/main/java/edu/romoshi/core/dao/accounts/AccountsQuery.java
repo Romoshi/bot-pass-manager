@@ -1,4 +1,4 @@
-package edu.romoshi.core.dto.accounts;
+package edu.romoshi.core.dao.accounts;
 
 public class AccountsQuery {
     public static final String ADD_ACCOUNT = "INSERT INTO accounts(user_id, name_service, login, password)" +

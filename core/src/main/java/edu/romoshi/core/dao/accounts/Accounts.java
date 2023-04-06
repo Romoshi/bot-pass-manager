@@ -1,7 +1,8 @@
-package edu.romoshi.core.dto.accounts;
+package edu.romoshi.core.dao.accounts;
 
 import edu.romoshi.core.crypto.Decryption;
-import edu.romoshi.core.dto.Connector;
+import edu.romoshi.core.crypto.Encryption;
+import edu.romoshi.core.dao.Connector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,11 +30,12 @@ public class Accounts {
     public void addAccount(int id) {
         try(Connection connection = Connector.getNewConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(AccountsQuery.ADD_ACCOUNT)) {
+            Encryption en = new Encryption();
 
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, this.nameService);
             preparedStatement.setString(3, this.login);
-            preparedStatement.setString(4, this.password);
+            preparedStatement.setString(4, en.encrypt(this.password, String.valueOf(id)));
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Add account)", e);
@@ -73,10 +75,10 @@ public class Accounts {
         }
     }
 
-    public String getInfo(String info) throws Exception {
+    public String getInfo(String chatId) throws Exception {
         Decryption de = new Decryption();
         return "Название сервиса: " + this.nameService + "\n" +
                 "Логин: " + this.login + "\n" +
-                "Пароль: " + de.decrypt(this.password, info);
+                "Пароль: " + de.decrypt(this.password, chatId);
     }
 }

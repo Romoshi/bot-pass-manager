@@ -1,4 +1,4 @@
-package edu.romoshi.core.dto.users;
+package edu.romoshi.core.dao.users;
 
 public class UsersQuery {
     public static final String ADD_USER = "INSERT INTO users(user_info, mk) VALUES(?, ?);";

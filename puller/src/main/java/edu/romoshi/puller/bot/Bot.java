@@ -6,13 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -30,13 +28,9 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         try{
-            if(update.hasMessage() && update.getMessage().hasText())
-            {
+            if(update.hasMessage() && update.getMessage().hasText()) {
                 Message inMess = update.getMessage();
                 parseMessage(inMess);
-
-                autoDeleteMessage(inMess);
-
             }
         } catch (Exception e) {
             logger.error("Update problems", e);
@@ -44,12 +38,13 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     private void parseMessage(Message message) {
-        if(!Tables.isFlag()) {
-            Tables.initTables();
-        }
+//        if(!Tables.isFlag()) {
+//            Tables.initTables();
+//        }
 
         cache.add(message);
         cache.autoDeleteCache(message);
+        autoDeleteMessage(message);
 
         initCommands(cache.findPassFromCache(message));
         receiver.runCommand(message);

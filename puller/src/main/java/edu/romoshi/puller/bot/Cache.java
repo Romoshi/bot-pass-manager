@@ -1,7 +1,7 @@
 package edu.romoshi.puller.bot;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import edu.romoshi.core.dto.users.Users;
+import edu.romoshi.core.dao.users.Users;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.*;

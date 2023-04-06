@@ -1,6 +1,6 @@
-package edu.romoshi.core.dto.users;
+package edu.romoshi.core.dao.users;
 
-import edu.romoshi.core.dto.Connector;
+import edu.romoshi.core.dao.Connector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
