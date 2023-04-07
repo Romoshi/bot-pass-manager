@@ -1,5 +1,5 @@
 syntax = "proto3";
-package edu.romoshi.core.grpc;
+package edu.romoshi.core.grps;
 import "google/protobuf/empty.proto";
 
 message Account {
@@ -13,12 +13,13 @@ message GetResponse {
   repeated Account accounts = 1;
 }
 
-message DeleteRequest  {
+message IdRequest  {
   int32 id = 1;
 }
 
-message AccountRequest {
-  string id = 1;
+message DeleteRequest {
+  int32 id = 1;
+  string nameService = 2;
 }
 
 message AccountResponse {
@@ -27,7 +28,6 @@ message AccountResponse {
 
 service AccountService {
   rpc addAccount(Account) returns (google.protobuf.Empty);
-  rpc getAccounts(AccountRequest) returns (GetResponse);
+  rpc getAccounts(IdRequest) returns (GetResponse);
   rpc deleteAccount(DeleteRequest) returns (google.protobuf.Empty);
-  rpc getInfo(AccountRequest) returns (AccountResponse);
 }
