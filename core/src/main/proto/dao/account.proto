@@ -1,0 +1,33 @@
+syntax = "proto3";
+package edu.romoshi.core.grps;
+import "google/protobuf/empty.proto";
+
+message Account {
+  int32 id = 1;
+  string nameService = 2;
+  string login = 3;
+  string password = 4;
+}
+
+message GetResponse {
+  repeated Account accounts = 1;
+}
+
+message IdRequest  {
+  int32 id = 1;
+}
+
+message DeleteRequest {
+  int32 id = 1;
+  string nameService = 2;
+}
+
+message AccountResponse {
+  string response = 1;
+}
+
+service AccountService {
+  rpc addAccount(Account) returns (google.protobuf.Empty);
+  rpc getAccounts(IdRequest) returns (GetResponse);
+  rpc deleteAccount(DeleteRequest) returns (google.protobuf.Empty);
+}

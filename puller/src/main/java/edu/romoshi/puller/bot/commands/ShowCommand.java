@@ -32,7 +32,7 @@ public class ShowCommand implements Command {
                 bot.sendMsg(message, MessageStrings.START_STRING);
             }
         } catch (Exception ex) {
-            logger.error("Show command", ex);
+            logger.error("DB is EMPTY", ex);
         }
     }
 }

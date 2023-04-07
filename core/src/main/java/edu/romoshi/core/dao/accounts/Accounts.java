@@ -20,6 +20,18 @@ public class Accounts {
     private final String login;
     private final String password;
 
+    public String getNameService() {
+        return nameService;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword(int chatId) throws Exception {
+        Decryption de = new Decryption();
+        return de.decrypt(this.password, String.valueOf(chatId));
+    }
 
     public Accounts(String nameService, String login, String password) {
         this.nameService = nameService;
@@ -73,12 +85,5 @@ public class Accounts {
         } catch (SQLException e) {
             logger.error("Delete account", e);
         }
-    }
-
-    public String getInfo(String chatId) throws Exception {
-        Decryption de = new Decryption();
-        return "Название сервиса: " + this.nameService + "\n" +
-                "Логин: " + this.login + "\n" +
-                "Пароль: " + de.decrypt(this.password, chatId);
     }
 }
