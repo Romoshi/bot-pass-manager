@@ -38,9 +38,9 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     private void parseMessage(Message message) {
-//        if(!Tables.isFlag()) {
-//            Tables.initTables();
-//        }
+        if(!Tables.isFlag()) {
+            Tables.initTables();
+        }
 
         cache.add(message);
         cache.autoDeleteCache(message);
