@@ -1,7 +1,6 @@
 package edu.romoshi.puller.bot.commands;
 
 import org.telegram.telegrambots.meta.api.objects.Message;
-
 import java.util.Objects;
 import java.util.concurrent.ConcurrentMap;
 

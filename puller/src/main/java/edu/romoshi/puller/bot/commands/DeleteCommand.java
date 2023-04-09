@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import static edu.romoshi.puller.Main.bot;
+import static edu.romoshi.puller.bot.Bot.bot;
 
 
 public class DeleteCommand implements Command {
@@ -21,7 +21,7 @@ public class DeleteCommand implements Command {
         try {
             if (verifyKey) {
                 if(messageArray.length == 2) {
-                    Accounts.deleteAccount(messageArray[1], message.getChatId().intValue());
+                    //Accounts.deleteAccount(messageArray[1], message.getChatId().intValue());
                     bot.sendMsg(message, MessageStrings.DELETE_STRING);
                 } else {
                     bot.sendMsg(message, MessageStrings.MISTAKE_MESSAGE);

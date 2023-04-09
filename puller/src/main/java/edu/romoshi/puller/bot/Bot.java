@@ -24,6 +24,11 @@ public class Bot extends TelegramLongPollingBot {
     private final int AUTO_DELETE_MESSAGE_TIME = 3 * (int)Math.pow(10, 5); //5 minute
     private final Receiver receiver = new Receiver(new ConcurrentHashMap<>());
     private final Cache cache = new Cache(new ConcurrentHashMap<>(), new ArrayList<>());
+    public static final Bot bot = new Bot(BOT_TOKEN);
+
+    public Bot(String botToken) {
+        super(botToken);
+    }
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -95,10 +100,5 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public String getBotUsername() {
         return BOT_NAME;
-    }
-
-    @Override
-    public String getBotToken() {
-        return BOT_TOKEN;
     }
 }

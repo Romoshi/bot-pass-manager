@@ -1,5 +1,5 @@
 syntax = "proto3";
-package edu.romoshi.core.grps;
+package edu.romoshi.grps;
 import "google/protobuf/empty.proto";
 
 message Account {

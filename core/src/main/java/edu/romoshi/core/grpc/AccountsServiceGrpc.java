@@ -2,8 +2,8 @@ package edu.romoshi.core.grpc;
 
 import com.google.protobuf.Empty;
 import edu.romoshi.core.dao.accounts.Accounts;
-import edu.romoshi.core.grps.AccountOuterClass;
-import edu.romoshi.core.grps.AccountServiceGrpc;
+import edu.romoshi.grps.AccountOuterClass;
+import edu.romoshi.grps.AccountServiceGrpc;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -2,6 +2,8 @@ package edu.romoshi.core.grpc;
 
 import com.google.protobuf.Empty;
 import edu.romoshi.core.dao.users.Users;
+import edu.romoshi.grpc.User;
+import edu.romoshi.grpc.UserServiceGrpc;
 import io.grpc.stub.StreamObserver;
 
 public class UsersServiceGrpc extends UserServiceGrpc.UserServiceImplBase {

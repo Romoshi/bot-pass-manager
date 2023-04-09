@@ -1,5 +1,5 @@
 syntax = "proto3";
-package edu.romoshi.core.grpc;
+package edu.romoshi.grpc;
 import "google/protobuf/empty.proto";
 
 message AddRequest {

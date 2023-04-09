@@ -1,7 +1,7 @@
 package edu.romoshi.puller.bot;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import edu.romoshi.core.dao.users.Users;
+//import edu.romoshi.core.dao.users.Users;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.*;
@@ -25,16 +25,16 @@ public class Cache {
         cacheMsg.put(message.getChatId().intValue(), messages);
     }
     public boolean findPassFromCache(Message message) {
-        Users user = new Users(message.getChatId().intValue());
-        if (user.getMk() == null) return false;
-        for(Map.Entry<Integer, List<String>> entry : cacheMsg.entrySet()) {
-            if(entry.getKey() == message.getChatId().intValue()) {
-                for (var item : entry.getValue()) {
-                    BCrypt.Result result = BCrypt.verifyer().verify(item.toCharArray(), user.getMk());
-                    if(result.verified) return true;
-                }
-            }
-        }
+//        Users user = new Users(message.getChatId().intValue());
+//        if (user.getMk() == null) return false;
+//        for(Map.Entry<Integer, List<String>> entry : cacheMsg.entrySet()) {
+//            if(entry.getKey() == message.getChatId().intValue()) {
+//                for (var item : entry.getValue()) {
+//                    BCrypt.Result result = BCrypt.verifyer().verify(item.toCharArray(), user.getMk());
+//                    if(result.verified) return true;
+//                }
+//            }
+//        }
         return false;
     }
 

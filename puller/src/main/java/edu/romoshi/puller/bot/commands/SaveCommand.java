@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import static edu.romoshi.puller.Main.bot;
+import static edu.romoshi.puller.bot.Bot.bot;
 
 public class SaveCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(SaveCommand.class);
@@ -20,8 +20,8 @@ public class SaveCommand implements Command {
             String[] messageArray = message.getText().split(" ");
             if (verifyKey) {
                 if(messageArray.length == 4) {
-                    Accounts account = new Accounts(messageArray[1], messageArray[2], messageArray[3]);
-                    account.addAccount(message.getChatId().intValue());
+//                    Accounts account = new Accounts(messageArray[1], messageArray[2], messageArray[3]);
+//                    account.addAccount(message.getChatId().intValue());
                     bot.sendMsg(message, MessageStrings.SAVE_STRING);
                 } else {
                     bot.sendMsg(message, MessageStrings.MISTAKE_MESSAGE);
