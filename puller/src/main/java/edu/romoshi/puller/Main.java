@@ -1,6 +1,9 @@
 package edu.romoshi.puller;
 
-import edu.romoshi.puller.bot.Bot;
+import edu.romoshi.grpc.UserServiceGrpc;
+import edu.romoshi.grps.AccountServiceGrpc;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +14,10 @@ import static edu.romoshi.puller.bot.Bot.bot;
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private static final ManagedChannel channel = ManagedChannelBuilder.forTarget(System.getenv("CHANNEL"))
+            .usePlaintext().build();
+    public static final AccountServiceGrpc.AccountServiceBlockingStub stubAccount = AccountServiceGrpc.newBlockingStub(channel);
+    public static final UserServiceGrpc.UserServiceBlockingStub stubUser = UserServiceGrpc.newBlockingStub(channel);
     public static void main(String[] args) {
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);

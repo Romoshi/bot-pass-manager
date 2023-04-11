@@ -1,10 +1,12 @@
 package edu.romoshi.puller.bot.commands;
 
+import edu.romoshi.grps.AccountOuterClass;
 import edu.romoshi.puller.bot.MessageStrings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import static edu.romoshi.puller.Main.stubAccount;
 import static edu.romoshi.puller.bot.Bot.bot;
 
 public class SaveCommand implements Command {
@@ -20,8 +22,10 @@ public class SaveCommand implements Command {
             String[] messageArray = message.getText().split(" ");
             if (verifyKey) {
                 if(messageArray.length == 4) {
-//                    Accounts account = new Accounts(messageArray[1], messageArray[2], messageArray[3]);
-//                    account.addAccount(message.getChatId().intValue());
+                    AccountOuterClass.Account request = AccountOuterClass.Account
+                            .newBuilder().setId(message.getChatId().intValue()).setNameService(messageArray[1]).setLogin(messageArray[2])
+                            .setPassword(messageArray[3]).build();
+                    stubAccount.addAccount(request);
                     bot.sendMsg(message, MessageStrings.SAVE_STRING);
                 } else {
                     bot.sendMsg(message, MessageStrings.MISTAKE_MESSAGE);

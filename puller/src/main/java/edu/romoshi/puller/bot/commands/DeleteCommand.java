@@ -1,10 +1,12 @@
 package edu.romoshi.puller.bot.commands;
 
+import edu.romoshi.grps.AccountOuterClass;
 import edu.romoshi.puller.bot.MessageStrings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import static edu.romoshi.puller.Main.stubAccount;
 import static edu.romoshi.puller.bot.Bot.bot;
 
 
@@ -21,7 +23,9 @@ public class DeleteCommand implements Command {
         try {
             if (verifyKey) {
                 if(messageArray.length == 2) {
-                    //Accounts.deleteAccount(messageArray[1], message.getChatId().intValue());
+                    AccountOuterClass.DeleteRequest request = AccountOuterClass.DeleteRequest
+                            .newBuilder().setId(message.getChatId().intValue()).setNameService(messageArray[1]).build();
+                    stubAccount.deleteAccount(request);
                     bot.sendMsg(message, MessageStrings.DELETE_STRING);
                 } else {
                     bot.sendMsg(message, MessageStrings.MISTAKE_MESSAGE);

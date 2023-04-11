@@ -1,11 +1,13 @@
 package edu.romoshi.puller.bot;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-//import edu.romoshi.core.dao.users.Users;
+import edu.romoshi.grpc.User;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentMap;
+
+import static edu.romoshi.puller.Main.stubUser;
 
 public class Cache {
 
@@ -25,16 +27,21 @@ public class Cache {
         cacheMsg.put(message.getChatId().intValue(), messages);
     }
     public boolean findPassFromCache(Message message) {
-//        Users user = new Users(message.getChatId().intValue());
-//        if (user.getMk() == null) return false;
-//        for(Map.Entry<Integer, List<String>> entry : cacheMsg.entrySet()) {
-//            if(entry.getKey() == message.getChatId().intValue()) {
-//                for (var item : entry.getValue()) {
-//                    BCrypt.Result result = BCrypt.verifyer().verify(item.toCharArray(), user.getMk());
-//                    if(result.verified) return true;
-//                }
-//            }
-//        }
+        User.IdRequest request = User.IdRequest
+                .newBuilder()
+                .setId(message.getChatId().intValue())
+                .build();
+        User.UserResponse response = stubUser.getMk(request);
+
+        if (response.getMasterKey() == null) return false;
+        for(Map.Entry<Integer, List<String>> entry : cacheMsg.entrySet()) {
+            if(entry.getKey() == message.getChatId().intValue()) {
+                for (var item : entry.getValue()) {
+                    BCrypt.Result result = BCrypt.verifyer().verify(item.toCharArray(), response.getMasterKey());
+                    if(result.verified) return true;
+                }
+            }
+        }
         return false;
     }
 

@@ -15,7 +15,7 @@ public class Core {
     private static final Logger logger = LoggerFactory.getLogger(Core.class);
     public static void main(String[] args) throws InterruptedException, IOException {
         Server core = ServerBuilder
-                .forPort(8080)
+                .forPort(Integer.parseInt(System.getenv("PORT")))
                 .addService(new AccountsServiceGrpc())
                 .addService(new UsersServiceGrpc())
                 .build();
