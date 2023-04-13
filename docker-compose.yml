@@ -4,16 +4,14 @@ services:
 
   #Java Services
   #Puller
-  app-poll:
+  app-pull:
     image: bot-pull
     restart: always
-    container_name: bot-pull
+    container_name: botpull
     env_file:
       - .env
     volumes:
       - ./logs/puller:/app/log
-    ports:
-      - 8080:8080
     depends_on:
       - app-core
     networks:
@@ -24,6 +22,9 @@ services:
   app-core:
     image: bot-core
     restart: always
+    container_name: botcore
+    expose:
+      - "8080"
     env_file:
       - .env
     volumes:

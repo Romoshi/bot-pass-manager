@@ -14,7 +14,7 @@ import static edu.romoshi.puller.bot.Bot.bot;
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
-    private static final ManagedChannel channel = ManagedChannelBuilder.forTarget(System.getenv("CHANNEL"))
+    private static final ManagedChannel channel = ManagedChannelBuilder.forAddress(System.getenv("CHANNEL_HOST"), Integer.parseInt(System.getenv("PORT")))
             .usePlaintext().build();
     public static final AccountServiceGrpc.AccountServiceBlockingStub stubAccount = AccountServiceGrpc.newBlockingStub(channel);
     public static final UserServiceGrpc.UserServiceBlockingStub stubUser = UserServiceGrpc.newBlockingStub(channel);
