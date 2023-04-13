@@ -10,6 +10,12 @@ services:
     container_name: bot-pull
     env_file:
       - .env
+    volumes:
+      - ./logs/puller:/app/log
+    ports:
+      - 8080:8080
+    depends_on:
+      - app-core
     networks:
       - app-network
 
@@ -21,7 +27,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./logs:/app/log
+      - ./logs/core:/app/log
     depends_on:
       - db
     networks:
