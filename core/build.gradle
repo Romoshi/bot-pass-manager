@@ -1,21 +1,20 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'application'
+    id 'io.ktor.plugin' version '2.2.4'
     id 'com.google.protobuf' version '0.9.2'
 }
 
 group 'edu.romoshi'
 version '1.0-VERSION'
 
-shadowJar {
-    archiveBaseName.set('bot-core')
+application {
+    mainClass.set("edu.romoshi.core.Core")
 }
 
-jar {
-    manifest {
-        attributes(
-                'Main-Class': 'edu.romoshi.core.Core'
-        )
+ktor {
+    fatJar {
+        archiveFileName.set("core.jar")
     }
 }
 
