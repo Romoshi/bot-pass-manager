@@ -1,10 +1,10 @@
-FROM gradle:jdk11-alpine AS build_step
+FROM gradle:jdk17-alpine AS build_step
 WORKDIR /app
 COPY . .
-RUN ./gradlew -p core shadowJar
+RUN apk add gcompat
+RUN ./gradlew -p core buildFatJar
 
-FROM adoptopenjdk:11-jre-hotspot
+FROM openjdk:17
 WORKDIR /app
 COPY --from=build_step /app/core/build/libs/*.jar /app
-RUN mv /app/general*.jar /app/core.jar
 ENTRYPOINT ["java", "-jar", "/app/core.jar"]

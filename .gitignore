@@ -82,7 +82,7 @@ fabric.properties
 # that are supposed to be shared within teams.
 
 .idea/*
-
+.idea
 .idea/codeStyles
 .idea/runConfigurations
 
@@ -141,7 +141,7 @@ log
 # other files
 .env
 dbdata
-
+*.dockerignore
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*

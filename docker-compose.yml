@@ -3,15 +3,17 @@ version: '3.8'
 services:
 
   #Java Services
-  #Polling
-  app-poll:
-    image: t-bot
+  #Puller
+  app-pull:
+    image: bot-pull
     restart: always
-    container_name: t-bot
+    container_name: botpull
+    ports:
+      - "9000:9000"
     env_file:
       - .env
     volumes:
-      - ./logs:/app/log
+      - ./logs/puller:/app/log
     depends_on:
       - app-core
     networks:
@@ -22,8 +24,13 @@ services:
   app-core:
     image: bot-core
     restart: always
+    container_name: botcore
+    ports:
+      - "8080:8080"
     env_file:
       - .env
+    volumes:
+      - ./logs/core:/app/log
     depends_on:
       - db
     networks:
