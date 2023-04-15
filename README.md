@@ -1,4 +1,4 @@
-### BOT IN DEVELOPMENT (ONLY LOCAL)
+
 <p align="center">
       <img src="https://i.ibb.co/52QPfDY/padlock.png" alt="Project logo" width="324">
 </p>
