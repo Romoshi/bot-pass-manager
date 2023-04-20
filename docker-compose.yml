@@ -44,7 +44,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_PASSWORD=${DB_PASS}
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
       - MYSQL_DATABASE=test
     env_file:
       - .env
