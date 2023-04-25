@@ -11,7 +11,7 @@ public class IpPool {
     public static List<String> getIpPoll() {
         List<String> ipPool = new ArrayList <>();
 
-        for (int i = 0; i < REPLICAS; i++) {
+        for (int i = 1; i < REPLICAS; i++) {
             ipPool.add(DNS + i + ":" + PORT);
         }
 
