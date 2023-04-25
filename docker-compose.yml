@@ -23,7 +23,7 @@ services:
     image: bot-core
     restart: always
     ports:
-      - "8000-8020:8080"
+      - "8001-8020:8080"
     env_file:
       - .env
     volumes:
@@ -38,7 +38,7 @@ services:
 
   #MySQL Service
   db:
-    image: mysql/mysql-server:8.0
+    image: mysql:8.0
     restart: always
     container_name: mysql8
     ports:
@@ -46,6 +46,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_PASS}
       - MYSQL_DATABASE=test
+      - MYSQL_ROOT_HOST=${DB_HOST}
     env_file:
       - .env
     volumes:

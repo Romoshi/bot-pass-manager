@@ -35,7 +35,6 @@ public class KeyCommand implements Command {
                     String bcryptHashString = BCrypt.withDefaults().hashToString(12, messageArray[1].toCharArray());
                     User.AddRequest request = User.AddRequest
                             .newBuilder()
-                            .setId(message.getChatId().intValue())
                             .setKey(bcryptHashString).build();
 
                     stubUser.addUser(request);

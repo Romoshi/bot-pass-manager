@@ -33,6 +33,7 @@ public class Cache {
                 .build();
         User.UserResponse response = stubUser.getMk(request);
 
+        //TODO: Сделать что-то с этим методом.
         if (response.getMasterKey() == null) return false;
         for(Map.Entry<Integer, List<String>> entry : cacheMsg.entrySet()) {
             if(entry.getKey() == message.getChatId().intValue()) {
