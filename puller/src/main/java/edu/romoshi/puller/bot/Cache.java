@@ -7,7 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 
-import static edu.romoshi.puller.Main.stubUser;
+import static edu.romoshi.puller.Puller.stubUser;
 
 public class Cache {
 

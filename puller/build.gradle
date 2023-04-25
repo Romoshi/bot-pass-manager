@@ -9,7 +9,7 @@ group 'edu.romoshi'
 version '1.0-VERSION'
 
 application {
-    mainClass.set("edu.romoshi.puller.Main")
+    mainClass.set("edu.romoshi.puller.Puller")
 }
 
 ktor {

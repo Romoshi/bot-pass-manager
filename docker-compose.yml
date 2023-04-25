@@ -8,8 +8,6 @@ services:
     image: bot-pull
     restart: always
     container_name: botpull
-    ports:
-      - "9000:9000"
     env_file:
       - .env
     volumes:
@@ -24,9 +22,8 @@ services:
   app-core:
     image: bot-core
     restart: always
-    container_name: botcore
     ports:
-      - "8080:8080"
+      - "8000-8020:8080"
     env_file:
       - .env
     volumes:
@@ -35,6 +32,9 @@ services:
       - db
     networks:
       - app-network
+    deploy:
+      mode: replicated
+      replicas: ${REPLICAS:-1}
 
   #MySQL Service
   db:
@@ -43,11 +43,11 @@ services:
     container_name: mysql8
     ports:
       - "3306:3306"
-    labels:
-      environment: ${BOT_NAME}
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_PASS}
       - MYSQL_DATABASE=test
+    env_file:
+      - .env
     volumes:
       - ./dbdata:/var/lib/mysql/
     networks:
@@ -56,4 +56,5 @@ services:
 #Docker Networks
 networks:
   app-network:
+    name: app-network
     driver: bridge

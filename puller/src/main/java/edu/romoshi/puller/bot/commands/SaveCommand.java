@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import static edu.romoshi.puller.Main.stubAccount;
+import static edu.romoshi.puller.Puller.stubAccount;
 import static edu.romoshi.puller.bot.Bot.bot;
 
 public class SaveCommand implements Command {
