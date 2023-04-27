@@ -20,21 +20,21 @@ public class DeleteCommand implements Command {
     @Override
     public void execute(Message message) {
         String[] messageArray = message.getText().split(" ");
-        try {
-            if (verifyKey) {
-                if(messageArray.length == 2) {
-                    AccountOuterClass.DeleteRequest request = AccountOuterClass.DeleteRequest
-                            .newBuilder().setId(message.getChatId().intValue()).setNameService(messageArray[1]).build();
+        if (verifyKey) {
+            if(messageArray.length == 2) {
+                AccountOuterClass.DeleteRequest request = AccountOuterClass.DeleteRequest
+                        .newBuilder().setId(message.getChatId().intValue()).setNameService(messageArray[1]).build();
+                try {
                     stubAccount.deleteAccount(request);
-                    bot.sendMsg(message, MessageStrings.DELETE_STRING);
-                } else {
-                    bot.sendMsg(message, MessageStrings.MISTAKE_MESSAGE);
+                } catch (Exception ex) {
+                    logger.info("bot delete password");
                 }
-            }else {
-                bot.sendMsg(message, MessageStrings.START_STRING);
+                bot.sendMsg(message, MessageStrings.DELETE_STRING);
+            } else {
+                bot.sendMsg(message, MessageStrings.MISTAKE_MESSAGE);
             }
-        } catch (Exception ex) {
-            logger.error("Delete command", ex);
+        } else {
+            bot.sendMsg(message, MessageStrings.START_STRING);
         }
     }
 }

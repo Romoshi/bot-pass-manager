@@ -18,23 +18,23 @@ public class SaveCommand implements Command {
     }
     @Override
     public void execute(Message message) {
-        try {
-            String[] messageArray = message.getText().split(" ");
-            if (verifyKey) {
-                if(messageArray.length == 4) {
-                    AccountOuterClass.Account request = AccountOuterClass.Account
-                            .newBuilder().setId(message.getChatId().intValue()).setNameService(messageArray[1]).setLogin(messageArray[2])
-                            .setPassword(messageArray[3]).build();
+        String[] messageArray = message.getText().split(" ");
+        if (verifyKey) {
+            if(messageArray.length == 4) {
+                AccountOuterClass.Account request = AccountOuterClass.Account
+                        .newBuilder().setId(message.getChatId().intValue()).setNameService(messageArray[1]).setLogin(messageArray[2])
+                        .setPassword(messageArray[3]).build();
+                try {
                     stubAccount.addAccount(request);
-                    bot.sendMsg(message, MessageStrings.SAVE_STRING);
-                } else {
-                    bot.sendMsg(message, MessageStrings.MISTAKE_MESSAGE);
+                } catch (Exception ex) {
+                    logger.info("bot save passwords");
                 }
+                bot.sendMsg(message, MessageStrings.SAVE_STRING);
             } else {
                 bot.sendMsg(message, MessageStrings.MISTAKE_MESSAGE);
             }
-        } catch (Exception ex) {
-            logger.error("Save command", ex);
+        } else {
+            bot.sendMsg(message, MessageStrings.MISTAKE_MESSAGE);
         }
     }
 }

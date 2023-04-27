@@ -11,8 +11,6 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 public class AccountsServiceGrpc extends AccountServiceGrpc.AccountServiceImplBase {
-    private static final Logger logger = LoggerFactory.getLogger(AccountsServiceGrpc.class);
-
     @Override
     public void addAccount(AccountOuterClass.Account request, StreamObserver<Empty> responseObserver) {
         int chatId = request.getId();
@@ -26,24 +24,18 @@ public class AccountsServiceGrpc extends AccountServiceGrpc.AccountServiceImplBa
     public void getAccounts(AccountOuterClass.IdRequest request, StreamObserver<AccountOuterClass.GetResponse> responseObserver) {
 
 
+
         int chatId = request.getId();
         List<Accounts> accountsList = Accounts.getAccounts(chatId);
 
         AccountOuterClass.GetResponse accounts = AccountOuterClass.GetResponse.newBuilder()
                 .addAllAccounts(
                         accountsList.stream().map(
-                                u -> {
-                                    try {
-                                        return AccountOuterClass.Account.newBuilder()
-                                                .setNameService(u.getNameService())
-                                                .setLogin(u.getLogin())
-                                                .setPassword(u.getPassword(chatId))
-                                                .build();
-                                    } catch (Exception e) {
-                                        logger.error("Show accounts gRPC error", e);
-                                        throw new RuntimeException(e);
-                                    }
-                                }
+                                u -> AccountOuterClass.Account.newBuilder()
+                                        .setNameService(u.getNameService())
+                                        .setLogin(u.getLogin())
+                                        .setPassword(u.getPassword())
+                                        .build()
                         ).toList()
                 ).build();
 

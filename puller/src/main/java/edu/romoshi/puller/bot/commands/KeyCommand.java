@@ -22,33 +22,27 @@ public class KeyCommand implements Command {
 
     @Override
     public void execute(Message message) {
-        try {
-            String[] messageArray = message.getText().split(" ");
-            User.IdRequest requestExist = User.IdRequest
-                    .newBuilder()
-                    .setId(message.getChatId().intValue())
-                    .build();
-            User.ExistResponse response = stubUser.userExist(requestExist);
-
-            if(!verifyKey && response.getResponse()) {
-                if(messageArray.length == 2) {
-                    String bcryptHashString = BCrypt.withDefaults().hashToString(12, messageArray[1].toCharArray());
-                    User.AddRequest request = User.AddRequest
-                            .newBuilder()
-                            .setKey(bcryptHashString).build();
-
+        String[] messageArray = message.getText().split(" ");
+        if(!verifyKey) {
+            if(messageArray.length == 2) {
+                String bcryptHashString = BCrypt.withDefaults().hashToString(12, messageArray[1].toCharArray());
+                   User.AddRequest request = User.AddRequest
+                           .newBuilder()
+                           .setId(message.getChatId().intValue())
+                           .setKey(bcryptHashString)
+                           .build();
+                try {
                     stubUser.addUser(request);
-
-                    bot.sendMsg(message, MessageStrings.KEY_STRING);
-                    bot.sendMsg(message, MessageStrings.AFTER_KEY_STRING);
-                } else {
-                    bot.sendMsg(message, MessageStrings.MISTAKE_MESSAGE);
+                } catch (Exception ex) {
+                    logger.info("bot add password");
                 }
-            } else if (!messageArray[1].isEmpty()){
-                bot.sendMsg(message, MessageStrings.KEY_EXIST);
+                bot.sendMsg(message, MessageStrings.KEY_STRING);
+                bot.sendMsg(message, MessageStrings.AFTER_KEY_STRING);
+            } else {
+                bot.sendMsg(message, MessageStrings.MISTAKE_MESSAGE);
             }
-        } catch (Exception ex) {
-            logger.error("Key command", ex);
+        } else if (!messageArray[1].isEmpty()){
+            bot.sendMsg(message, MessageStrings.KEY_EXIST);
         }
     }
 }

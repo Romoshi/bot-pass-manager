@@ -28,9 +28,8 @@ public class Accounts {
         return login;
     }
 
-    public String getPassword(int chatId) throws Exception {
-        Decryption de = new Decryption();
-        return de.decrypt(this.password, String.valueOf(chatId));
+    public String getPassword() {
+        return password;
     }
 
     public Accounts(String nameService, String login, String password) {
@@ -50,10 +49,11 @@ public class Accounts {
             preparedStatement.setString(4, en.encrypt(this.password, String.valueOf(id)));
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Add account)", e);
+            logger.error("Add account", e);
         }
     }
     public static List<Accounts> getAccounts(int id) {
+        Decryption de = new Decryption();
         List<Accounts> accounts = new ArrayList<>();
 
         try(Connection connection = Connector.getNewConnection();
@@ -64,7 +64,7 @@ public class Accounts {
             while(rs.next()) {
                 String ns = rs.getString("name_service");
                 String lg = rs.getString("login");
-                String pass = rs.getString("password");
+                String pass = de.decrypt(rs.getString("password"), String.valueOf(id));
 
                 accounts.add(new Accounts(ns, lg, pass));
             }
