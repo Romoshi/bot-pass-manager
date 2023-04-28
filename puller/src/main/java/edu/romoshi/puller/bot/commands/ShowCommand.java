@@ -31,11 +31,9 @@ public class ShowCommand implements Command {
 
                     List<AccountOuterClass.Account> accounts = response.getAccountsList();
                     for (var account : accounts) {
-                        String info = new StringBuilder()
-                                .append("Название сервиса: " + account.getNameService() + "\n")
-                                .append("Логин: " + account.getLogin() + "\n")
-                                .append("Пароль: " + account.getPassword() + "\n")
-                                .toString();
+                        String info = "Название сервиса: " + account.getNameService() + "\n" +
+                                "Логин: " + account.getLogin() + "\n" +
+                                "Пароль: " + account.getPassword() + "\n";
                        bot.sendMsg(message, info);
                     }
                 } else {

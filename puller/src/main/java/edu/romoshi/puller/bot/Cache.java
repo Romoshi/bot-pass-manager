@@ -2,6 +2,8 @@ package edu.romoshi.puller.bot;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import edu.romoshi.grpc.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.*;
@@ -11,6 +13,7 @@ import static edu.romoshi.puller.Puller.stubUser;
 
 public class Cache {
 
+    private static final Logger logger = LoggerFactory.getLogger(Cache.class);
     private final ConcurrentMap<Integer, List<String>> cacheMsg;
     private final List<String> messages;
     private final int DEFAULT_TIMEOUT = (int) (86.4 * Math.pow(10, 5)); //24 hours
@@ -33,7 +36,6 @@ public class Cache {
                 .build();
         User.UserResponse response = stubUser.getMk(request);
 
-        if (response.getMasterKey() == null) return false;
         for(Map.Entry<Integer, List<String>> entry : cacheMsg.entrySet()) {
             if(entry.getKey() == message.getChatId().intValue()) {
                 for (var item : entry.getValue()) {

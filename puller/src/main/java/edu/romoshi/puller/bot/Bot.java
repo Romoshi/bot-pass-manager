@@ -46,8 +46,16 @@ public class Bot extends TelegramLongPollingBot {
         cache.add(message);
         cache.autoDeleteCache(message);
         autoDeleteMessage(message);
+        boolean mk;
 
-        initCommands(cache.findPassFromCache(message));
+        try {
+            mk = cache.findPassFromCache(message);
+        } catch (Exception ex) {
+            logger.info("Пароля не существует.");
+            mk = false;
+        }
+
+        initCommands(mk);
         receiver.runCommand(message);
 
         if(!receiver.isFlag()) {
