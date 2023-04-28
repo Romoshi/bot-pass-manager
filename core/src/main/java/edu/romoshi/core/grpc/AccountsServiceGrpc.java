@@ -22,9 +22,6 @@ public class AccountsServiceGrpc extends AccountServiceGrpc.AccountServiceImplBa
 
     @Override
     public void getAccounts(AccountOuterClass.IdRequest request, StreamObserver<AccountOuterClass.GetResponse> responseObserver) {
-
-
-
         int chatId = request.getId();
         List<Accounts> accountsList = Accounts.getAccounts(chatId);
 

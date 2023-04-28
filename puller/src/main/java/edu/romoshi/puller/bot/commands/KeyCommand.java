@@ -23,7 +23,13 @@ public class KeyCommand implements Command {
     @Override
     public void execute(Message message) {
         String[] messageArray = message.getText().split(" ");
-        if(!verifyKey) {
+        User.IdRequest requestExist = User.IdRequest
+                .newBuilder()
+                .setId(message.getChatId().intValue())
+                .build();
+        User.ExistResponse response = stubUser.userExist(requestExist);
+
+        if(!verifyKey && response.getResponse()) {
             if(messageArray.length == 2) {
                 String bcryptHashString = BCrypt.withDefaults().hashToString(12, messageArray[1].toCharArray());
                    User.AddRequest request = User.AddRequest
