@@ -14,7 +14,7 @@ public class Tables {
     }
 
     private static final Logger logger = LoggerFactory.getLogger(Tables.class);
-    private static final String INIT_DB = "CREATE DATABASE IF NOT EXISTS test;";
+    private static final String INIT_DB = "CREATE DATABASE IF NOT EXISTS app;";
     private static final String INIT_TABLE_ACCOUNTS = "CREATE TABLE IF NOT EXISTS accounts(" +
                                                     "id BIGINT AUTO_INCREMENT PRIMARY KEY," +
                                                     "user_id INT NOT NULL," +
