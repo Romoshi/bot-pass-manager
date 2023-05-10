@@ -36,4 +36,3 @@ jobs:
           tags: |
             ghcr.io/romoshi/bot-pass-manager/botpuller:${{ github.sha }}
             ghcr.io/romoshi/bot-pass-manager/botpuller:latest
-
